@@ -1,0 +1,21 @@
+// Kalimba (Biblioteca Racoon)
+// fuente: vcsl
+<control>
+default_path=kalimba/
+
+<global>
+ampeg_release=0.40
+amp_veltrack=85
+
+<region> sample=G2-v1.flac pitch_keycenter=43 lokey=0 hikey=45 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B2-v1.flac pitch_keycenter=47 lokey=46 hikey=50 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F3-v1.flac pitch_keycenter=53 lokey=51 hikey=55 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As3-v1.flac pitch_keycenter=58 lokey=56 hikey=60 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds4-v1.flac pitch_keycenter=63 lokey=61 hikey=65 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G4-v1.flac pitch_keycenter=67 lokey=66 hikey=70 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs5-v1.flac pitch_keycenter=73 lokey=71 hikey=75 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F5-v1.flac pitch_keycenter=77 lokey=76 hikey=79 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As5-v1.flac pitch_keycenter=82 lokey=80 hikey=85 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E6-v1.flac pitch_keycenter=88 lokey=86 hikey=90 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs6-v1.flac pitch_keycenter=92 lokey=91 hikey=94 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs7-v1.flac pitch_keycenter=97 lokey=95 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

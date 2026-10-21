@@ -1,0 +1,21 @@
+// Cítara húngara (Biblioteca Racoon)
+// fuente: zither
+<control>
+default_path=citara-hungara/
+
+<global>
+ampeg_release=0.30
+amp_veltrack=85
+
+<region> sample=G4-v1.flac pitch_keycenter=67 lokey=0 hikey=68 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As4-v1.flac pitch_keycenter=70 lokey=69 hikey=71 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C5-v1.flac pitch_keycenter=72 lokey=72 hikey=73 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds5-v1.flac pitch_keycenter=75 lokey=74 hikey=76 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs5-v1.flac pitch_keycenter=78 lokey=77 hikey=79 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs5-v1.flac pitch_keycenter=80 lokey=80 hikey=81 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B5-v1.flac pitch_keycenter=83 lokey=82 hikey=84 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs6-v1.flac pitch_keycenter=85 lokey=85 hikey=86 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E6-v1.flac pitch_keycenter=88 lokey=87 hikey=89 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G6-v1.flac pitch_keycenter=91 lokey=90 hikey=92 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A6-v1.flac pitch_keycenter=93 lokey=93 hikey=94 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C7-v1.flac pitch_keycenter=96 lokey=95 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

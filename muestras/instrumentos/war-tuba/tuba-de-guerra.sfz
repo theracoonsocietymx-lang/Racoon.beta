@@ -1,0 +1,21 @@
+// Tuba de guerra (Biblioteca Racoon)
+// fuente: wartuba
+<control>
+default_path=tuba-de-guerra/
+
+<global>
+ampeg_release=0.20
+amp_veltrack=85
+
+<region> sample=F1-v1.flac pitch_keycenter=29 lokey=0 hikey=30 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G1-v1.flac pitch_keycenter=31 lokey=31 hikey=32 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As1-v1.flac pitch_keycenter=34 lokey=33 hikey=35 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C2-v1.flac pitch_keycenter=36 lokey=36 hikey=37 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D2-v1.flac pitch_keycenter=38 lokey=38 hikey=39 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F2-v1.flac pitch_keycenter=41 lokey=40 hikey=42 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G2-v1.flac pitch_keycenter=43 lokey=43 hikey=44 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As2-v1.flac pitch_keycenter=46 lokey=45 hikey=47 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C3-v1.flac pitch_keycenter=48 lokey=48 hikey=49 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D3-v1.flac pitch_keycenter=50 lokey=50 hikey=51 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F3-v1.flac pitch_keycenter=53 lokey=52 hikey=54 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G3-v1.flac pitch_keycenter=55 lokey=55 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

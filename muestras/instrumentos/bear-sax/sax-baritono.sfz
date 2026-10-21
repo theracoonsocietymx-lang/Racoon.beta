@@ -1,0 +1,21 @@
+// Saxofón barítono (Biblioteca Racoon)
+// fuente: bearsax
+<control>
+default_path=sax-baritono/
+
+<global>
+ampeg_release=0.20
+amp_veltrack=85
+
+<region> sample=Cs2-v1.flac pitch_keycenter=37 lokey=0 hikey=38 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E2-v1.flac pitch_keycenter=40 lokey=39 hikey=41 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G2-v1.flac pitch_keycenter=43 lokey=42 hikey=44 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A2-v1.flac pitch_keycenter=45 lokey=45 hikey=46 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C3-v1.flac pitch_keycenter=48 lokey=47 hikey=49 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds3-v1.flac pitch_keycenter=51 lokey=50 hikey=52 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs3-v1.flac pitch_keycenter=54 lokey=53 hikey=55 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A3-v1.flac pitch_keycenter=57 lokey=56 hikey=58 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C4-v1.flac pitch_keycenter=60 lokey=59 hikey=61 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D4-v1.flac pitch_keycenter=62 lokey=62 hikey=63 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F4-v1.flac pitch_keycenter=65 lokey=64 hikey=66 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs4-v1.flac pitch_keycenter=68 lokey=67 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

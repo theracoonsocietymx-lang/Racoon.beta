@@ -1,0 +1,31 @@
+// Piano viejo de cantina (Biblioteca Racoon)
+// fuente: freepats_oldpiano
+<control>
+default_path=piano-viejo/
+
+<global>
+ampeg_release=0.30
+amp_veltrack=85
+
+<region> sample=Gs0-v1.flac pitch_keycenter=20 lokey=0 hikey=22 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C1-v1.flac pitch_keycenter=24 lokey=23 hikey=26 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E1-v1.flac pitch_keycenter=28 lokey=27 hikey=30 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs1-v1.flac pitch_keycenter=32 lokey=31 hikey=34 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs2-v1.flac pitch_keycenter=37 lokey=35 hikey=39 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F2-v1.flac pitch_keycenter=41 lokey=40 hikey=43 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A2-v1.flac pitch_keycenter=45 lokey=44 hikey=47 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs3-v1.flac pitch_keycenter=49 lokey=48 hikey=51 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F3-v1.flac pitch_keycenter=53 lokey=52 hikey=55 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A3-v1.flac pitch_keycenter=57 lokey=56 hikey=59 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs4-v1.flac pitch_keycenter=61 lokey=60 hikey=63 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F4-v1.flac pitch_keycenter=65 lokey=64 hikey=67 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A4-v1.flac pitch_keycenter=69 lokey=68 hikey=71 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D5-v1.flac pitch_keycenter=74 lokey=72 hikey=76 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs5-v1.flac pitch_keycenter=78 lokey=77 hikey=80 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As5-v1.flac pitch_keycenter=82 lokey=81 hikey=84 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D6-v1.flac pitch_keycenter=86 lokey=85 hikey=88 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs6-v1.flac pitch_keycenter=90 lokey=89 hikey=92 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B6-v1.flac pitch_keycenter=95 lokey=93 hikey=97 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds7-v1.flac pitch_keycenter=99 lokey=98 hikey=101 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G7-v1.flac pitch_keycenter=103 lokey=102 hikey=105 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B7-v1.flac pitch_keycenter=107 lokey=106 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

@@ -1,0 +1,337 @@
+MUESTRAS RACOON, CRÉDITOS Y LICENCIAS
+
+Todas las muestras vienen de bibliotecas gratuitas que permiten redistribuirlas. Se mezclaron micrófonos, se recortaron colas
+y se igualaron niveles, pero el sonido es de sus autores. Las licencias CC BY piden dar crédito: este archivo lo da y debe
+acompañar a la biblioteca. La GPL de los dos kits de Hydrogen es compatible con la GPL3 de Racoon.
+
+Se dejaron fuera, a propósito: jRhodes3d (CC BY-NC), la 909 de Rob Roy (prohíbe modificar), Drum Abuse y SMDrums (sin licencia clara).
+
+Adventure Kid Waveforms (AKWF)
+  autor: Kristoffer Ekstrand (Adventure Kid), vía Sonic Pi
+  licencia: CC0 1.0
+  origen: https://github.com/sonic-pi-net/sonic-pi
+  archivos en Racoon: 4358
+
+Bear Sax
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.bear-sax
+  archivos en Racoon: 1
+
+Big Cat Cello
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer-bigcat.cello
+  archivos en Racoon: 2
+
+Big Little Bass
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.big-little-bass
+  archivos en Racoon: 1
+
+Big Rusty Drums
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.big-rusty-drums
+  archivos en Racoon: 333
+
+Black and Blue Basses
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.black-and-blue-basses
+  archivos en Racoon: 2
+
+Black and Green Guitars
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.black-and-green-guitars
+  archivos en Racoon: 2
+
+Body Percussion
+  autor: sfzinstruments
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/body_percussion
+  archivos en Racoon: 56
+
+Free Drum Samples (Trap Duro, Bounce, Soul Vintage)
+  autor: Boochi44, en parte a partir de la 808 grabada por Edward Loveall
+  licencia: CC0 1.0
+  origen: https://github.com/Boochi44/free-drum-samples
+  archivos en Racoon: 57
+
+Caveman Cosmonaut
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.caveman-cosmonaut
+  archivos en Racoon: 3
+
+Roland CR-78
+  autor: boxedear.com, vía oramics/sampled
+  licencia: Dominio público
+  origen: https://github.com/oramics/sampled
+  archivos en Racoon: 17
+
+Dim Cabasa
+  autor: kinwie
+  licencia: CC BY 4.0
+  origen: https://github.com/sfzinstruments/kinwie.dim-cabasa
+  archivos en Racoon: 10
+
+DRSKit 1.0
+  autor: Lars Muldjord, Bent Bisballe Nyeng y Jes Eiler (DrumGizmo / DRSDrums)
+  licencia: CC BY 4.0
+  origen: https://github.com/sfzinstruments/DrumGizmo.DRSKit
+  archivos en Racoon: 83
+
+Double Bass
+  autor: D. Smolken
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/dsmolken.double-bass
+  archivos en Racoon: 1
+
+Emily Guitar
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.emilyguitar
+  archivos en Racoon: 1
+
+Fashion Bass
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.fashionbass
+  archivos en Racoon: 1
+
+Frankensnare
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.frankensnare
+  archivos en Racoon: 215
+
+Old Piano (Francis Bacon)
+  autor: Piotr Barcz, armado por FreePats
+  licencia: CC0 1.0
+  origen: https://github.com/smpldsnds/freepats-old-piano-fb
+  archivos en Racoon: 1
+
+Gogodze Phu Vol I
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.gogodze-phu-vol-i
+  archivos en Racoon: 88
+
+Gogodze Phu Vol II
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.gogodze-phu-vol-ii
+  archivos en Racoon: 118
+
+Growly Bass
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.growlybass
+  archivos en Racoon: 1
+
+The Hat With The Phat
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/Karoryfer.TheHatWithThePhat
+  archivos en Racoon: 85
+
+Horse Pulse
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/Karoryfer.HorsePulse
+  archivos en Racoon: 1
+
+TR808EmulationKit de Hydrogen
+  autor: ArtemioLabs
+  licencia: GPL 2.0 o posterior
+  origen: https://github.com/hydrogen-music/hydrogen
+  archivos en Racoon: 16
+
+GMRockKit de Hydrogen
+  autor: Glen MacArthur y Sebastian Moors
+  licencia: GPL 2.0 o posterior
+  origen: https://github.com/hydrogen-music/hydrogen
+  archivos en Racoon: 42
+
+LinnDrum LM-2
+  autor: machines.hyperreal.org, vía oramics/sampled
+  licencia: Dominio público
+  origen: https://github.com/oramics/sampled
+  archivos en Racoon: 29
+
+Meat Bass
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.meatbass
+  archivos en Racoon: 2
+
+272 Merry Orks
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.272-merry-orks
+  archivos en Racoon: 129
+
+Maestro Rhythm King MRK-2
+  autor: oramics/sampled
+  licencia: Dominio público
+  origen: https://github.com/oramics/sampled
+  archivos en Racoon: 10
+
+MuldjordKit
+  autor: Lars Muldjord (DrumGizmo), mapeo de kinwie
+  licencia: CC BY 4.0
+  origen: https://github.com/sfzinstruments/DrumGizmo.MuldjordKit
+  archivos en Racoon: 57
+
+Pasta Bass
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.pastabass
+  archivos en Racoon: 2
+
+Pearl Master Studio Pack 1
+  autor: enoe, vía oramics/sampled
+  licencia: CC BY 3.0
+  origen: https://github.com/oramics/sampled
+  archivos en Racoon: 15
+
+Salamander Grand Piano
+  autor: Alexander Holm, mapeo de kinwie
+  licencia: CC BY 3.0
+  origen: https://github.com/sfzinstruments/SalamanderGrandPiano
+  archivos en Racoon: 1
+
+Scarypiano
+  autor: Karoryfer Lecolds, sobre el piano de dominio público de la Universidad de Iowa
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.scarypiano
+  archivos en Racoon: 47
+
+Shiny Guitar
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.shinyguitar
+  archivos en Racoon: 2
+
+Drum Machines (RZ-1, SK-1, MFB-512, CR-8000, Drumtraks, MR-10)
+  autor: smpldsnds
+  licencia: Dominio público
+  origen: https://github.com/smpldsnds/drum-machines
+  archivos en Racoon: 70
+
+Sneaky Bass
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.sneakybass
+  archivos en Racoon: 3
+
+Muestras de Sonic Pi
+  autor: Sam Aaron y colaboradores de freesound.org, Arovane, The Black Dog
+  licencia: CC0 1.0
+  origen: https://github.com/sonic-pi-net/sonic-pi
+  archivos en Racoon: 196
+
+Splendid Grand Piano
+  autor: Akai (liberado en 2000), mapeo de kinwie
+  licencia: Dominio público
+  origen: https://github.com/smpldsnds/sfzinstruments-splendid-grand-piano
+  archivos en Racoon: 1
+
+Squid Pipes
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.squidpipes
+  archivos en Racoon: 1
+
+jSteelDrum
+  autor: Jeff Learman
+  licencia: The Unlicense
+  origen: https://github.com/sfzinstruments/jlearman.SteelDrum
+  archivos en Racoon: 1
+
+String Cyborgs
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.string-cyborgs
+  archivos en Racoon: 2
+
+Swag Bass
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.swagbass
+  archivos en Racoon: 1
+
+Swirly Drums
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.swirly-drums
+  archivos en Racoon: 130
+
+Roland TR-505
+  autor: oramics/sampled
+  licencia: Dominio público
+  origen: https://github.com/oramics/sampled
+  archivos en Racoon: 16
+
+Roland TR-707
+  autor: Francois Dion
+  licencia: Dominio público
+  origen: https://github.com/fluid-music/open-drums
+  archivos en Racoon: 14
+
+Roland TR-808, juego de 1994
+  autor: Michael Fischer (Technopolis)
+  licencia: CC0 1.0
+  origen: https://github.com/tidalcycles/sounds-tr808-fischer
+  archivos en Racoon: 116
+
+Unruly Drums
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.unruly-drums
+  archivos en Racoon: 302
+
+Versilian Community Sample Library
+  autor: Versilian Studios (Sam Gossner)
+  licencia: CC0 1.0
+  origen: https://github.com/sgossner/VCSL
+  archivos en Racoon: 432
+
+Virtuosity Drums
+  autor: Versilian Studios (Sam Gossner)
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/virtuosity_drums
+  archivos en Racoon: 281
+
+VSCO 2 Community Edition
+  autor: Versilian Studios (Sam Gossner)
+  licencia: CC0 1.0
+  origen: https://github.com/sgossner/VSCO-2-CE
+  archivos en Racoon: 136
+
+War Tuba
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.war-tuba
+  archivos en Racoon: 1
+
+WaveEdit Online
+  autor: usuarios de WaveEdit (Synthesis Technology)
+  licencia: CC0 1.0
+  origen: https://github.com/smpldsnds/wavedit-online
+  archivos en Racoon: 705
+
+Weresax
+  autor: Karoryfer Lecolds
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/karoryfer.weresax
+  archivos en Racoon: 1
+
+Hungarian Zither
+  autor: sfzinstruments
+  licencia: CC0 1.0
+  origen: https://github.com/sfzinstruments/hungarian_zither
+  archivos en Racoon: 1

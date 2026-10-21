@@ -1,0 +1,15 @@
+// Balafón (Biblioteca Racoon)
+// fuente: vcsl
+<control>
+default_path=balafon/
+
+<global>
+ampeg_release=0.30
+amp_veltrack=85
+
+<region> sample=Cs4-v1.flac pitch_keycenter=61 lokey=0 hikey=63 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F4-v1.flac pitch_keycenter=65 lokey=64 hikey=68 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C5-v1.flac pitch_keycenter=72 lokey=69 hikey=74 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F5-v1.flac pitch_keycenter=77 lokey=75 hikey=80 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C6-v1.flac pitch_keycenter=84 lokey=81 hikey=86 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F6-v1.flac pitch_keycenter=89 lokey=87 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

@@ -1,0 +1,21 @@
+// Bajo eléctrico con dedos (Biblioteca Racoon)
+// fuente: sneakybass
+<control>
+default_path=bajo-dedos/
+
+<global>
+ampeg_release=0.12
+amp_veltrack=85
+
+<region> sample=C1-v1.flac pitch_keycenter=24 lokey=0 hikey=25 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds1-v1.flac pitch_keycenter=27 lokey=26 hikey=29 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G1-v1.flac pitch_keycenter=31 lokey=30 hikey=32 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As1-v1.flac pitch_keycenter=34 lokey=33 hikey=35 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs2-v1.flac pitch_keycenter=37 lokey=36 hikey=38 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E2-v1.flac pitch_keycenter=40 lokey=39 hikey=42 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs2-v1.flac pitch_keycenter=44 lokey=43 hikey=45 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B2-v1.flac pitch_keycenter=47 lokey=46 hikey=48 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D3-v1.flac pitch_keycenter=50 lokey=49 hikey=51 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F3-v1.flac pitch_keycenter=53 lokey=52 hikey=55 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A3-v1.flac pitch_keycenter=57 lokey=56 hikey=58 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C4-v1.flac pitch_keycenter=60 lokey=59 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

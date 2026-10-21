@@ -1,0 +1,20 @@
+// Campanas tubulares (Biblioteca Racoon)
+// fuente: vcsl
+<control>
+default_path=campanas-tubulares/
+
+<global>
+ampeg_release=1.00
+amp_veltrack=85
+
+<region> sample=C4-v1.flac pitch_keycenter=60 lokey=0 hikey=61 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D4-v1.flac pitch_keycenter=62 lokey=62 hikey=63 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E4-v1.flac pitch_keycenter=64 lokey=64 hikey=64 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F4-v1.flac pitch_keycenter=65 lokey=65 hikey=66 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G4-v1.flac pitch_keycenter=67 lokey=67 hikey=68 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A4-v1.flac pitch_keycenter=69 lokey=69 hikey=70 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B4-v1.flac pitch_keycenter=71 lokey=71 hikey=71 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C5-v1.flac pitch_keycenter=72 lokey=72 hikey=73 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D5-v1.flac pitch_keycenter=74 lokey=74 hikey=75 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E5-v1.flac pitch_keycenter=76 lokey=76 hikey=76 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F5-v1.flac pitch_keycenter=77 lokey=77 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

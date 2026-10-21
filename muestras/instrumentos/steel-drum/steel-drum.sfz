@@ -1,0 +1,21 @@
+// Tambor de acero (Biblioteca Racoon)
+// fuente: steeldrum
+<control>
+default_path=steel-drum/
+
+<global>
+ampeg_release=0.30
+amp_veltrack=85
+
+<region> sample=C4-v1.flac pitch_keycenter=60 lokey=0 hikey=61 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D4-v1.flac pitch_keycenter=62 lokey=62 hikey=63 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E4-v1.flac pitch_keycenter=64 lokey=64 hikey=65 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs4-v1.flac pitch_keycenter=66 lokey=66 hikey=67 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs4-v1.flac pitch_keycenter=68 lokey=68 hikey=69 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As4-v1.flac pitch_keycenter=70 lokey=70 hikey=71 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs5-v1.flac pitch_keycenter=73 lokey=72 hikey=74 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds5-v1.flac pitch_keycenter=75 lokey=75 hikey=76 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F5-v1.flac pitch_keycenter=77 lokey=77 hikey=78 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G5-v1.flac pitch_keycenter=79 lokey=79 hikey=80 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A5-v1.flac pitch_keycenter=81 lokey=81 hikey=82 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B5-v1.flac pitch_keycenter=83 lokey=83 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

@@ -1,0 +1,21 @@
+// Saxofón tenor (Biblioteca Racoon)
+// fuente: vcsl
+<control>
+default_path=sax-tenor/
+
+<global>
+ampeg_release=0.20
+amp_veltrack=85
+
+<region> sample=Gs2-v1.flac pitch_keycenter=44 lokey=0 hikey=46 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=89617 loop_end=115526
+<region> sample=C3-v1.flac pitch_keycenter=48 lokey=47 hikey=50 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=93832 loop_end=120459
+<region> sample=E3-v1.flac pitch_keycenter=52 lokey=51 hikey=54 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=85531 loop_end=111754
+<region> sample=Gs3-v1.flac pitch_keycenter=56 lokey=55 hikey=58 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=52024 loop_end=78354
+<region> sample=C4-v1.flac pitch_keycenter=60 lokey=59 hikey=62 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=85471 loop_end=111930
+<region> sample=E4-v1.flac pitch_keycenter=64 lokey=63 hikey=66 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=72897 loop_end=99252
+<region> sample=Gs4-v1.flac pitch_keycenter=68 lokey=67 hikey=70 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=77018 loop_end=103460
+<region> sample=C5-v1.flac pitch_keycenter=72 lokey=71 hikey=74 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=89582 loop_end=116040
+<region> sample=E5-v1.flac pitch_keycenter=76 lokey=75 hikey=78 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=72884 loop_end=99240
+<region> sample=Gs5-v1.flac pitch_keycenter=80 lokey=79 hikey=82 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=72889 loop_end=99329
+<region> sample=C6-v1.flac pitch_keycenter=84 lokey=83 hikey=86 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=56202 loop_end=82623
+<region> sample=E6-v1.flac pitch_keycenter=88 lokey=87 hikey=127 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=72902 loop_end=99357

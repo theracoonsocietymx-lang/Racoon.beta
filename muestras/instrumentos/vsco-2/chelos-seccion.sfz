@@ -1,0 +1,21 @@
+// Sección de chelos (Biblioteca Racoon)
+// fuente: vsco
+<control>
+default_path=chelos-seccion/
+
+<global>
+ampeg_release=0.45
+amp_veltrack=85
+
+<region> sample=C2-v1.flac pitch_keycenter=36 lokey=0 hikey=38 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=93832 loop_end=120140
+<region> sample=E2-v1.flac pitch_keycenter=40 lokey=39 hikey=41 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=68783 loop_end=95072
+<region> sample=G2-v1.flac pitch_keycenter=43 lokey=42 hikey=45 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=94028 loop_end=120087
+<region> sample=B2-v1.flac pitch_keycenter=47 lokey=46 hikey=48 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=81192 loop_end=107824
+<region> sample=D3-v1.flac pitch_keycenter=50 lokey=49 hikey=51 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=56184 loop_end=82333
+<region> sample=F3-v1.flac pitch_keycenter=53 lokey=52 hikey=55 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=47848 loop_end=74050
+<region> sample=A3-v1.flac pitch_keycenter=57 lokey=56 hikey=60 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=93668 loop_end=119964
+<region> sample=E4-v1.flac pitch_keycenter=64 lokey=61 hikey=65 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=93772 loop_end=120053
+<region> sample=G4-v1.flac pitch_keycenter=67 lokey=66 hikey=69 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B4-v1.flac pitch_keycenter=71 lokey=70 hikey=72 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=68688 loop_end=95044
+<region> sample=D5-v1.flac pitch_keycenter=74 lokey=73 hikey=75 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=77041 loop_end=103500
+<region> sample=F5-v1.flac pitch_keycenter=77 lokey=76 hikey=127 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=89552 loop_end=116001

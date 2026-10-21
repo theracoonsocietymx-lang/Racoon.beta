@@ -1,0 +1,372 @@
+Doble clic en "Instalar Racoon.command". Es el unico instalador.
+
+Compila los 11 plugins y Racoon, el estudio, los instala en esta Mac y arma Muestras Racoon completa.
+No pregunta nada: al terminar todo queda listo para producir. La primera vez tarda bastante (de 40 a 90 minutos,
+segun tu Mac y tu internet), y una ventana te dice en que paso va. Si macOS pide las herramientas de Xcode,
+acepta y vuelve a darle doble clic. Si se corta, vuelve a darle doble clic: sigue donde se quedo.
+
+Al terminar:
+- Racoon queda en Aplicaciones.
+- Los plugins quedan en ~/Library/Audio/Plug-Ins (VST3 y Components), donde tu DAW tambien los encuentra.
+  Todos se llaman "Racoon - ..." (Racoon - Badger Bass, Racoon - Hamster Drums...), asi salen juntos.
+  Los nombres de antes se borran solos para que no aparezcan dos veces.
+- La primera vez que abras Racoon se escribe la Biblioteca Racoon en Musica/Racoon (365 sonidos, unos 68 MB):
+  bombos, cajas, palmas, charles, percusiones, loops de 12 estilos, fills, bajos y transiciones.
+  La encuentras en Racoon, pestaña Samples, boton Biblioteca.
+- Muestras Racoon completa queda en Musica/Racoon/Muestras Racoon. El instalador baja cada muestra de su biblioteca
+  original en GitHub y la arma con todas sus capas: hasta 6 capas de fuerza y 4 alternancias por golpe, 30 notas por
+  instrumento, pianos que suenan hasta 10 segundos. Baja unos 5 GB y queda en 1 GB. Sin internet (o con menos de 12 GB libres)
+  se queda la normal, que viene en la carpeta muestras, y la completa se arma la siguiente vez que corras el instalador.
+- La normal (la carpeta muestras): 3060 golpes reales de bateria y percusion,
+  76 instrumentos cromaticos, texturas, loops, voces y 5063 ondas, de 55 bibliotecas libres. La usan Hamster y Squirrel
+  (boton MUESTRAS), Mole (BATERIA), Badger (LOAD de cada oscilador) y Skunk (CARGAR...). En Racoon: Samples, boton Muestras.
+  Al elegir un genero, Hamster ya toca con el kit de muestras de ese estilo. Creditos y licencias en muestras/CREDITOS.txt.
+- En la carpeta Instalador queda un solo .dmg con todo, para instalarlo en otra Mac sin compilar. Trae adentro los
+  11 plugins y Muestras Racoon: la primera vez que abras Racoon en la otra Mac, las muestras se copian solas a
+  Musica/Racoon/Muestras Racoon (unos segundos, en segundo plano).
+
+La carpeta plugins tiene el codigo de los 11 plugins, la carpeta estudio el de Racoon y la carpeta muestras las muestras.
+
+Los 11 plugins funcionan igual en la parte de abajo: Play, deshacer y rehacer, la secuencia (piano roll),
+el teclado y "Empieza aqui". Todos traen un ejemplo cargado: abre cualquiera y dale Play.
+
+Idioma: la primera vez que abres Racoon pregunta "¿En que idioma quieres usar Racoon? / Which language do you want to use?"
+con dos botones, Español y English. Se cambia cuando quieras en el menu del engrane, Idioma / Language.
+Los 11 plugins usan el mismo idioma, tambien dentro de tu DAW: si lo cambias con un plugin abierto, su ventana cambia en un par de segundos.
+Los terminos de produccion (drop, build-up, kick, groove), los nombres de los animales y de los generos se quedan igual en los dos idiomas.
+
+Al abrir, Racoon pregunta que genero vas a producir (44: house, techno, trap, reggaeton, drum & bass, lo-fi...)
+y arma un bloque de 16 compases en ese estilo, un canal por instrumento y todos los clips colocados. Dale Play y suena. Tu ultimo proyecto esta en Archivo > Abrir el ultimo proyecto.
+Cada genero es una rola distinta, en su propia tonalidad de la rueda de Camelot, y todos los instrumentos suenan en esa tonalidad (la bateria y la percusion tambien se afinan).
+
+Efectos de Racoon (55 en el navegador, pestaña Efectos):
+- Nuevos: Transitorios, De-esser, Clipper, Bombeo, Sub grave, Excitador, Imagen estereo, Medidor (LUFS y pico real),
+  Compuerta ritmica, Rotativo, Wah, Shimmer, Afinacion automatica y Efectos DJ (freno de cinta, rebobinado, tartamudeo).
+- Puerta tiene Ratio (abajo de 20:1 es expansor), Compresor tiene Ganancia automatica y Saturador dos curvas mas.
+- Las perillas de la tarjeta del canal, la automatizacion y los macros ahora si mueven el sonido. Antes el efecto no se enteraba.
+- El ping-pong rebota izquierda, derecha, izquierda. Los filtros del delay ya tocan el primer eco.
+- Vinilo, Reductor, Filtro automatico, Multibanda y Bus de bateria ya suenan al cargarlos.
+- El modo Paralelo del compresor mezcla una copia aplastada debajo del original, como en Nueva York.
+
+Ajustes del 21 de octubre (efectos por genero):
+- Efectos por genero. En Racoon, pestaña Samples, boton Efectos (junto a Biblioteca y Muestras): una carpeta por
+  cada uno de los 44 generos y adentro una por tipo de efecto: Risers, Downlifters, Rollers, Reverse, Sweeps,
+  Impactos, Sub drops, Fills, Incidentales, Texturas, Voces y Ambientes. Entras a House y ves los rollers de clap
+  de House, sus risers, sus impactos; entras a Reggaeton y ves sus sirenas, su air horn, sus rewinds.
+- 1210 efectos en total. 522 los sintetiza Racoon la primera vez que abre (unos 15 segundos, en segundo plano), a
+  la velocidad y en la tonalidad de cada genero: un roller de House dura un compas exacto a 124 BPM, un sub drop
+  de Trap cae en su nota. Son de Racoon (CC0).
+- Los otros 688 son grabados y los baja el instalador de bibliotecas libres: vinilos y crujidos, silbatos, sirenas
+  reales, yunque y brake drum (en lugar de disparos en trap, drill, dembow y dancehall), laseres, voces de
+  anunciador ("ready", "go", "fight"), multitud de rave y aplausos, whooshes, ambientes y drones. De Kenney,
+  Ben Burnes, The Motion Monkey, VCSL, Sonic Pi y LMMS; los creditos van en la misma carpeta.
+- El buscador de Samples tambien los encuentra por genero: escribe "house roller" o "trap 808".
+- Lo que no existe con licencia libre: gritos tipo "hey" o MC, vocal chops, air horn real y bed squeak. El air horn
+  va sintetizado; para los gritos, lo mejor es grabarlos y sumarlos a la carpeta Voces de cada genero.
+
+Ajustes del 21 de octubre (cierre):
+- Instalador con ventana: mientras compila, además de la Terminal sale una ventana con la barra de avance y el paso
+  en el que va (copiando muestras, plugins, Racoon). Al terminar dice "Racoon quedó instalado" y se cierra sola.
+  Si algo falla, lo dice y la Terminal conserva el texto para mandarlo.
+- El .dmg ya trae Muestras Racoon adentro (ver arriba), la completa si ya se armo en tu Mac. Quien lo instale en otra
+  Mac abre Racoon y ya tiene todo, sin bajar nada. Tambien lleva los efectos por genero grabados.
+- Muestras Racoon completa: el instalador la arma solo (ver arriba). Antes los pianos y la orquesta venian con 1 o 2
+  capas y se cortaban a los 3 o 4 segundos; por eso sonaban planos.
+- Windows: el paquete trae .github/workflows/windows.yml. Si subes las carpetas estudio, plugins y muestras a un
+  repositorio de GitHub, en la pestaña Actions > "Racoon para Windows" > Run workflow, GitHub compila Racoon.exe y los
+  11 plugins VST3 en sus servidores y deja un zip para bajar. Es la primera vez que se compila para Windows: si GitHub
+  marca un error, copia el texto y lo arreglamos.
+- La ventana de géneros: el botón Sorpréndeme ahora dice ALEATORIA, como todos los demás.
+- El sampler de Mole ya no suelta un kit mientras alguna voz lo sigue tocando (antes esperaba diez segundos fijos).
+- Trocear en golpes a Hamster: el kit va solo al Hamster de ese canal. Antes, un Hamster sin nombre de canal (por
+  ejemplo uno abierto aparte) podía quedarse con el kit que era para otro.
+- Licencias completas: el texto de la AGPLv3 de los plugins (plugins/LICENSE), el de la GPL 2.0 de los dos kits de
+  Hydrogen (muestras/LICENCIAS), el de la MPL 2.0 de Eigen y el de la SIL Open Font License de cada tipografía.
+- ARMONIZAR en inglés: la explicación de arriba de la rueda ya sale completa en inglés.
+
+Ajustes del 21 de octubre (noche):
+- ARMONIZAR, arriba junto a EXPORTAR (o Cmd+Mayus+K): abre la rueda de Camelot. Afuera las mayores (B), adentro las
+  menores (A); cada casilla dice su numero (8A) y su nota (La menor). Al abrir no hay ninguna elegida; la blanca es
+  donde esta la rola. Toca una y todo se va a esa tonalidad en ese momento: si la rola suena, la oyes. Prueba las que
+  quieras. "Armonizar en esta tonalidad" la deja (un Cmd+Z la regresa); Cancelar o Esc dejan la rola como estaba.
+  Se mueven las notas de los instrumentos, los loops de audio y la tonalidad de los plugins (Chipmunk, Porcupine,
+  Chinchilla, la afinacion de los kits). La bateria y el ritmo no cambian.
+  Como se mueve: con el mismo modo (de 8A a 5A) todo sube o baja los mismos semitonos, por el camino mas corto; si cambia
+  el modo (de A a B), cada nota pasa al mismo grado de la escala nueva y la melodia conserva su forma.
+- Tonalidades mas oscuras: 27 generos electronicos (house, techno, trance, bass music, breakbeat, synthwave...) pasan a
+  menor natural en notas como Fa, Do, Sol y Re menor (4A a 7A) y a progresiones de i, iv, v y VI. El techno se queda en
+  un solo acorde de quintas. ALEATORIA tambien elige progresiones mas oscuras.
+
+Ajustes del 21 de octubre (tarde):
+- Hamster (INICIO y PATRON) y Mole ya no pintan al hacer clic. Ahora funcionan como el Piano: doble clic pone o quita
+  un golpe, un clic lo selecciona (Mayus suma), arrastrar en un hueco selecciona varios con un recuadro, arrastrar un
+  golpe seleccionado lo mueve (a los lados en el tiempo, arriba o abajo a otro sonido), Alt+arrastrar copia.
+  Supr borra, Cmd+C / Cmd+X / Cmd+V copian, cortan y pegan, Cmd+D duplica, las flechas mueven.
+  La tecla B pone el lapiz: un clic pone y arrastrar pinta, como antes. En PATRON, Cmd+arrastrar cambia la fuerza
+  y clic derecho pone el acento.
+- Deshacer y Rehacer, con Cmd+Z y Cmd+Mayus+Z, en todos los instrumentos, tambien para las notas y los golpes
+  (antes en Hamster solo deshacia las perillas, y en Badger las notas no se deshacian). En los plugins de abajo
+  los botones dicen Deshacer y Rehacer.
+- Cmd+C, Cmd+V y Cmd+D ya no tocan pads en Hamster: antes Cmd+C sonaba el pad de la C.
+- Editar un clip dentro de su instrumento (doble clic en el clip): al cerrar la ventana con cambios, Racoon pregunta
+  "¿Guardar los cambios en el clip?" con Guardar en el clip, No guardar y Cancelar. Funciona en los 10 que abren clips.
+- Un solo nombre: ALEATORIA. Los botones VARIAR (Hamster, Badger), MUTAR AHORA (Mole) y AL AZAR ahora dicen
+  ALEATORIA, y RANDOMIZE de Badger (en la pagina de presets) tambien. Todos usan la misma palabra.
+- Unir clips: selecciona dos o mas clips MIDI de un canal (Mayus+clic, o arrastra un pedazo sobre ellos), clic
+  derecho > Unir los clips en uno (o Cmd+J). Queda un solo clip para duplicar, copiar y pegar.
+
+Ajustes del 21 de octubre:
+- Los audios ya no se pierden al guardar. Antes, una rola armada sin nombre (con sus risers, impactos y bajadas) se
+  guardaba en otra carpeta y al abrirla no encontraba esos audios. Ahora, al guardar, los audios del proyecto se
+  copian junto al archivo, en la carpeta "<nombre de la rola> Audio", y los demas quedan apuntando a donde estan.
+- Si al abrir un proyecto falta algun audio, la ventana trae tres botones: BUSCAR, ELEGIR CARPETA... y SEGUIR ASI.
+  BUSCAR los busca solito por su nombre en la carpeta del proyecto, en las de Racoon (Biblioteca, Muestras,
+  proyectos sin guardar), Musica, Documentos, Escritorio y Descargas, y los vuelve a poner en sus clips. Lo que no
+  encuentre lo puedes buscar en la carpeta que le digas. Tambien esta en el menu del engrane: "Buscar los audios que faltan".
+- Samples tiene buscador: escribe "tom" y salen todos los sonidos con tom en su nombre o en su carpeta, de la
+  Biblioteca, Muestras Racoon, tu carpeta de samples y los audios de tus proyectos. Esc borra la busqueda.
+
+Ajustes del 20 de octubre:
+- ALEATORIA llena todo el clip. Si pintas 3 notas en un clip de 8 tiempos, escribe una parte completa de ese
+  instrumento en todo el clip. Si solo el primer compas tiene una idea, la repite y la varia hasta el final.
+  Clips de mas de 16 compases repiten los 16 que hace.
+- El piano roll de Badger y la secuencia de los otros plugins funcionan como el Piano de Racoon: un clic en una nota
+  la selecciona (Mayus suma), arrastrar en un hueco selecciona varias con un recuadro, arrastrar mueve las
+  seleccionadas en tiempo y altura, el borde derecho las alarga, Alt+arrastrar copia, doble clic escribe o borra.
+  El lapiz (tecla B, y en Badger el boton LAPIZ) deja escribir con un clic como antes.
+- Flechas arriba y abajo suben o bajan medio tono lo seleccionado; con Mayus, una octava.
+  Cmd+Mayus+flecha arriba (o abajo) copia las notas una octava arriba (o abajo), encima de las que ya estan.
+  Cmd+D duplica justo despues. Igual en Racoon, en Badger y en los demas plugins.
+- Ya no se menciona ningun otro programa en las ventanas, ayudas ni textos: donde decia el nombre de otro DAW
+  ahora dice "tu DAW". En Badger, el boton se llama SEGUIR TEMPO DEL DAW.
+
+Ajustes del 19 de octubre:
+- Los modos se llaman Principiante y Avanzado (antes Facil y Completo), en Racoon, los efectos y los plugins.
+- El boton "A la maqueta" ahora dice "Pegar en maqueta".
+- Mute y solo actuan sobre lo que suena en la maqueta (los clips). Un canal en mute sigue sonando cuando tocas
+  su instrumento en vivo o con el teclado de su ventana. Los clips callados por el canal se ven rayados.
+- Samples: un clic en un audio lo escucha; con las flechas arriba y abajo pasas al anterior o al siguiente y suena.
+  Enter o flecha derecha entra a una carpeta, izquierda sale, espacio para o repite.
+- Botones que se prenden en amarillo: su texto pasa a negro. Lo mismo en los menus de Tempo, Compas y Rejilla al
+  pasar el raton, y en la opcion iluminada de cualquier menu.
+- Los botones oscuros de la barra de arriba tienen borde claro, para que no se pierdan en su sombra.
+- Hamster: se cerraba a veces si cambiabas de kit mientras sonaba un golpe largo. Ya no: un sonido viejo se libera
+  solo cuando ninguna voz lo esta tocando.
+- Piano roll: clic y arrastrar en un hueco selecciona con un recuadro (Mayus suma), doble clic en un
+  hueco escribe una nota y doble clic en una nota la borra. La tecla B pone el lapiz: clic escribe y arrastrar pinta
+  una nota por paso de rejilla. La maqueta ya funcionaba asi (clic pone el cursor, arrastrar selecciona un rango).
+- Crear la rola completa (Editar > Crear la rola completa con la seleccion, o Cmd+Mayus+R). Arrastra sobre la
+  maqueta el loop que quieres usar (por ejemplo los 16 compases del bloque de inicio), elige cuanto dura la rola y
+  Racoon arma intro, build-up, drop, breakdown, build-up 2, drop 2 y outro, como en "El arte de contar historias":
+  cada seccion de 8 a 64 compases, siempre en frases de 8 y cada cambio en el uno. 7 minutos a 124 BPM son 216 compases.
+  Intro y outro con bombo, hats y percusion para mezclar; el bajo entra en el build-up y la armonia despues; la melodia
+  se guarda para el drop; el breakdown se queda sin bombo ni bajo y un filtro en el master le quita los graves
+  (180 Hz); los build-ups terminan con redoble que se acelera, riser, filtro que abre hasta 400 Hz y un tiempo de
+  silencio; cada drop entra con platillo e impacto. En el drop 2 la melodia sube una octava cada dos frases.
+  Los risers, impactos y bajadas los fabrica Racoon a tu tempo, en un canal nuevo "Transiciones".
+  Cada seccion queda marcada en la regla. Un Cmd+Z deshace todo. Lo que no hace: componer partes nuevas. Acomoda,
+  quita, filtra y varia lo que tu loop ya tiene. Si el loop trae audio, ese audio solo se repite y se corta.
+  La bateria se separa por sonido y cada uno tiene su momento. En el intro: bombo solo, luego hats, luego shaker y aro,
+  y palmas con hat abierto en la ultima frase. Las congas, bongos y toms entran a media subida; en el drop 1 contestan
+  una frase si y otra no, igual que el cencerro, y el ride llega en la segunda mitad; en el drop 2 todo va completo.
+  En el breakdown el shaker regresa a media seccion para no perder el pulso. Los golpes sueltos de tu loop (un tom,
+  un efecto que sonaba una vez) ya no se repiten como reloj: suenan al final de las frases, uno distinto cada vez.
+  El fill de tu loop cae al final de cada 16 compases y al final del drop, nunca a media frase; si tu loop no trae
+  fill, Racoon toca uno corto cada 8 compases y uno de un tiempo entero (bajando por los toms si hay) cada 16.
+  En drops largos el bombo respira los dos ultimos tiempos del compas 16. Un platillo al reves de un compas cae justo
+  en el uno del build-up, del breakdown y del outro.
+- Aleatoria con reglas de cada instrumento (en el Piano de Racoon y en el boton Aleatoria de cada plugin). Todo va en
+  frases de 4 compases, un acorde por compas (nunca mas rapido) y, dentro de una cancion, la misma progresion para
+  todos: la del genero que elegiste o, si no hay, una que Racoon guarda en el proyecto. El ritmo sigue el estilo del
+  genero: four on the floor, afro, trap (medio tiempo), drum & bass, dembow, boom bap o ambient.
+  Bajo: raiz en la primera nota de cada compas, un ritmo de un compas que se repite, quinta y octava de color, nota de
+  paso al acorde siguiente al final de la frase, una nota a la vez, nunca arriba de Mi3.
+  Pad (Dormouse): acordes de compas entero que se enlazan; las notas que se repiten se quedan sonando.
+  Coro (Porcupine): soprano, contralto, tenor y bajo en su registro, sin cruzarse, sin quintas ni octavas paralelas,
+  notas largas y un respiro al final de cada frase.
+  Acordes (Chipmunk): stabs con el ritmo del estilo y anticipacion del acorde siguiente al final de la frase.
+  Guitarra (Ferret): rasgueos (abajo de grave a agudo, arriba solo las cuatro de arriba) o arpegio de dedos.
+  Melodia (Squirrel): motivo y respuesta (A A' A B), notas del acorde en los tiempos, mas pasos que saltos, un
+  respiro, nota larga al cerrar la frase y la ultima en la tonica. Voz (Chinchilla): lo mismo pero cantable, de La3 a
+  Re5 y sin semicorcheas. Textura (Skunk): pedal de tonica y quinta toda la frase, una nota aguda que entra a la mitad.
+  Percusion (Mole): shaker en cada compas, congas, bongos y cencerro segun el estilo; ya no genera bombo ni caja.
+  Bateria (Hamster): el groove del estilo y los fills solo en el ultimo compas de la frase.
+- Aleatoria sobre un clip que ya tiene notas ya no lo reemplaza: lo varia. Se quedan los compases donde suena y los
+  silencios (el bajo que espera dos compases, los acordes que descansan en la tercera frase), el ritmo, el registro,
+  cuantas notas tiene cada acorde y la armonia de cada compas. Lo que cambia es lo que la regla del instrumento deja:
+  bajo, la misma raiz y el mismo ritmo con otra octava o quinta en algunos golpes y otra nota de paso; pad y coro,
+  otra inversion de los mismos acordes; acordes, otra inversion y a veces otro patron de stabs con los mismos golpes;
+  melodia y voz, otro contorno sobre el mismo ritmo; guitarra, otras posiciones; textura, otra linea lenta sobre la
+  armonia; bateria, bombo y palmas fijos y los hats y la percusion con golpes movidos. La armonia sale de lo que tocan
+  los otros canales en cada compas. Con el clip vacio, Aleatoria crea desde cero como antes.
+- La bateria del bloque viene en dos canales: Hamster · Kick (solo el bombo, sin reverb) y Hamster · Groove (caja,
+  palmas, hats, platillos), los dos con el mismo kit, para mezclar y masterizar el bombo aparte. El sidechain escucha
+  al canal Kick.
+- ALEATORIA ya no se va gastando: si el clip tiene la ultima variacion (no lo tocaste), la siguiente sale otra vez del
+  original. Clic derecho en ALEATORIA: Variar lo que hay, Patron nuevo en todo el clip (llena todos los compases,
+  por ejemplo la guitarra desde el compas 1) o Patron nuevo de otro instrumento.
+- FIJAR, junto a ALEATORIA: un clip que ya te gusto se queda como esta (en la maqueta dice FIJO; tambien con clic
+  derecho en el clip). Editar > ALEATORIA en todos los canales (Cmd+Mayus+A) varia cada clip con notas, o solo los de
+  la seleccion, menos los fijados, y un Cmd+Z los regresa todos.
+- Fijar un solo sonido de la bateria: en el Piano, cada fila de la bateria (Bombo, Caja, Charles cerrado...) tiene a la
+  derecha de su nombre una casilla "fijar". Al darle clic dice FIJO y ALEATORIA ya no mueve el patron de ese sonido;
+  el resto del kit si cambia. Tambien lo respeta ALEATORIA en todos los canales.
+- DUPLICAR notas en el Piano (Cmd+D): la copia cae justo donde terminan las notas, redondeado a la rejilla;
+  antes saltaba al compas siguiente y copiaba el hueco.
+- Seleccionar en la maqueta arrastrando desde un hueco: al soltar, la seleccion se ajusta a lo que hay adentro (los
+  bordes vacios se quitan; un borde que corta un clip se queda). Asi Cmd+D pone la copia justo despues del clip y no
+  despues del silencio que arrastraste.
+
+Tandas 3 a 6 (18 de octubre):
+- Cara nueva. Fondo oscuro de trabajo, la barra de arriba en Limon (en cada plugin, el color de su animal), tarjetas
+  con una franja de color y su etiqueta, numeros en JetBrains Mono con su unidad (dB, Hz, ms) y lineas finas.
+  Cambia en Racoon (maqueta, piano, mezclador, canal, navegador), en las ventanas de los efectos y en los 11 plugins.
+  Los efectos de dinamica, saturacion, delay y reverb estrenan pantallas: curva de compresion, curva del saturador,
+  ecos en una linea de tiempo o la caida de la reverb.
+- Compresor, EQ de ocho bandas, Limitador, Reverb, Delay y Saturador con pantallas nuevas: cada linea dice su numero
+  (dB, Hz, segundos), la leyenda va en su propia franja y la reduccion tiene escala. El Saturador marca que parte de la
+  curva esta usando la senal y amplia la onda cuando entra bajita. Lo mismo en Filtro automatico, Medidor, Afinador,
+  Espectro y Bombeo.
+- Los acentos ya no salen rotos ("RESOLUCIÃ³N" en Espectro, varias ayudas al pasar el raton): mas de cien textos corregidos
+  en Racoon y los plugins.
+- Hedgehog (mastering) ya no trae piano roll abajo: Play, el ejemplo y el teclado.
+- Sinte de Chipmunk y bateria de Mole (su sonido propio): osciladores sin aliasing (PolyBLEP), copias desafinadas
+  a izquierda y derecha, filtro de estado variable que sigue la nota y la fuerza, un piano electrico con campana.
+  En una nota aguda el aliasing bajo de -18 a -46 dB. Charles, ride y crash con seis osciladores cuadrados como la 808,
+  bombo con click filtrado, caja con dos modos de parche, y la bateria en estereo (charles a la derecha, ride a la izquierda).
+- Samplers con lectura sinc de 32 puntos (antes lineal o cubica): Squirrel, Hamster, el oscilador Sample de Badger y los
+  kits de Muestras de Mole. Leyendo una quinta arriba, el error bajo de -62 dB (cubica) a -124 dB. Una octava arriba,
+  lo que antes se doblaba casi entero (-2.5 dB) ahora queda en -38 dB. A velocidad 1 suena la muestra exacta.
+  El cruce de los loops es de igual potencia.
+- Efecto nuevo: Prisma (Creativos y espectrales). Parte el sonido en Sub, Cuerpo, Filo y Aire y le da a cada banda
+  saturacion (4x con ADAA), golpe, ancho, nivel y envios a un eco y una reverb compartidos. Refraccion atrasa un lado de
+  cada banda una fraccion de milisegundo: los agudos se abren y el Sub queda al centro. Sin tocar suma plano (0.3 dB).
+  Ademas del Inicial trae 5 presets: Bajo con filo, Bateria con golpe, Voz que brilla, Prisma abierto y Pad lejano.
+- Piano: el carril de abajo ya dibuja controladores. Clic en VEL y elige Modulacion, Expresion, Filtro (CC 74),
+  Sustain, Volumen o Pitch bend. Arrastra para dibujar la curva; clic derecho y arrastra para borrarla.
+- Clip de audio: marcadores de warp. Doble clic sobre la onda pone un marcador donde cae un golpe; arrastralo y el audio
+  de alrededor se estira o se encoge sin cambiar de tono. La onda se dibuja como va a sonar y cada tramo dice su porcentaje.
+  Clic derecho quita un marcador o todo el warp.
+- Separar en stems: clic derecho en un clip de audio > Separar en stems. La cancion queda en cuatro canales nuevos,
+  Voz, Bateria, Bajo y Otros, en el mismo lugar y con los mismos ajustes; el clip original queda apagado (Cmd+Z dos
+  veces lo deshace). Usa Demucs v4 de Meta (licencia MIT) con demucs.cpp (MIT), dentro de Racoon y sin internet.
+  El modelo pesa 81 MB: el instalador lo baja a Musica/Racoon/Modelos, y si no pudo, Racoon lo pide la primera vez.
+  Trabaja en segundo plano y la barra de abajo dice cuanto falta. En una Mac con chip M tarda del orden de un minuto
+  o dos por cancion; en una Intel vieja, varios. Aqui solo pude probar el camino completo con un modelo de pesos al
+  azar (el real no se puede bajar desde donde trabajo): la calidad de la separacion la vas a oir tu primero.
+- Warp: clic derecho sobre la onda > Poner un marcador en cada golpe, y luego Llevar los marcadores a la rejilla
+  (1/16): cada golpe cae en tiempo.
+
+Sonido mas fino, tanda 2 (18 de octubre):
+- Saturacion sin "arena" digital: los saturadores usan ADAA (antialiasing por antiderivada, Parker, Zavalishin y Bilbao,
+  2016-2017) encima del sobremuestreo. Con un tono de 5 kHz al maximo, el aliasing bajo de -19 a -40 dB en el Amplificador,
+  de -20 a -32 en el Pedal fuzz, de -19 a -30 en el Bus de bateria, de -18 a -50 en el Overdrive y de -18 a -34 en la Valvula.
+  Tambien en el Clipper, el Compresor de bus, Transitorios, el Excitador, Skunk, Hedgehog, Mole y en los plugins: Badger y
+  Hamster (distorsion, clipper, drive de los golpes, soft clip del master), Chinchilla, Ferret, Hedgehog, Skunk y Dormouse.
+- Amplificador, Pedal y Valvula trabajan a 4x (antes 2x).
+- Filtros que se deslizan: los EQ y filtros de los efectos de Racoon ya no cambian a saltos en cada bloque, y el filtro de
+  voz de Badger y Hamster y el de Squirrel se mueven muestra por muestra. Un barrido con resonancia ya no hace escalones
+  (en la prueba, el ruido de los escalones bajo de -59 a -101 dB).
+- Reverb nueva en Badger, Hamster (rack y envio de reverb), Chinchilla, Ferret, Porcupine y Skunk: una red de 8 lineas de
+  retardo (FDN) con matriz Hadamard, lineas que se mueven despacio y graves y agudos que se apagan cada uno a su ritmo.
+  Reemplaza a Freeverb (del 2000). Suena igual de fuerte con las mismas perillas; el tamano ahora va de 0.4 a 6 segundos.
+- Chinchilla: prender la reverb ya no sube 6 dB la voz.
+- El Vocoder usa una sierra sin aliasing (PolyBLEP).
+
+Arreglos de sonido, tanda 1 (18 de octubre):
+- Amplificador, Valvula dinamica y Pedal ya no adelgazan los graves. Un filtro interno cortaba abajo de 70 Hz (150 Hz a 96 kHz);
+  ahora corta en 10 Hz a cualquier frecuencia de muestreo. Se nota en el modelo Bajo del amplificador.
+- Valvula dinamica: con Envolvente, el lado derecho ya sigue los golpes igual que el izquierdo.
+- Puerta: los cortes de graves y agudos del detector ya hacen lo que dicen.
+- Reverb hibrida: el espacio llega justo con el predelay, tambien abajo de 11 ms (antes llegaba tarde).
+- Limitador: "Estereo enlazado" apagado ya deja que cada lado baje por su cuenta.
+- Puerta, Bus de bateria, Alinear, los difusores del Eco y del Shimmer, el Vocoder y Tiempo espectral suenan igual a 44.1, 48 y 96 kHz.
+- Compuerta ritmica, Delay filtrado, Resonadores, Dinamica multibanda y el motor fisico de Badger ya no piden memoria mientras
+  suenan (podia causar clics con la computadora cargada).
+- Badger, Hamster y Chinchilla: al cambiar el tiempo del delay, el eco se desliza en vez de tronar. Los faders de pista de Hamster
+  se mueven suave, sin escalones.
+- Chinchilla: el analizador se calcula en la pantalla, ya no en el audio.
+
+Arreglos en la maqueta (18 de octubre):
+- Duplicar (Cmd+D) con un pedazo elegido: la copia cae justo en los tiempos que siguen, del mismo largo. 4 tiempos
+  elegidos ocupan los 4 siguientes y la seleccion pasa a la copia, asi que otro Cmd+D sigue repitiendo.
+- Lo que pones encima borra lo de abajo: al pegar, duplicar o mover un clip (con el mouse, las flechas
+  o a otro canal), la parte del clip de abajo que queda tapada desaparece y lo que sobresale se queda. Cmd+Z lo regresa.
+- Supr ya no se traba: un clic en un clip con Piano abierto muestra sus notas y las teclas siguen en la maqueta, asi que
+  Supr y Cmd+D actuan sobre el clip. Para borrar o duplicar notas, haz clic dentro del Piano primero.
+
+Nuevo (17 de octubre):
+- Canal: junto al nombre del canal esta su VOLUMEN, con fader y numero en dB. Clic en el numero y escribe -6, 0, +3 o -inf.
+  Si mueves el fader en la maqueta o en el mezclador, el numero cambia solo.
+- La rueda del mouse ya no mueve ningun fader ni perilla: solo desplaza la vista. Un volumen solo cambia con clic sostenido.
+- En la esquina de arriba a la izquierda del panel de abajo (Piano, Canal, Master) esta el icono del instrumento del canal.
+  Siempre cuadrado, aunque estires el panel.
+- Piano: si haces mas alto el panel de abajo, se ven mas octavas (las notas no se estiran). Con el panel normal, una octava.
+- Badger y Hamster se callan cuando cierras su ventana y contestas "Si, detenerlo". Los otros 9 ya lo hacian.
+  Su Play y sus teclas siguen sonando como siempre con el transporte parado.
+- Dentro de los plugins con piano roll abajo (todos menos Badger, Hamster y Mole), el borde de arriba de esa barra se arrastra
+  hacia arriba: el piano roll crece y muestra mas notas. Doble clic en el borde: lo mas alto posible, o de vuelta.
+- Boton ALEATORIA (amarillo) en el Piano de Racoon: llena el clip abierto con una secuencia al azar que suena a musica,
+  en la tonalidad de la cancion. Genera bateria en Hamster y Mole (con las pistas de su kit), bajo en Badger, acordes en
+  Dormouse, Porcupine y Chipmunk, arpegio en Ferret, textura en Skunk y melodia en lo demas. Cada clic da otra distinta;
+  Cmd+Z la quita. Clic derecho en el boton (o clic derecho en las notas > Secuencia aleatoria) para elegir que genera.
+- El mismo boton, "Aleatoria", esta abajo en los plugins con piano roll, para usarlo tambien en tu DAW.
+- Efecto nuevo: Sidechain (Efectos > Dinamica). Lo pones en el canal que quieres que baje (el bajo, los pads) y en su
+  tarjeta eliges a quien escucha (Escucha a: el bombo). Si en la cancion hay un canal Bombo o una bateria, se conecta solo.
+  Modo Ducking (bombeo de house) o Compresor; umbral, profundidad, ratio, rodilla, ataque, retencion, relajacion,
+  curva de subida, filtros de la clave (a 150 Hz solo el bombo dispara), escuchar la clave, anticipar 5 ms, al reves y mezcla.
+  Sin nadie conectado no toca el sonido.
+
+Nuevo en esta version (ideas y algoritmos tomados de SoundCraft, codigo libre MIT; creditos en estudio/ATRIBUCIONES.txt):
+- El fader de cada canal, en la maqueta y en el mezclador, va a donde hagas clic y sigue al puntero uno a uno.
+- Debajo de la maqueta hay una regla de minutos y segundos (0:15, 1:30...). A la izquierda dice en que segundo va el cursor.
+  Un clic en ella mueve el cursor.
+- Piano, boton ... junto a Cuantizar: fuerza (50 % deja algo de tu toque), swing (20 a 35 % suena a house), azar,
+  cuantizar los finales y conservar la duracion. Q y Cmd+U usan esas opciones.
+- Piano, clic derecho > Velocidad: crescendo, decrescendo, humanizar, mas fuerte, mas suave, emparejar y todas iguales.
+  Tambien Quitar solapes (la nota que pisa a la siguiente de la misma altura se recorta) y Detectar la tonalidad.
+- Clic derecho en un clip de audio:
+  Fundidos: curva lineal, convexa, concava o en S para la entrada y la salida (el clip dibuja la curva).
+  Procesar audio: normalizar a -0.3 dB, invertir la fase, quitar DC, subir o bajar 3 dB. Escribe un archivo nuevo y deja el original.
+  Quitar silencios: corta el clip donde no suena, con tres umbrales (-35, -45 y -55 dB).
+  Convertir a MIDI (melodia): una voz, un bajo o una guitarra nota por nota pasan a un canal nuevo con sus notas.
+  Dividir en los golpes: un clip por golpe, en el mismo canal.
+  Trocear en golpes a Hamster: canal nuevo de Hamster con un golpe en cada pista y un clip que los toca donde estaban.
+  Detectar la tonalidad: la dice y la enciende en la escala del Piano.
+- Al exportar la mezcla, Racoon dice los LUFS integrados, el pico real y el pico. Avisa si el pico real pasa de -1 dBTP.
+- Si Racoon se cierra solo, deja un informe en Application Support/Racoon/Fallos con lo ultimo que paso. Guarda los 5 mas nuevos
+  y la siguiente vez que lo abras te avisa una vez.
+- Al abrir un proyecto, Racoon revisa que esten los audios, que ningun clip pida mas audio del que tiene y que los plugins carguen.
+  Si falta un audio, BUSCAR LOS ARCHIVOS lo encuentra por nombre en la carpeta que elijas.
+
+Abajo de la maqueta estan las pestañas Piano (antes Notas), Canal y Master. Piano y Canal se pintan completos del color del canal que muestran.
+Un clic en un clip o en un canal de la maqueta con Piano abierto muestra las notas de ese canal; desde Canal, la pestaña Piano abre las del canal que estas viendo.
+En Piano, la bateria se ve por tambores (Bombo, Caja, Charles) y los instrumentos de notas en una octava con sus nombres (Do, Re, Mi...).
+Los botones - y + sobre el teclado cambian de octava y dicen cuantas notas hay abajo o arriba. El boton Octava apagado muestra todo el teclado.
+Clic derecho en las notas: subir o bajar una octava, reverso, invertir, legato, silenciar, copiar y pegar.
+Atajos de siempre: F9 graba (antes era R), R o Cmd+R voltea al reves, 0 apaga, Cmd+L loop a la seleccion, Cmd+J consolida,
+Cmd+G agrupa, Cmd+Mayus+M clip MIDI nuevo, Mayus+Tab cambia entre Piano y Canal, Mayus+flechas en Piano: octava o largo de la nota.
+La lista completa esta en Ayuda > Atajos de teclado.
+En Piano, la linea clara al final del clip se arrastra para alargar o acortar la secuencia (por compases; con Cmd, por rejilla).
+Clic derecho > Largo del clip: 1 a 32 compases, o al doble repitiendo las notas.
+Si cierras un instrumento que sigue sonando con su propio Play, Racoon pregunta si lo detiene.
+En Canal, la rueda del mouse desplaza la fila de tarjetas aunque el puntero este sobre una perilla.
+En Hamster, MUESTRAS abre un panel a la derecha para probar sonidos uno tras otro (clic o flechas); CERRAR o Esc lo guarda.
+
+Todos los plugins tienen Exportar y automatizacion:
+- Exportar guarda la secuencia como .mid en Musica/Racoon/Patrones (o arrastra el boton a tu DAW o a Racoon).
+- Clic derecho en cualquier perilla > Ver automatizacion. Dibujas la linea, o la grabas moviendo la perilla mientras suena.
+- La automatizacion va dentro del .mid como MIDI CC y el plugin la sigue en cualquier DAW.
+
+Pasar una secuencia a la rola:
+- En el plugin, escribe la secuencia y pulsa «A la maqueta». En Racoon cae como clip al final de su canal, sin borrar nada.
+- O en Racoon: clic derecho en el canal > Crear secuencia. Se abre el plugin y lo que pases cae al final de ese canal.
+- En tu DAW, arrastra el boton «A la maqueta» a una pista.
+- Un clic en la maqueta muestra abajo todo lo que tiene ese canal.
+- Doble clic en un clip lo abre en su instrumento con sus notas. Editalo ahi y pulsa «Devolver al clip».
+- En Skunk, la BIBLIOTECA trae materiales listos para tocar con notas. Chinchilla puede cantar las notas de un clip (Cantar las notas MIDI).
+
+En la maqueta:
+- Shift + clic suma clips; arrastra uno por su nombre y se mueven todos.
+- Arrastra sobre el cuerpo de los clips para elegir solo un pedazo: Cmd+C, Cmd+V donde hagas clic, Cmd+D lo repite, Supr lo borra.
+- Mientras arrastras ves el compás exacto; las flechas mueven una linea de la rejilla.

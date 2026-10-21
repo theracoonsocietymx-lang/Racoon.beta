@@ -1,0 +1,20 @@
+// Contrabajo pizzicato (Biblioteca Racoon)
+// fuente: dsmolken
+<control>
+default_path=contrabajo-pizz/
+
+<global>
+ampeg_release=0.20
+amp_veltrack=85
+
+<region> sample=C1-v1.flac pitch_keycenter=24 lokey=0 hikey=25 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds1-v1.flac pitch_keycenter=27 lokey=26 hikey=29 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G1-v1.flac pitch_keycenter=31 lokey=30 hikey=32 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As1-v1.flac pitch_keycenter=34 lokey=33 hikey=36 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D2-v1.flac pitch_keycenter=38 lokey=37 hikey=39 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F2-v1.flac pitch_keycenter=41 lokey=40 hikey=43 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A2-v1.flac pitch_keycenter=45 lokey=44 hikey=46 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C3-v1.flac pitch_keycenter=48 lokey=47 hikey=50 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E3-v1.flac pitch_keycenter=52 lokey=51 hikey=53 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G3-v1.flac pitch_keycenter=55 lokey=54 hikey=56 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A3-v1.flac pitch_keycenter=57 lokey=57 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

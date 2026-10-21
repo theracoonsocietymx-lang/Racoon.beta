@@ -1,0 +1,21 @@
+// Armónica cromática (Biblioteca Racoon)
+// fuente: vcsl
+<control>
+default_path=armonica-cromatica/
+
+<global>
+ampeg_release=0.20
+amp_veltrack=85
+
+<region> sample=C3-v1.flac pitch_keycenter=48 lokey=0 hikey=50 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=47848 loop_end=73839
+<region> sample=E3-v1.flac pitch_keycenter=52 lokey=51 hikey=53 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=68783 loop_end=95267
+<region> sample=G3-v1.flac pitch_keycenter=55 lokey=54 hikey=57 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=47848 loop_end=74230
+<region> sample=C4-v1.flac pitch_keycenter=60 lokey=58 hikey=62 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=60389 loop_end=86527
+<region> sample=E4-v1.flac pitch_keycenter=64 lokey=63 hikey=68 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=89597 loop_end=115956
+<region> sample=C5-v1.flac pitch_keycenter=72 lokey=69 hikey=74 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=47848 loop_end=74154
+<region> sample=E5-v1.flac pitch_keycenter=76 lokey=75 hikey=77 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=85402 loop_end=111776
+<region> sample=G5-v1.flac pitch_keycenter=79 lokey=78 hikey=81 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=85407 loop_end=111839
+<region> sample=C6-v1.flac pitch_keycenter=84 lokey=82 hikey=86 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=64557 loop_end=90990
+<region> sample=E6-v1.flac pitch_keycenter=88 lokey=87 hikey=89 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=72902 loop_end=99383
+<region> sample=G6-v1.flac pitch_keycenter=91 lokey=90 hikey=93 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=47848 loop_end=74290
+<region> sample=C7-v1.flac pitch_keycenter=96 lokey=94 hikey=127 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=56206 loop_end=82656

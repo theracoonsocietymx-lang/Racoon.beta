@@ -1,0 +1,21 @@
+// Sección de violas (Biblioteca Racoon)
+// fuente: vsco
+<control>
+default_path=violas-seccion/
+
+<global>
+ampeg_release=0.45
+amp_veltrack=85
+
+<region> sample=C3-v1.flac pitch_keycenter=48 lokey=0 hikey=50 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=64569 loop_end=90674
+<region> sample=E3-v1.flac pitch_keycenter=52 lokey=51 hikey=53 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=85531 loop_end=111746
+<region> sample=G3-v1.flac pitch_keycenter=55 lokey=54 hikey=57 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=72914 loop_end=99253
+<region> sample=B3-v1.flac pitch_keycenter=59 lokey=58 hikey=60 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=81192 loop_end=107585
+<region> sample=D4-v1.flac pitch_keycenter=62 lokey=61 hikey=63 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=56184 loop_end=82679
+<region> sample=F4-v1.flac pitch_keycenter=65 lokey=64 hikey=67 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A4-v1.flac pitch_keycenter=69 lokey=68 hikey=70 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=64509 loop_end=90960
+<region> sample=C5-v1.flac pitch_keycenter=72 lokey=71 hikey=74 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E5-v1.flac pitch_keycenter=76 lokey=75 hikey=77 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G5-v1.flac pitch_keycenter=79 lokey=78 hikey=81 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B5-v1.flac pitch_keycenter=83 lokey=82 hikey=84 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=60376 loop_end=86806
+<region> sample=D6-v1.flac pitch_keycenter=86 lokey=85 hikey=127 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=64557 loop_end=90960

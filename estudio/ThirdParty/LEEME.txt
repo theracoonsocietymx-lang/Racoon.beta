@@ -1,0 +1,11 @@
+Codigo de terceros que Racoon compila tal cual (salvo lo indicado):
+
+demucs.cpp (https://github.com/sevagh/demucs.cpp), licencia MIT (demucs.cpp/LICENSE).
+  Inferencia en C++ del modelo Demucs v4 (Hybrid Transformer) de Meta, licencia MIT.
+  Cambio de Racoon: los indices de los tensores pasan de std::array<int, N> a std::array<Eigen::Index, N>
+  para compilar con Eigen 3.4.0. threaded_inference.hpp viene de cli-apps/ (sin cambios de logica).
+  Los pesos del modelo (ggml-model-htdemucs-4s-f16.bin, 81 MB) no vienen en el paquete: el instalador
+  o Racoon los descargan la primera vez que separas una cancion.
+
+Eigen 3.4.0 (https://eigen.tuxfamily.org), Mozilla Public License 2.0 (eigen/COPYRIGHT-debian.txt).
+  Solo los encabezados de Eigen/ y unsupported/, sin cambios.

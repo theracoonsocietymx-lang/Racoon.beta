@@ -1,0 +1,61 @@
+# Compila Racoon y los 11 plugins para Windows en los servidores de GitHub (gratis en repositorios públicos).
+# En GitHub: pestaña Actions > "Racoon para Windows" > Run workflow. Al terminar (unos 40 minutos), abajo en
+# Artifacts queda "Racoon-Windows": Racoon.exe, los 11 plugins VST3 y la carpeta Muestras Racoon.
+# El repositorio necesita las tres carpetas del paquete en su raíz: estudio, plugins y muestras.
+name: Racoon para Windows
+
+on:
+  workflow_dispatch:
+  push:
+    tags: [ "v*" ]
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Motor de audio (Tracktion Engine y su JUCE)
+        shell: bash
+        run: bash estudio/scripts/fetch_deps.sh
+
+      - name: JUCE de los plugins
+        shell: bash
+        run: |
+          if [ ! -f plugins/JUCE/CMakeLists.txt ]; then
+            git clone --depth 1 --branch 8.0.16-security https://github.com/juce-framework/JUCE.git plugins/JUCE
+          fi
+
+      - name: Los 11 plugins (VST3)
+        run: |
+          cmake -S plugins -B plugins/build-win -G "Visual Studio 17 2022" -A x64
+          cmake --build plugins/build-win --config Release --parallel
+
+      - name: Racoon, el estudio
+        run: |
+          cmake -S estudio -B estudio/build-win -G "Visual Studio 17 2022" -A x64
+          cmake --build estudio/build-win --config Release --target Racoon --parallel
+
+      - name: Juntar todo
+        shell: pwsh
+        run: |
+          $out = "dist/Racoon-Windows"
+          New-Item -ItemType Directory -Force -Path "$out/VST3" | Out-Null
+          Get-ChildItem -Path plugins/build-win -Recurse -Directory -Filter *.vst3 |
+            Where-Object { $_.FullName -match "Release" } |
+            ForEach-Object { Copy-Item $_.FullName -Destination "$out/VST3" -Recurse -Force }
+          $exe = Get-ChildItem -Path estudio/build-win -Recurse -Filter Racoon.exe | Select-Object -First 1
+          Copy-Item $exe.FullName -Destination $out
+          if (Test-Path muestras/catalogo.json) { Copy-Item muestras -Destination "$out/Muestras Racoon" -Recurse }
+          @"
+          Racoon para Windows
+          1. Copia la carpeta VST3 completa (los 11 .vst3) a C:\Program Files\Common Files\VST3
+          2. Copia la carpeta Muestras Racoon a Documentos\Racoon\Muestras Racoon, o déjala junto a Racoon.exe
+          3. Abre Racoon.exe
+          "@ | Out-File -Encoding utf8 "$out/LEEME.txt"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Racoon-Windows
+          path: dist/Racoon-Windows

@@ -1,0 +1,41 @@
+Muestras Racoon: el programa que arma la biblioteca
+
+La biblioteca que viene en el paquete (carpeta muestras) salió de aquí. Sirve para rehacerla, actualizarla cuando las
+bibliotecas originales cambien, o sacar una versión más grande.
+
+Necesita Python 3.9 o más nuevo, git y curl (ffmpeg es opcional), y estos módulos:
+  pip3 install numpy scipy soundfile
+
+La forma fácil: bash completa.sh arma la completa en Música/Racoon/Muestras Racoon con su propio Python. Es lo que
+corre "Instalar Racoon.command".
+
+Usarlo a mano:
+  python3 build.py --dry                              cuenta lo que haría, sin bajar nada
+  python3 build.py --root "/ruta/Muestras Racoon"     la versión del paquete (unos 420 MB)
+  RACOON_PERFIL=completo python3 build.py --root ...  6 capas, 4 alternancias, 30 notas por instrumento, 48 kHz (varios GB)
+
+Lo que hace, en orden:
+1. Clona cada repositorio sin bajar audio (solo la lista de archivos) en ~/.cache/racoon-muestras/repos.
+2. Elige qué archivos usar: el micrófono o la mezcla de micrófonos de cada pieza, las capas de velocidad repartidas
+   de suave a fuerte y las alternancias de la capa más fuerte. En DrumGizmo mide cada golpe para ordenar las capas.
+3. Baja solo esos archivos (en paralelo) y los mezcla: cercano, parche de abajo, overheads y sala con su paneo.
+4. Recorta el silencio del principio y la cola por debajo de -60 dB (-54 en platillos), con fundidos cortos.
+5. Normaliza cada sonido a -1 dBFS con la misma ganancia para todas sus capas (la capa suave sigue sonando suave).
+6. Pasa a mono lo que no tiene diferencia entre canales y escribe FLAC de 16 bits con dither.
+7. En los instrumentos cromáticos revisa la octava midiendo el tono, busca un bucle por periodos enteros en los
+   sostenidos y escribe un .sfz por instrumento.
+8. Arma catalogo.json (muestras, grupos, instrumentos, kits por biblioteca y por género), ondas.json, CREDITOS.txt
+   y la carpeta LICENCIAS.
+
+Los archivos:
+  core.py         descarga, lectura, mezcla, recorte y análisis
+  model.py        categorías, agrupado por capas y alternancias
+  src_drums.py    baterías acústicas (Virtuosity, Frankensnare, Unruly, Big Rusty, Swirly, Hat Phat, Gogodze, DrumGizmo...)
+  src_more.py     cajas de ritmo (808, 707, CR-78, LinnDrum...), Sonic Pi, percusiones de VCSL y VSCO, Hydrogen, DRS
+  src_melodic.py  los 76 instrumentos cromáticos
+  melodic.py      escaneo por nota, bucles y SFZ
+  src_extra.py    texturas, loops, voces, ondas AKWF y tablas WaveEdit
+  finalize.py     catálogo, kits, créditos y licencias
+
+Para agregar una biblioteca: suma su repositorio en REPOS (core.py), escribe su escaneo en el archivo que le toque
+y su autor y licencia en FUENTES (finalize.py). Solo bibliotecas que permitan redistribuir y modificar.

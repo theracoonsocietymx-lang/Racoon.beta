@@ -1,0 +1,21 @@
+// Guitarra eléctrica Green (Biblioteca Racoon)
+// fuente: blackgreen
+<control>
+default_path=guitarra-green/
+
+<global>
+ampeg_release=0.20
+amp_veltrack=85
+
+<region> sample=E2-v1.flac pitch_keycenter=40 lokey=0 hikey=42 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs2-v1.flac pitch_keycenter=44 lokey=43 hikey=46 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C3-v1.flac pitch_keycenter=48 lokey=47 hikey=50 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F3-v1.flac pitch_keycenter=53 lokey=51 hikey=55 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A3-v1.flac pitch_keycenter=57 lokey=56 hikey=59 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs4-v1.flac pitch_keycenter=61 lokey=60 hikey=63 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F4-v1.flac pitch_keycenter=65 lokey=64 hikey=67 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A4-v1.flac pitch_keycenter=69 lokey=68 hikey=71 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs5-v1.flac pitch_keycenter=73 lokey=72 hikey=75 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs5-v1.flac pitch_keycenter=78 lokey=76 hikey=80 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As5-v1.flac pitch_keycenter=82 lokey=81 hikey=84 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D6-v1.flac pitch_keycenter=86 lokey=85 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

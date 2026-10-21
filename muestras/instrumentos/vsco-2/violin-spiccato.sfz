@@ -1,0 +1,21 @@
+// Violín spiccato (Biblioteca Racoon)
+// fuente: vsco
+<control>
+default_path=violin-spiccato/
+
+<global>
+ampeg_release=0.10
+amp_veltrack=85
+
+<region> sample=G3-v1.flac pitch_keycenter=55 lokey=0 hikey=57 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C4-v1.flac pitch_keycenter=60 lokey=58 hikey=62 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E4-v1.flac pitch_keycenter=64 lokey=63 hikey=65 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G4-v1.flac pitch_keycenter=67 lokey=66 hikey=68 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A4-v1.flac pitch_keycenter=69 lokey=69 hikey=70 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C5-v1.flac pitch_keycenter=72 lokey=71 hikey=74 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E5-v1.flac pitch_keycenter=76 lokey=75 hikey=78 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A5-v1.flac pitch_keycenter=81 lokey=79 hikey=82 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C6-v1.flac pitch_keycenter=84 lokey=83 hikey=86 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E6-v1.flac pitch_keycenter=88 lokey=87 hikey=90 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A6-v1.flac pitch_keycenter=93 lokey=91 hikey=94 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C7-v1.flac pitch_keycenter=96 lokey=95 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

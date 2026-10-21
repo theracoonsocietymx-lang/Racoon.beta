@@ -1,0 +1,21 @@
+// Đàn tranh (Biblioteca Racoon)
+// fuente: vcsl
+<control>
+default_path=dan-tranh/
+
+<global>
+ampeg_release=0.30
+amp_veltrack=85
+
+<region> sample=B2-v1.flac pitch_keycenter=47 lokey=0 hikey=49 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds3-v1.flac pitch_keycenter=51 lokey=50 hikey=52 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs3-v1.flac pitch_keycenter=54 lokey=53 hikey=55 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs3-v1.flac pitch_keycenter=56 lokey=56 hikey=58 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs4-v1.flac pitch_keycenter=61 lokey=59 hikey=62 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds4-v1.flac pitch_keycenter=63 lokey=63 hikey=64 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs4-v1.flac pitch_keycenter=66 lokey=65 hikey=68 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B4-v1.flac pitch_keycenter=71 lokey=69 hikey=72 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs5-v1.flac pitch_keycenter=73 lokey=73 hikey=74 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds5-v1.flac pitch_keycenter=75 lokey=75 hikey=77 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs5-v1.flac pitch_keycenter=80 lokey=78 hikey=81 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B5-v1.flac pitch_keycenter=83 lokey=82 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

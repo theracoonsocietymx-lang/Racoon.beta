@@ -1,0 +1,21 @@
+// Bajo eléctrico apagado (Biblioteca Racoon)
+// fuente: sneakybass
+<control>
+default_path=bajo-apagado/
+
+<global>
+ampeg_release=0.08
+amp_veltrack=85
+
+<region> sample=C2-v1.flac pitch_keycenter=36 lokey=0 hikey=37 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds2-v1.flac pitch_keycenter=39 lokey=38 hikey=41 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G2-v1.flac pitch_keycenter=43 lokey=42 hikey=44 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As2-v1.flac pitch_keycenter=46 lokey=45 hikey=47 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs3-v1.flac pitch_keycenter=49 lokey=48 hikey=50 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E3-v1.flac pitch_keycenter=52 lokey=51 hikey=54 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs3-v1.flac pitch_keycenter=56 lokey=55 hikey=57 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B3-v1.flac pitch_keycenter=59 lokey=58 hikey=60 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D4-v1.flac pitch_keycenter=62 lokey=61 hikey=63 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F4-v1.flac pitch_keycenter=65 lokey=64 hikey=67 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A4-v1.flac pitch_keycenter=69 lokey=68 hikey=70 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C5-v1.flac pitch_keycenter=72 lokey=71 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

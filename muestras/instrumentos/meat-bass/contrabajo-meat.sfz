@@ -1,0 +1,21 @@
+// Contrabajo Meat pizzicato (Biblioteca Racoon)
+// fuente: meatbass
+<control>
+default_path=contrabajo-meat/
+
+<global>
+ampeg_release=0.20
+amp_veltrack=85
+
+<region> sample=A0-v1.flac pitch_keycenter=21 lokey=0 hikey=22 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C1-v1.flac pitch_keycenter=24 lokey=23 hikey=25 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds1-v1.flac pitch_keycenter=27 lokey=26 hikey=30 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A1-v1.flac pitch_keycenter=33 lokey=31 hikey=34 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C2-v1.flac pitch_keycenter=36 lokey=35 hikey=37 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds2-v1.flac pitch_keycenter=39 lokey=38 hikey=40 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs2-v1.flac pitch_keycenter=42 lokey=41 hikey=43 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A2-v1.flac pitch_keycenter=45 lokey=44 hikey=46 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C3-v1.flac pitch_keycenter=48 lokey=47 hikey=51 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs3-v1.flac pitch_keycenter=54 lokey=52 hikey=55 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A3-v1.flac pitch_keycenter=57 lokey=56 hikey=58 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C4-v1.flac pitch_keycenter=60 lokey=59 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

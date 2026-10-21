@@ -1,0 +1,21 @@
+// Clavisynth TX81Z (Biblioteca Racoon)
+// fuente: vcsl
+<control>
+default_path=clavisynth-tx81z/
+
+<global>
+ampeg_release=0.20
+amp_veltrack=85
+
+<region> sample=C2-v1.flac pitch_keycenter=36 lokey=0 hikey=40 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs2-v1.flac pitch_keycenter=44 lokey=41 hikey=46 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C3-v1.flac pitch_keycenter=48 lokey=47 hikey=52 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs3-v1.flac pitch_keycenter=56 lokey=53 hikey=60 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E4-v1.flac pitch_keycenter=64 lokey=61 hikey=66 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs4-v1.flac pitch_keycenter=68 lokey=67 hikey=72 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E5-v1.flac pitch_keycenter=76 lokey=73 hikey=78 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs5-v1.flac pitch_keycenter=80 lokey=79 hikey=84 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E6-v1.flac pitch_keycenter=88 lokey=85 hikey=92 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C7-v1.flac pitch_keycenter=96 lokey=93 hikey=98 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E7-v1.flac pitch_keycenter=100 lokey=99 hikey=104 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C8-v1.flac pitch_keycenter=108 lokey=105 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

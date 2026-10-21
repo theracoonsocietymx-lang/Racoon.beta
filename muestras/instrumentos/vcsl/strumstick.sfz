@@ -1,0 +1,21 @@
+// Strumstick (Biblioteca Racoon)
+// fuente: vcsl
+<control>
+default_path=strumstick/
+
+<global>
+ampeg_release=0.30
+amp_veltrack=85
+
+<region> sample=D3-v1.flac pitch_keycenter=50 lokey=0 hikey=51 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E3-v1.flac pitch_keycenter=52 lokey=52 hikey=53 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G3-v1.flac pitch_keycenter=55 lokey=54 hikey=57 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B3-v1.flac pitch_keycenter=59 lokey=58 hikey=60 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs4-v1.flac pitch_keycenter=61 lokey=61 hikey=62 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E4-v1.flac pitch_keycenter=64 lokey=63 hikey=65 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G4-v1.flac pitch_keycenter=67 lokey=66 hikey=68 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A4-v1.flac pitch_keycenter=69 lokey=69 hikey=71 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs5-v1.flac pitch_keycenter=73 lokey=72 hikey=74 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E5-v1.flac pitch_keycenter=76 lokey=75 hikey=77 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs5-v1.flac pitch_keycenter=78 lokey=78 hikey=79 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A5-v1.flac pitch_keycenter=81 lokey=80 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

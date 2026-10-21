@@ -1,0 +1,20 @@
+// Clarinete (Biblioteca Racoon)
+// fuente: vsco
+<control>
+default_path=clarinete/
+
+<global>
+ampeg_release=0.25
+amp_veltrack=85
+
+<region> sample=D3-v1.flac pitch_keycenter=50 lokey=0 hikey=51 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=72857 loop_end=99274
+<region> sample=F3-v1.flac pitch_keycenter=53 lokey=52 hikey=55 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=93862 loop_end=120145
+<region> sample=As3-v1.flac pitch_keycenter=58 lokey=56 hikey=60 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=93829 loop_end=120131
+<region> sample=D4-v1.flac pitch_keycenter=62 lokey=61 hikey=63 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=68688 loop_end=94970
+<region> sample=F4-v1.flac pitch_keycenter=65 lokey=64 hikey=67 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=68706 loop_end=95109
+<region> sample=As4-v1.flac pitch_keycenter=70 lokey=68 hikey=72 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=81219 loop_end=107604
+<region> sample=D5-v1.flac pitch_keycenter=74 lokey=73 hikey=75 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=77041 loop_end=103479
+<region> sample=F5-v1.flac pitch_keycenter=77 lokey=76 hikey=79 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=93723 loop_end=120120
+<region> sample=As5-v1.flac pitch_keycenter=82 lokey=80 hikey=84 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=93769 loop_end=120217
+<region> sample=D6-v1.flac pitch_keycenter=86 lokey=85 hikey=88 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=60380 loop_end=86822
+<region> sample=Fs6-v1.flac pitch_keycenter=90 lokey=89 hikey=127 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=77099 loop_end=103549

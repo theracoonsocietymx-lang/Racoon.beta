@@ -1,0 +1,21 @@
+// Cuerdas cyborg Blackheart (Biblioteca Racoon)
+// fuente: stringcyborgs
+<control>
+default_path=cyborg-blackheart/
+
+<global>
+ampeg_release=0.50
+amp_veltrack=85
+
+<region> sample=C2-v1.flac pitch_keycenter=36 lokey=0 hikey=37 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=72930 loop_end=99221
+<region> sample=Ds2-v1.flac pitch_keycenter=39 lokey=38 hikey=42 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=68847 loop_end=94929
+<region> sample=A2-v1.flac pitch_keycenter=45 lokey=43 hikey=46 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=72840 loop_end=99298
+<region> sample=C3-v1.flac pitch_keycenter=48 lokey=47 hikey=51 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=77110 loop_end=103068
+<region> sample=Fs3-v1.flac pitch_keycenter=54 lokey=52 hikey=55 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=47848 loop_end=73831
+<region> sample=A3-v1.flac pitch_keycenter=57 lokey=56 hikey=60 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=68675 loop_end=95132
+<region> sample=Ds4-v1.flac pitch_keycenter=63 lokey=61 hikey=64 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=46027 loop_end=72251
+<region> sample=Fs4-v1.flac pitch_keycenter=66 lokey=65 hikey=69 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=77081 loop_end=103304
+<region> sample=C5-v1.flac pitch_keycenter=72 lokey=70 hikey=73 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=64541 loop_end=90836
+<region> sample=Ds5-v1.flac pitch_keycenter=75 lokey=74 hikey=78 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=64552 loop_end=90986
+<region> sample=A5-v1.flac pitch_keycenter=81 lokey=79 hikey=82 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=61483 loop_end=87944
+<region> sample=C6-v1.flac pitch_keycenter=84 lokey=83 hikey=127 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=46031 loop_end=72420

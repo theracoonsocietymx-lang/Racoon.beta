@@ -1,0 +1,21 @@
+// Flauta dulce contralto (Biblioteca Racoon)
+// fuente: vcsl
+<control>
+default_path=flauta-dulce/
+
+<global>
+ampeg_release=0.20
+amp_veltrack=85
+
+<region> sample=F4-v1.flac pitch_keycenter=65 lokey=0 hikey=66 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=77049 loop_end=103375
+<region> sample=Gs4-v1.flac pitch_keycenter=68 lokey=67 hikey=69 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=52015 loop_end=78531
+<region> sample=As4-v1.flac pitch_keycenter=70 lokey=70 hikey=71 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=60362 loop_end=86808
+<region> sample=C5-v1.flac pitch_keycenter=72 lokey=72 hikey=73 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=93756 loop_end=120056
+<region> sample=D5-v1.flac pitch_keycenter=74 lokey=74 hikey=75 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=47848 loop_end=74336
+<region> sample=E5-v1.flac pitch_keycenter=76 lokey=76 hikey=77 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=56193 loop_end=82580
+<region> sample=Fs5-v1.flac pitch_keycenter=78 lokey=78 hikey=79 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=72904 loop_end=99347
+<region> sample=Gs5-v1.flac pitch_keycenter=80 lokey=80 hikey=81 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=47848 loop_end=74331
+<region> sample=As5-v1.flac pitch_keycenter=82 lokey=82 hikey=83 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=93769 loop_end=120168
+<region> sample=C6-v1.flac pitch_keycenter=84 lokey=84 hikey=85 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=68734 loop_end=95138
+<region> sample=D6-v1.flac pitch_keycenter=86 lokey=86 hikey=87 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=85444 loop_end=111849
+<region> sample=E6-v1.flac pitch_keycenter=88 lokey=88 hikey=127 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=89606 loop_end=116078
