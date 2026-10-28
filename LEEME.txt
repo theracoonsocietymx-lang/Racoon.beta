@@ -48,6 +48,14 @@ Efectos de Racoon (55 en el navegador, pestaña Efectos):
 - Vinilo, Reductor, Filtro automatico, Multibanda y Bus de bateria ya suenan al cargarlos.
 - El modo Paralelo del compresor mezcla una copia aplastada debajo del original, como en Nueva York.
 
+Ajustes del 28 de octubre (Aleatoria respeta la estructura):
+- ALEATORIA ya no llena todo el clip. En un bloque, el patron nuevo suena solo donde el canal sonaba: la intro sigue
+  entrando con bombo y charles, el break sigue sin bombo, el bajo espera sus dos compases y la guitarra, los acordes
+  y la melodia entran donde entraban. Cambian las notas y el sonido, la progresion del bloque se queda. Vale para el
+  boton Aleatoria del Piano y para Editar > ALEATORIA en todos los canales, clic tras clic.
+- Si borras o agregas notas a mano, la siguiente ALEATORIA lee la estructura nueva de tus notas.
+- Un boceto (3 notas sueltas, o una idea de un compas al inicio de un clip largo) se sigue llenando en todo el clip.
+
 Ajustes del 26 de octubre (modo DJ y Aleatoria que aprende tu gusto, fase 5):
 - Archivo > Modo DJ (Cmd+Opcion+J). Arrastra tus rolas (wav, aiff, flac, mp3) o usa "Agregar rolas". Racoon mide
   cada una en un segundo, mas o menos: el tempo a la centesima (126.00, 118.49), la tonalidad en la rueda de Camelot

@@ -1927,6 +1927,34 @@ void PianoRoll::setHeld (te::Clip& c, bool on) { c.state.setProperty ("racoonHol
 
 namespace
 {
+// the structure of a clip: per bar, which parts of it sound there. For drums each kind of hit is its own part
+// (k kick, s snare, clap and rim, h closed hats, o open hat, c cymbals, t toms, p the rest of the percussion); for an
+// instrument a bar either plays ("x") or is silent. "k s h|k h|..." one bar after the other
+char drumPart (int p, const aleatorio::Bateria& d)
+{
+    if (p == d.kick || p == 35 || p == 36) return 'k';
+    if (p == d.snare || p == d.clap || p == d.rim || p == 37 || p == 38 || p == 39 || p == 40) return 's';
+    if (p == d.closedHat || p == 42 || p == 44) return 'h';
+    if (p == d.openHat || p == 46) return 'o';
+    if (p == d.crash || p == d.ride || p == 49 || p == 51 || p == 52 || p == 55 || p == 57 || p == 59) return 'c';
+    if (p == d.tom || p == d.tomHi || p == d.tomLo || p == 41 || p == 43 || p == 45 || p == 47 || p == 48 || p == 50) return 't';
+    return 'p';
+}
+
+StringArray structureOf (const std::vector<aleatorio::Nota>& notes, int bars, double bpb, bool drums, const aleatorio::Bateria& d)
+{
+    StringArray out;
+    for (int b = 0; b < bars; ++b) out.add ({});
+    for (auto& n : notes)
+    {
+        const int b = (int) std::floor (n.start / bpb + 1.0e-6);
+        if (b < 0 || b >= bars) continue;
+        const String part = drums ? String::charToString ((juce_wchar) drumPart (n.pitch, d)) : String ("x");
+        if (! out[b].contains (part)) out.set (b, out[b] + part);
+    }
+    return out;
+}
+
 String notesKey (const std::vector<aleatorio::Nota>& v)
 {
     auto s = v;
@@ -2140,6 +2168,43 @@ bool PianoRoll::generateRandom (std::optional<aleatorio::Rol> role, int64 seed, 
     const auto keepRows = isDrumClip() ? heldRows() : std::set<int>();
     if (! keepRows.empty())
         notes.erase (std::remove_if (notes.begin(), notes.end(), [&] (const aleatorio::Nota& x) { return keepRows.count (x.pitch) > 0; }), notes.end());
+
+    // the clip's structure stays: a block comes in with kick and hats, its break has no kick, some channels wait
+    // their turn. The new pattern sounds only where the clip already sounded, part by part (a kind of hit that the
+    // clip never had may come in, only in bars that were not silent). The structure is kept with the clip, so
+    // pressing again and again does not wear it away; after a hand edit it is read again from the notes
+    {
+        const bool drums = isDrumClip();
+        StringArray shape;
+        const auto stored = StringArray::fromTokens (clip->state.getProperty ("racoonEstructura").toString(), "|", "");
+        const bool untouched = clip->state.getProperty ("racoonAleaHecho").toString() == notesKey (now);
+        if (untouched && stored.size() == clipBars) shape = stored;
+        else if (! now.empty()) shape = structureOf (now, clipBars, o.beatsPerBar, drums, o.drums);
+        // a sketch is not a structure: a few loose notes, or an idea only at the start of the clip (silence only
+        // after its last bar), ask for a part in the whole clip
+        int lastSounding = -1;
+        for (int b = 0; b < shape.size(); ++b) if (shape[b].isNotEmpty()) lastSounding = b;
+        bool anySilent = false;
+        for (int b = 0; b < lastSounding; ++b) anySilent = anySilent || shape[b].isEmpty();
+        if (now.size() < 4 || lastSounding < shape.size() - 1) shape.clear();
+        String known;
+        for (auto& b : shape) for (auto ch : b) if (! known.containsChar (ch)) known << String::charToString (ch);
+        if (! shape.isEmpty() && (anySilent || drums))
+        {
+            notes.erase (std::remove_if (notes.begin(), notes.end(), [&] (const aleatorio::Nota& x)
+            {
+                const int b = (int) std::floor (x.start / o.beatsPerBar + 1.0e-6);
+                if (b < 0 || b >= shape.size()) return false;
+                const auto& here = shape[b];
+                if (here.isEmpty()) return true;                                   // a silent bar stays silent
+                if (! drums) return false;
+                const auto part = (juce_wchar) drumPart (x.pitch, o.drums);
+                return known.containsChar (part) && ! here.containsChar (part);    // this hit waits for its bars
+            }), notes.end());
+            clip->state.setProperty ("racoonEstructura", shape.joinIntoString ("|"), nullptr);
+        }
+        else clip->state.removeProperty ("racoonEstructura", nullptr);
+    }
 
     auto* um = &vs.edit().getUndoManager();
     if (ownUndoStep) um->beginNewTransaction();

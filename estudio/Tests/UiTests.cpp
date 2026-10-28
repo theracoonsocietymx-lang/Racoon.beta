@@ -1645,15 +1645,17 @@ int runUiTests (Session& s, const File& out)
                 roll.setClip (grooveC);
                 roll.setRowHeld (42, false);
             }
-            // a fresh pattern fills the whole clip (the guitar from bar 1 too)
+            // a fresh pattern keeps where the guitar waits in the block (it comes in later): the same bars sound
             if (gtrC != nullptr)
             {
                 roll.setClip (gtrC);
                 pump (40);
+                std::set<int> was;
+                for (auto* n : gtrC->getSequence().getNotes()) was.insert ((int) (n->getStartBeat().inBeats() / 4.0));
                 roll.generateRandom (std::nullopt, 77, true);
                 std::set<int> bars;
                 for (auto* n : gtrC->getSequence().getNotes()) bars.insert ((int) (n->getStartBeat().inBeats() / 4.0));
-                check ((int) bars.size() == 16, "Patrón nuevo en todo el clip: la guitarra suena en los 16 compases ("_u + String ((int) bars.size()) + ")");
+                check (bars == was && ! bars.empty(), "Patrón nuevo: la guitarra sigue entrando donde entraba en el bloque ("_u + String ((int) bars.size()) + " compases)");
             }
             // FIJAR: the bass is held; ALEATORIA there does nothing, and on every channel it is skipped
             if (bassC != nullptr && grooveC != nullptr)
@@ -1987,6 +1989,77 @@ int runUiTests (Session& s, const File& out)
                 check (shown && ! mc.likeBtn.isVisible() && (bool) s.getEdit().state.getProperty ("racoonCalificado"),
                        "después de armar, la barra de abajo pregunta Me gusta / No me gusta, y al contestar se quita");
             }
+        }
+
+        // ---------------------------------------------------- ALEATORIA keeps the block's structure: the intro, the break
+        // and the channels that wait their turn stay silent where they were, click after click
+        {
+            s.newProject (true, false, findGenre ("techhouse"));
+            pump (400);
+            mc.getViewState().clearRange();
+            auto shapeOf = [&s] ()
+            {
+                // per channel, the bars with notes, and for the Kick the bars with a kick
+                std::map<String, String> out;
+                for (auto* t : te::getAudioTracks (s.getEdit()))
+                    for (auto* c : t->getClips())
+                        if (auto* m = dynamic_cast<te::MidiClip*> (c))
+                        {
+                            String bars = String::repeatedString ("-", 16);
+                            for (auto* n : m->getSequence().getNotes())
+                            {
+                                // a bar sounds when a note starts in it or rings through it (a pad held two bars)
+                                const double a = n->getStartBeat().inBeats(), e = a + n->getLengthBeats().inBeats();
+                                for (int b = (int) (a / 4.0); b < 16 && b * 4.0 < e - 0.01; ++b)
+                                    if (b >= 0) bars = bars.replaceSection (b, 1, "x");
+                            }
+                            out[t->getName()] = bars;
+                        }
+                return out;
+            };
+            auto sigAll = [&s] ()
+            {
+                String k;
+                for (auto* t : te::getAudioTracks (s.getEdit()))
+                    for (auto* c : t->getClips())
+                        if (auto* m = dynamic_cast<te::MidiClip*> (c))
+                            for (auto* n : m->getSequence().getNotes()) k << n->getNoteNumber() << "@" << n->getStartBeat().inBeats() << ";";
+                return k.hashCode64();
+            };
+            const auto before = shapeOf();
+            int silentBars = 0;
+            for (auto& [name, bars] : before) for (auto ch : bars) silentBars += ch == '-' ? 1 : 0;
+            bool kept = true, changed = true, filled = true;
+            String why;
+            for (int click = 0; click < 4; ++click)
+            {
+                const auto sig = sigAll();
+                mc.invokeDirectly (ui::MainComponent::editRandomAll, false);
+                pump (300);
+                changed = changed && sigAll() != sig;
+                const auto after = shapeOf();
+                for (auto& [name, bars] : before)
+                {
+                    const auto& a = after.count (name) ? after.at (name) : String();
+                    for (int b = 0; b < 16 && a.length() == 16; ++b)
+                    {
+                        if (bars[b] == '-' && a[b] != '-') { kept = false; why << name << " compás " << (b + 1) << "; "; }
+                    }
+                    // the last phrase plays as it did: the channels that sounded there still sound
+                    if (bars.substring (12) == "xxxx" && a.substring (12).containsChar ('-')) { filled = false; why << name << " calló al final; "; }
+                }
+            }
+            check (silentBars > 20 && kept && changed && filled,
+                   "ALEATORIA respeta la estructura del bloque: los " + String (silentBars) + String::fromUTF8 (" compases callados (intro, break, canales que esperan) siguen callados tras 4 clics, y cada clic cambia la rola ") + why);
+            int kicksInBreak = 0;
+            for (auto* t : te::getAudioTracks (s.getEdit()))
+                if (t->getName().startsWith (String::fromUTF8 ("Hamster")))
+                    for (auto* c : t->getClips())
+                        if (auto* m = dynamic_cast<te::MidiClip*> (c))
+                            for (auto* n : m->getSequence().getNotes())
+                                if ((n->getNoteNumber() == 36 || n->getNoteNumber() == 35) && n->getStartBeat().inBeats() >= 32.0 && n->getStartBeat().inBeats() < 48.0) ++kicksInBreak;
+            check (kicksInBreak == 0, "y el break sigue sin bombo (" + String (kicksInBreak) + " bombos en los compases 9 a 12)");
+            shot (mc, shots.getChildFile ("31_aleatoria_con_estructura.png"));
         }
 
         // ---------------------------------------------------- the computer keyboard: A S D F play the channel below, Z / X move the octave
