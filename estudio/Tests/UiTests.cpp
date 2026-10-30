@@ -2031,12 +2031,26 @@ int runUiTests (Session& s, const File& out)
             for (auto& [name, bars] : before) for (auto ch : bars) silentBars += ch == '-' ? 1 : 0;
             bool kept = true, changed = true, filled = true;
             String why;
+            // Skunk's texture and Porcupine's choir change on every click too (they used to repeat after the first)
+            auto sigOf = [&s] (const char* who)
+            {
+                String k;
+                for (auto* t : te::getAudioTracks (s.getEdit()))
+                    if (t->getName().startsWith (who))
+                        for (auto* c : t->getClips())
+                            if (auto* m = dynamic_cast<te::MidiClip*> (c))
+                                for (auto* n : m->getSequence().getNotes()) k << n->getNoteNumber() << "@" << n->getStartBeat().inBeats() << ";";
+                return k;
+            };
+            std::set<String> skunks { sigOf ("Skunk") }, choirs { sigOf ("Porcupine") };
             for (int click = 0; click < 4; ++click)
             {
                 const auto sig = sigAll();
                 mc.invokeDirectly (ui::MainComponent::editRandomAll, false);
                 pump (300);
                 changed = changed && sigAll() != sig;
+                skunks.insert (sigOf ("Skunk"));
+                choirs.insert (sigOf ("Porcupine"));
                 const auto after = shapeOf();
                 for (auto& [name, bars] : before)
                 {
@@ -2059,6 +2073,8 @@ int runUiTests (Session& s, const File& out)
                             for (auto* n : m->getSequence().getNotes())
                                 if ((n->getNoteNumber() == 36 || n->getNoteNumber() == 35) && n->getStartBeat().inBeats() >= 32.0 && n->getStartBeat().inBeats() < 48.0) ++kicksInBreak;
             check (kicksInBreak == 0, "y el break sigue sin bombo (" + String (kicksInBreak) + " bombos en los compases 9 a 12)");
+            check (skunks.size() >= 4 && choirs.size() >= 4, "la textura de Skunk y el coro de Porcupine cambian en cada clic ("
+                   + String ((int) skunks.size()) + " texturas y " + String ((int) choirs.size()) + " coros distintos en 5 versiones)");
             shot (mc, shots.getChildFile ("31_aleatoria_con_estructura.png"));
         }
 
@@ -2132,15 +2148,24 @@ int runUiTests (Session& s, const File& out)
                 pump (400);
                 shot (mc, shots.getChildFile ("23_rola_completa_en_la_maqueta.png"));
             }
-            // with nothing selected it says what to do instead of opening
+            // with nothing selected (the brush button on a fresh block) it takes the four bars where most channels play
+            s.newProject (true, false, &defaultGenre());
+            pump (600);
             v.clearRange();
             s.getSelection().deselectAll();
             mc.invokeDirectly (ui::MainComponent::editMakeSong, false);
-            pump (100);
-            int open = 0;
-            for (int i = 0; i < Desktop::getInstance().getNumComponents(); ++i)
-                if (auto* top = Desktop::getInstance().getComponent (i)) open += findChildren<ui::SongMakerPanel> (*top).size();
-            check (open == 0, "sin selección no abre la ventana (pide arrastrar el loop)");
+            pump (300);
+            ui::SongMakerPanel* p2 = nullptr;
+            for (int i = 0; i < Desktop::getInstance().getNumComponents() && p2 == nullptr; ++i)
+                if (auto* top = Desktop::getInstance().getComponent (i))
+                    if (auto found = findChildren<ui::SongMakerPanel> (*top); ! found.isEmpty()) p2 = found[0];
+            check (p2 != nullptr, "sin selección, el botón del pincel abre Crear la rola completa con los compases donde más canales suenan");
+            if (p2 != nullptr)
+            {
+                p2->accept();
+                pump (800);
+                check (s.getEdit().getMarkerManager().getMarkers().size() == 7, "y arma la rola con sus 7 secciones");
+            }
         }
 
         mc.setEasyMode (true);

@@ -1572,17 +1572,23 @@ void Session::buildBlockTemplate (const Genre& g)
     const int minorSteps[7] { 0, 2, 3, 5, 7, 8, 10 }, majorSteps[7] { 0, 2, 4, 5, 7, 9, 11 };
     const int* steps = g.major ? majorSteps : minorSteps;
     const int tonic = 48 + g.key + (g.key < 4 ? 12 : 0);        // between E3 and D#4: each genre in its own key
+    // the block's own seed: its sounds, its motif and its voice change with it (another block, another song)
+    const auto blockSeed = [&]
+    {
+        auto seedText = SystemStats::getEnvironmentVariable ("RACOON_SEMILLA_SONIDOS", {});
+        return seedText.isNotEmpty() ? (juce::uint32) seedText.getLargeIntValue() : (juce::uint32) Random::getSystemRandom().nextInt();
+    }();
     auto note = [&] (int degree, int base)                      // a note of the scale, any degree, from "base"
     {
         const int oct = degree >= 0 ? degree / 7 : -((6 - degree) / 7);
         const int d = degree - oct * 7;
         return base + steps[d] + 12 * oct;
     };
-    auto bassNote = [&] (int degree)                            // the root, between E1 and D#2
+    auto bassNote = [&] (int degree)                            // the root, between C1 and B1: deep
     {
         int n = note (degree, tonic - 24);
-        while (n > 51) n -= 12;
-        while (n < 40) n += 12;
+        while (n > 47) n -= 12;
+        while (n < 36) n += 12;
         return n - 12 + 12 * 0;
     };
     auto chordOf = [&] (int bar) { return g.prog[bar % 4]; };
@@ -1805,10 +1811,10 @@ void Session::buildBlockTemplate (const Genre& g)
 
     // the registers: each part has its own place, so the chords don't pile up on the same notes
     // (low and dark: the whole block sits under the middle of the piano, nothing shrill)
-    const int padLo = tonic - 12, padHi = tonic + 8;          // pads: the middle, wide
-    const int stabLo = tonic - 2, stabHi = tonic + 13;        // chord stabs: above the pads, close
+    const int padLo = tonic - 19, padHi = tonic + 1;          // pads: low and wide, dark
+    const int stabLo = tonic - 10, stabHi = tonic + 5;        // chord stabs: just above the pads, close
     const int gtrLo = tonic - 16, gtrHi = tonic + 2;          // guitar: under the pads
-    const int choirLo = tonic - 4, choirHi = tonic + 12;      // choir: the voices' own range
+    const int choirLo = tonic - 12, choirHi = tonic + 4;      // choir: low voices
 
     // ---- pads: the whole block, one chord per bar, the root underneath and the rest led from chord to chord
     if (pad != nullptr)
@@ -1857,7 +1863,7 @@ void Session::buildBlockTemplate (const Genre& g)
             // each genre has its own motif: a walk over the scale that leans on the chord tones
             int walk[16];
             {
-                juce::Random rnd ((juce::int64) String (g.id).hashCode64() ^ 0x5eed);
+                juce::Random rnd ((juce::int64) String (g.id).hashCode64() ^ 0x5eed ^ ((juce::int64) blockSeed << 7));
                 const int pool[] { 0, 2, 4, 7, 4, 2, 1, 3, 5, 6, 0, 4 };
                 int cur = 4;
                 for (int i = 0; i < 16; ++i)
@@ -1875,9 +1881,9 @@ void Session::buildBlockTemplate (const Genre& g)
                 eachStep (g.melody, [&] (double pos, double len, char)
                 {
                     const int step = walk[(k++) % 16];
-                    int nn = noteOn (deg + step, tonic, deg);
-                    while (nn > 79) nn -= 12;                           // by octaves, so the note stays in the key
-                    while (nn < 55) nn += 12;
+                    int nn = noteOn (deg + step, tonic - 12, deg);      // an octave under the old line: darker
+                    while (nn > 62) nn -= 12;                           // by octaves, so the note stays in the key
+                    while (nn < 40) nn += 12;
                     c->getSequence().addNote (nn, bp (bar * bpb + swung (pos)), bd (jmax (0.2, len * 0.85)), 92, 0, um);
                 });
             }
@@ -2019,15 +2025,15 @@ void Session::buildBlockTemplate (const Genre& g)
         {
             const String fam = String::fromUTF8 (g.family);
             static const std::map<String, juce::StringArray> libs {
-                { "House", { "Pad de cristal", "Cuerdas lejanas", "Coro oscuro" } },
-                { "Techno y trance", { "Viento afinado", "Órgano grave"_u, "Pad de cristal" } },
+                { "House", { "Órgano grave"_u, "Cuerdas lejanas", "Coro oscuro" } },
+                { "Techno y trance", { "Viento afinado", "Órgano grave"_u } },
                 { "Bass music", { "Agua profunda", "Viento afinado", "Órgano grave"_u } },
-                { "Urbano y latino", { "Coro oscuro", "Campanas suaves", "Agua profunda" } },
-                { "Hip hop y R&B", { "Polvo de cinta", "Campanas suaves", "Coro oscuro" } },
-                { "Retro, pop y funk", { "Cuerdas lejanas", "Pad de cristal", "Órgano grave"_u } },
-                { "Chill", { "Agua profunda", "Campanas suaves", "Polvo de cinta" } } };
+                { "Urbano y latino", { "Coro oscuro", "Polvo de cinta", "Agua profunda" } },
+                { "Hip hop y R&B", { "Polvo de cinta", "Coro oscuro" } },
+                { "Retro, pop y funk", { "Cuerdas lejanas", "Órgano grave"_u } },
+                { "Chill", { "Agua profunda", "Polvo de cinta" } } };
             const auto it = libs.find (fam);
-            const auto list = it != libs.end() ? it->second : juce::StringArray { "Pad de cristal" };
+            const auto list = it != libs.end() ? it->second : juce::StringArray { "Órgano grave"_u };
             const auto material = list[(int) ((juce::uint32) String (g.id).hashCode64() % (juce::uint32) list.size())];
             if (texture != nullptr)
                 for (auto* p : texture->pluginList)
@@ -2119,7 +2125,7 @@ void Session::buildBlockTemplate (const Genre& g)
     if (voice != nullptr && g.voice)
         if (auto* vc = createMidiClip (*voice, { 0_bp, bp (beats) }, String::fromUTF8 ("Voz · ") + String::fromUTF8 (g.name)))
         {
-            juce::Random rnd ((juce::int64) String (g.id).hashCode64() ^ 0x70c4);
+            juce::Random rnd ((juce::int64) String (g.id).hashCode64() ^ 0x70c4 ^ ((juce::int64) blockSeed << 11));
             // club genres get a chopped voice (short repeated syllables with gaps); the rest get a sung line
             static const juce::StringArray chopped { "techno", "hardtechno", "minimal", "acid", "psytrance", "dubstep",
                                                       "drill", "phonk", "hardstyle", "electro", "jerseyclub", "melodictechno" };
@@ -2133,11 +2139,11 @@ void Session::buildBlockTemplate (const Genre& g)
                 rhythm.push_back ({ t, jmin (d * (chop ? 0.7 : 0.9), 8.0 - t) });
                 t += d + (rnd.nextInt (chop ? 2 : 4) == 0 ? (chop ? 0.75 : 0.5) : 0.0);
             }
-            auto singable = [&] (int degree, int chordDeg)              // between E3 and A4: a low, warm voice
+            auto singable = [&] (int degree, int chordDeg)              // between B2 and E4: a low, dark voice
             {
                 int n = noteOn (degree, tonic, chordDeg);
-                while (n < 52) n += 12;
-                while (n > 69) n -= 12;
+                while (n < 47) n += 12;
+                while (n > 64) n -= 12;
                 return n;
             };
             const int startBar = rnd.nextInt (3) == 0 ? 4 : 8;
@@ -2179,8 +2185,7 @@ void Session::buildBlockTemplate (const Genre& g)
 
     // ---- the sounds: each block its own kit, bass, guitar, pads, chords, melody, choir... (another seed, another song)
     {
-        auto seedText = SystemStats::getEnvironmentVariable ("RACOON_SEMILLA_SONIDOS", {});
-        const auto seed = seedText.isNotEmpty() ? (juce::uint32) seedText.getLargeIntValue() : (juce::uint32) Random::getSystemRandom().nextInt();
+        const auto seed = blockSeed;
         edit->state.setProperty ("racoonSoundSeed", (int64) seed, nullptr);
         varySounds (seed);
     }

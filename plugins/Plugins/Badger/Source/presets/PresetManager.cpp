@@ -55,7 +55,7 @@ void PresetManager::loadFactory (int i)
 {
     if (! juce::isPositiveAndBelow (i, (int) factory.size())) return;
     proc.undo.beginNewTransaction();
-    proc.loadPatchState (buildFactory (i), false);
+    proc.loadPatchState (buildFactory (i), racoon::maqueta::hostIsRacoon());
     currentKey = "factory:" + factory[(size_t) i].name;
 }
 
@@ -124,7 +124,8 @@ void PresetManager::load (const PresetInfo& info)
     auto v = juce::ValueTree::fromXml (*xml);
     v.setProperty ("presetName", info.name, nullptr);
     proc.undo.beginNewTransaction();
-    proc.loadPatchState (v, false);
+    // inside Racoon the bass plays the song's clip: a preset changes the sound, never the sequencer (its own notes)
+    proc.loadPatchState (v, racoon::maqueta::hostIsRacoon());
     currentKey = info.key();
 }
 

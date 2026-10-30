@@ -287,8 +287,20 @@ void Spectral::frame (int c, const SpectralParams& p, Rand& rnd)
         }
 
         // freeze: hold the magnitudes, keep the phases turning
-        if (p.freeze && ! wasFrozen)
-            for (int k = 0; k < bins; ++k) { frozenMag[c][(size_t) k] = std::abs (spec[(size_t) k]); phase[c][(size_t) k] = std::arg (spec[(size_t) k]); }
+        // what it holds is the first moment with sound: frozen over silence (the song not started yet, a MIDI
+        // channel before its first note) it waits for the sound and takes that
+        // (quiet means some 40 dB under a full-scale tone: while what it holds is that quiet, a louder moment replaces it)
+        const float quiet = (float) n * (float) n * 1.0e-5f;
+        if (p.freeze && (! wasFrozen || frozenEnergy[c] < quiet))
+        {
+            float e = 0.0f;
+            for (int k = 0; k < bins; ++k) e += std::norm (spec[(size_t) k]);
+            if (! wasFrozen || e > frozenEnergy[c] * 1.5f)
+            {
+                for (int k = 0; k < bins; ++k) { frozenMag[c][(size_t) k] = std::abs (spec[(size_t) k]); phase[c][(size_t) k] = std::arg (spec[(size_t) k]); }
+                frozenEnergy[c] = e;
+            }
+        }
         if (p.freeze)
         {
             const float keep = 1.0f - p.decay * 0.05f;

@@ -583,8 +583,8 @@ void randomSequences()
         check (total > (rol == Rol::textura ? 40 * 2 : 40 * 4) && outOfKey == 0 && outOfClip == 0 && (int) different.size() >= minDifferent,
                "aleatoria de " + nombreRol (rol) + ": " + String ((int) different.size()) + " distintas de 40, " + String (total)
                + " notas, todas en la tonalidad y dentro de los 4 compases (" + String (outOfKey) + " fuera de tono)");
-        if (rol == Rol::bajo) check (highest <= 55 && lowest >= 24, "el bajo vive abajo (de " + String (lowest) + " a " + String (highest) + ")");
-        if (rol == Rol::melodia) check (lowest >= 48 && highest <= 84, "la melodía va en el medio (de "_u + String (lowest) + " a " + String (highest) + ")");
+        if (rol == Rol::bajo) check (highest <= 52 && lowest >= 24, "el bajo vive abajo (de " + String (lowest) + " a " + String (highest) + ")");
+        if (rol == Rol::melodia) check (lowest >= 40 && highest <= 74, "la melodía va grave (de "_u + String (lowest) + " a " + String (highest) + ")");
     }
     // chords: three or more notes at once
     {
@@ -703,14 +703,18 @@ void randomSequences()
             }
             auto ch = make (Rol::coro, seed);
             std::vector<std::array<int, 4>> voices;
-            for (int b = 0; b < 8; ++b)
+            // the choir sings in several rhythms (held chords, two "ah", "ooh" on 2 and 4...): every attack has its four voices
+            std::set<double> attacks;
+            for (auto& n : ch) attacks.insert (n.start);
+            for (double at : attacks)
             {
+                const int b = (int) (at / 4.0 + 1.0e-6);
                 std::vector<int> sounding;
-                for (auto& n : ch) if (n.start <= b * 4.0 + 1.0e-6 && n.start + n.length > b * 4.0 + 0.1) sounding.push_back (n.pitch);
+                for (auto& n : ch) if (n.start <= at + 1.0e-6 && n.start + n.length > at + 0.05) sounding.push_back (n.pitch);
                 std::sort (sounding.begin(), sounding.end());
                 if (sounding.size() != 4) { ++choirBad; continue; }
                 for (int x : sounding) if (! chordPcsOf (9, true, prog[(size_t) (b % 4)]).count (x % 12)) ++choirBad;
-                if (sounding[0] < 40 || sounding[0] > 60 || sounding[3] < 60 || sounding[3] > 79) ++ranges;
+                if (sounding[0] < 33 || sounding[0] > 53 || sounding[3] < 50 || sounding[3] > 70) ++ranges;
                 for (size_t k = 1; k < 4; ++k) if (sounding[k] <= sounding[k - 1]) ++crossings;
                 voices.push_back ({ sounding[0], sounding[1], sounding[2], sounding[3] });
             }
@@ -745,11 +749,21 @@ void randomSequences()
         check (wrong == 0, "acordes: el acorde (con su séptima o novena) cambia en la barra de compás o se anticipa al final de la frase (" + String (wrong) + " fuera)");
     }
     {
-        // texture: a pedal, not a pattern: few notes, each one long
-        int notesTotal = 0, shortOnes = 0;
+        // texture: over the key (a pedal, a slow line, a pulse or a bloom), different each time, never out of the key
+        int outside = 0;
+        std::set<String> kinds;
+        const std::array<int, 7> aMinor { 9, 11, 0, 2, 4, 5, 7 };
         for (int seed = 1; seed <= 20; ++seed)
-            for (auto& n : make (Rol::textura, seed)) { ++notesTotal; if (n.length < 7.9) ++shortOnes; }
-        check (notesTotal <= 20 * 6 && shortOnes == 0, "textura: un pedal de frase (" + String (notesTotal / 20) + " notas en 8 compases, ninguna de menos de 2 compases)");
+        {
+            String sig;
+            for (auto& n : make (Rol::textura, seed))
+            {
+                if (std::find (aMinor.begin(), aMinor.end(), n.pitch % 12) == aMinor.end()) ++outside;
+                sig << n.pitch << "@" << n.start << ";";
+            }
+            kinds.insert (sig);
+        }
+        check (outside == 0 && kinds.size() >= 15, "textura: en la tonalidad y distinta cada vez (" + String ((int) kinds.size()) + " distintas en 20 semillas)");
     }
     {
         // percussion: shaker, congas, bongos and cowbell; never a kick or a snare
@@ -779,7 +793,7 @@ void randomSequences()
             auto notes = make (Rol::voz, seed);
             for (auto& n : notes)
             {
-                if (n.pitch < 57 || n.pitch > 74) ++outOfRange;
+                if (n.pitch < 48 || n.pitch > 67) ++outOfRange;
                 if (std::abs (n.start * 2.0 - std::round (n.start * 2.0)) > 1.0e-6) ++sixteenths;
             }
             for (int b = 0; b < 8; ++b)

@@ -31,6 +31,9 @@ public:
         setupGlyph (metro, String::fromUTF8 ("Metrónomo"), [this] { s.setMetronome (! s.isMetronomeOn()); });
         setupGlyph (undo, String::fromUTF8 ("Deshacer (Cmd+Z)"), [this] { owner.commandManager.invokeDirectly (editUndo, false); });
         setupGlyph (redo, String::fromUTF8 ("Rehacer (Cmd+Mayús+Z)"), [this] { owner.commandManager.invokeDirectly (editRedo, false); });
+        setupGlyph (makeSongBtn, String::fromUTF8 ("Crear la rola completa: tu loop se vuelve una canción con intro, build-up, drop, breakdown y outro. "
+                                                   "Usa lo que selecciones; sin selección, los compases donde más canales suenan (Cmd+Mayús+R)"),
+                    [this] { owner.commandManager.invokeDirectly (editMakeSong, false); });
         setupGlyph (browserBtn, String::fromUTF8 ("Mostrar u ocultar el navegador (Cmd+1)"), [this] { owner.commandManager.invokeDirectly (viewBrowser, false); });
         setupGlyph (editorBtn, String::fromUTF8 ("Editor de notas y clips (Cmd+2)"), [this] { owner.commandManager.invokeDirectly (viewEditor, false); });
         setupGlyph (mixerBtn, String::fromUTF8 ("Master: todas las pistas y sus medidores (Cmd+3)"), [this] { owner.commandManager.invokeDirectly (viewMixer, false); });
@@ -200,6 +203,8 @@ public:
         undo.setBounds (r.removeFromLeft (b + 3).withTrimmedRight (3));
         redo.setBounds (r.removeFromLeft (b + 3).withTrimmedRight (3));
         r.removeFromLeft (8);
+        makeSongBtn.setBounds (r.removeFromLeft (b + 3).withTrimmedRight (3));
+        r.removeFromLeft (8);
         display = r.removeFromLeft (roomy ? 152 : 136);
         r.removeFromLeft (8);
         tempo.setBounds (r.removeFromLeft (96).withTrimmedTop (14));
@@ -268,7 +273,7 @@ public:
     ViewState& vs;
     Session& s;
     GlyphButton toStart { Glyph::toStart }, play { Glyph::play }, stop { Glyph::stop }, rec { Glyph::record }, loop { Glyph::loop }, metro { Glyph::metronome },
-                undo { Glyph::undo }, redo { Glyph::redo }, browserBtn { Glyph::folder }, editorBtn { Glyph::keyboard }, mixerBtn { Glyph::mixer },
+                undo { Glyph::undo }, redo { Glyph::redo }, makeSongBtn { Glyph::brush }, browserBtn { Glyph::folder }, editorBtn { Glyph::keyboard }, mixerBtn { Glyph::mixer },
                 menuBtn { Glyph::gear };
     Slider tempo;
     ComboBox signature, snap;
@@ -462,6 +467,9 @@ MainComponent::MainComponent (Session& s)
     };
 
     commandManager.registerAllCommandsForTarget (this);
+    // the Mac menu bar asks for a command's target from the focused component: with the focus in a plugin's window
+    // (or nowhere) it found none and greyed out Guardar, Nuevo, Abrir... Every command goes to this window
+    commandManager.setFirstCommandTarget (this);
     addKeyListener (commandManager.getKeyMappings());
     setWantsKeyboardFocus (true);
 
@@ -1331,6 +1339,41 @@ void MainComponent::makeSong()
                 a = jmin (a, vs.timeToBeat (c->getPosition().getStart()));
                 b = jmax (b, vs.timeToBeat (c->getPosition().getEnd()));
             }
+    }
+    // nothing chosen (the pencil button on a fresh block): the four bars where the most channels play together,
+    // the last ones on a tie (in a block, its last phrase, where everything sounds)
+    if (tracks.isEmpty() || b <= a)
+    {
+        tracks.clear();
+        const double bpb = jmax (1, vs.beatsPerBar());
+        double songEnd = 0.0;
+        for (auto* t : te::getAudioTracks (session.getEdit()))
+            for (auto* c : t->getClips()) songEnd = jmax (songEnd, vs.timeToBeat (c->getPosition().getEnd()));
+        int bestCount = 0;
+        for (double w = 0.0; w + 4 * bpb <= songEnd + 1.0e-6; w += 4 * bpb)
+        {
+            int count = 0;
+            for (auto* t : te::getAudioTracks (session.getEdit()))
+            {
+                bool plays = false;
+                for (auto* c : t->getClips())
+                    if (auto* mc = dynamic_cast<te::MidiClip*> (c))
+                    {
+                        const double off = vs.timeToBeat (mc->getPosition().getStart()) - mc->getOffsetInBeats().inBeats();
+                        for (auto* n : mc->getSequence().getNotes())
+                        {
+                            const double at = off + n->getStartBeat().inBeats();
+                            if (at >= w - 1.0e-6 && at < w + 4 * bpb) { plays = true; break; }
+                        }
+                    }
+                    else if (vs.timeToBeat (c->getPosition().getStart()) < w + 4 * bpb && vs.timeToBeat (c->getPosition().getEnd()) > w) plays = true;
+                count += plays ? 1 : 0;
+            }
+            if (count >= bestCount && count > 0) { bestCount = count; a = w; b = w + 4 * bpb; }
+        }
+        if (bestCount > 0)
+            for (auto* t : te::getAudioTracks (session.getEdit()))
+                if (! t->getClips().isEmpty()) tracks.add (t);
     }
     String why;
     auto done = [this] (const arranger::Result& r)

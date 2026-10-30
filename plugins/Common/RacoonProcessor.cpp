@@ -1,6 +1,43 @@
 #include <cstring>
 #include "RacoonProcessor.h"
 
+namespace
+{
+// Inside Racoon a plugin plays the song's clips: a Chinchilla that sings the MIDI, a Skunk whose grains follow the
+// keyboard over a material of its library, a Mole that plays with the song. A sound (a factory or user preset) is
+// about the timbre, so changing it there must not change how the plugin plays: those values are kept.
+// (Chinchilla's presets are made for a recorded voice and turned singing off: the channel went silent.)
+struct PlayModeGuard
+{
+    explicit PlayModeGuard (juce::AudioProcessor& p) : proc (p)
+    {
+        if (! racoon::maqueta::hostIsRacoon()) return;
+        for (auto* prm : proc.getParameters())
+            if (auto* rp = dynamic_cast<juce::RangedAudioParameter*> (prm))
+                if (keep().contains (rp->paramID)) kept.push_back ({ rp, rp->getValue() });
+    }
+    ~PlayModeGuard()
+    {
+        // Skunk playing a material of its library: the sound may pick another material, but the capture stays frozen
+        // (live capture records the silent input of a MIDI channel over the material) and the grains stay audible
+        // (a spectral sound with the grains at 0 only processes the input, and there is none)
+        bool library = false;
+        for (auto& [rp, v] : kept) if (rp->paramID == "lib" && v > 1.0e-6f) library = true;
+        for (auto& [rp, v] : kept)
+        {
+            const auto& id = rp->paramID;
+            if ((id == "lib" || id == "gmix") && rp->getValue() > 1.0e-6f) continue;     // only when the sound left none
+            if ((id == "recmode" || id == "freeze" || id == "gmix") && ! library) continue;
+            if (std::abs (rp->getValue() - v) > 1.0e-6f) rp->setValueNotifyingHost (v);
+        }
+    }
+    static const juce::StringArray& keep() { static const juce::StringArray k { "sing_on", "gmidi", "play", "lib", "recmode", "freeze", "gmix" }; return k; }
+    juce::AudioProcessor& proc;
+    std::vector<std::pair<juce::RangedAudioParameter*, float>> kept;
+};
+}
+
+
 namespace racoon
 {
 using namespace juce;
@@ -671,6 +708,7 @@ bool RacoonProcessor::loadUserPreset (const String& name)
     auto f = presetFolder().getChildFile (name + ".racoonpreset");
     if (auto xml = parseXML (f))
     {
+        PlayModeGuard guard (*this);
         restoreState (ValueTree::fromXml (*xml));
         currentPresetName = name;
         return true;
@@ -694,6 +732,7 @@ const String RacoonProcessor::getProgramName (int i)
     return isPositiveAndBelow (i, (int) fp.size()) ? fp[(size_t) i].name : String ("Inicial");
 }
 
+
 void RacoonProcessor::setCurrentProgram (int i)
 {
     auto fp = factoryPresets();
@@ -707,6 +746,7 @@ void RacoonProcessor::applyFactoryPreset (int index)
     auto fp = factoryPresets();
     if (! isPositiveAndBelow (index, (int) fp.size())) return;
     const auto& preset = fp[(size_t) index];
+    PlayModeGuard guard (*this);
     for (auto* p : getParameters())
     {
         auto* rp = dynamic_cast<RangedAudioParameter*> (p);

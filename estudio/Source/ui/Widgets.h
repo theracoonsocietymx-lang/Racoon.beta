@@ -3,7 +3,7 @@
 
 namespace racoon::ui
 {
-enum class Glyph { none, play, stop, record, loop, metronome, toStart, undo, redo, plus, close, folder, save, gear, scissors, keyboard, mixer, wave, follow, back, forward };
+enum class Glyph { none, play, stop, record, loop, metronome, toStart, undo, redo, plus, close, folder, save, gear, scissors, keyboard, mixer, wave, follow, back, forward, brush };
 
 void drawGlyph (juce::Graphics&, Glyph, juce::Rectangle<float>, juce::Colour);
 

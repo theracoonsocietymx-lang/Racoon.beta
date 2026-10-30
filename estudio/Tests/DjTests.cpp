@@ -122,6 +122,29 @@ AudioBuffer<float> cancionDePrueba (double bpm, int root, bool major, double sr)
 int runDjTests (Session& s, const File& out)
 {
     std::cout << "modo DJ" << std::endl;
+    // RACOON_VARIEDAD=house: four blocks of a genre with four seeds, and what each instrument really ended up with
+    if (auto id = SystemStats::getEnvironmentVariable ("RACOON_VARIEDAD", {}); id.isNotEmpty())
+    {
+        for (int k = 1; k <= 4; ++k)
+        {
+            setenv ("RACOON_SEMILLA_SONIDOS", String (k * 7919).toRawUTF8(), 1);
+            s.newProject (true, false, findGenre (id));
+            MessageManager::getInstance()->runDispatchLoopUntil (1500);
+            std::cout << "== semilla " << k << std::endl << s.getEdit().state.getProperty ("racoonSounds").toString() << std::endl;
+            for (auto* t : te::getAudioTracks (s.getEdit()))
+                if (auto* ext = dynamic_cast<te::ExternalPlugin*> (Session::instrumentOf (*t) != nullptr ? Session::instrumentOf (*t) : (t->pluginList.size() > 0 ? t->pluginList[0] : nullptr)))
+                    if (auto* pi = ext->getAudioPluginInstance())
+                    {
+                        String line = t->getName() + ": programa " + pi->getProgramName (pi->getCurrentProgram());
+                        for (auto* prm : pi->getParameters())
+                            for (auto* nm : { "Sonido", "Osc 1 forma", "Osc 1 tabla", "Guitarra", "Cantar: voz", "Biblioteca", "Wave", "Osc A Wave" })
+                                if (prm->getName (64) == String::fromUTF8 (nm)) line << " | " << nm << "=" << prm->getCurrentValueAsText();
+                        std::cout << "   " << line << std::endl;
+                    }
+            MessageManager::getInstance()->runDispatchLoopUntil (3000);
+        }
+        return 0;
+    }
     // RACOON_DJ_GENEROS="house,techno": the block of each genre written as "bloque <id> <key>.wav" (to tune the key finder)
     if (auto ids = SystemStats::getEnvironmentVariable ("RACOON_DJ_GENEROS", {}); ids.isNotEmpty())
     {
@@ -306,6 +329,131 @@ int runDjTests (Session& s, const File& out)
         }
         else check (false, "la herramienta DJ se exporta");
     }
+    // changing a channel's sound (a preset of the plugin) keeps it playing the song: Chinchilla still sings the MIDI,
+    // Skunk's grains still follow the notes, Mole still plays with the song, Badger plays the clip and not its own
+    // sequencer. Every preset of the four, one after the other, and the channels rendered at the end
+    if (auto* g = findGenre ("deephouse"))
+    {
+        s.newProject (true, false, g);
+        MessageManager::getInstance()->runDispatchLoopUntil (1000);
+        StringArray lost;
+        int presets = 0;
+        for (auto* t : te::getAudioTracks (s.getEdit()))
+            for (auto* p : t->pluginList)
+                if (auto* ext = dynamic_cast<te::ExternalPlugin*> (p))
+                    if (auto* pi = ext->getAudioPluginInstance())
+                    {
+                        const auto name = t->getName();
+                        if (! (name.startsWith ("Chinchilla") || name.startsWith ("Skunk") || name.startsWith ("Mole") || name.startsWith ("Badger"))) continue;
+                        auto valueOf = [pi] (const String& id) -> float
+                        {
+                            // the host sees the plugin's parameters by name
+                            static const std::map<String, String> names { { "sing_on", "Cantar las notas MIDI" }, { "gmidi", "Granos con el teclado" },
+                                                                          { "play", "Reproducir" }, { "seq_mode", "Seq Mode" }, { "lib", "Biblioteca" } };
+                            for (auto* prm : pi->getParameters())
+                                if (prm->getName (64) == String::fromUTF8 (names.at (id).toRawUTF8())) return prm->getValue();
+                            return -1.0f;
+                        };
+                        const float sing = valueOf ("sing_on"), grains = valueOf ("gmidi"), play = valueOf ("play"), seq = valueOf ("seq_mode");
+                        std::cout << "    " << name << ": cantar " << sing << ", granos " << grains << ", reproducir " << play << ", secuenciador " << seq << std::endl;
+                        for (int k = 0; k < pi->getNumPrograms(); ++k)
+                        {
+                            pi->setCurrentProgram (k);
+                            ++presets;
+                            if (std::abs (valueOf ("sing_on") - sing) > 1e-6f || std::abs (valueOf ("gmidi") - grains) > 1e-6f
+                                || std::abs (valueOf ("play") - play) > 1e-6f || std::abs (valueOf ("seq_mode") - seq) > 1e-6f)
+                                lost.addIfNotAlreadyThere (name + " / " + pi->getProgramName (k));
+                        }
+                        // and it ends on a sound in the middle of the list
+                        pi->setCurrentProgram (pi->getNumPrograms() / 2);
+                        if (std::abs (valueOf ("lib")) < 1e-6f && name.startsWith ("Skunk")) lost.addIfNotAlreadyThere (name + String::fromUTF8 (": sin material de biblioteca"));
+                    }
+        // RACOON_PRESETS_DEBUG: every Skunk sound rendered alone, to find the silent ones
+        if (SystemStats::getEnvironmentVariable ("RACOON_PRESETS_DEBUG", {}).isNotEmpty())
+            for (auto* t : te::getAudioTracks (s.getEdit()))
+                if (t->getName().startsWith ("Skunk"))
+                    if (auto* ext = dynamic_cast<te::ExternalPlugin*> (Session::instrumentOf (*t) != nullptr ? Session::instrumentOf (*t) : t->pluginList[0]))
+                        if (auto* pi = ext->getAudioPluginInstance())
+                        {
+                            t->setSolo (true);
+                            for (int k = 0; k < pi->getNumPrograms(); ++k)
+                            {
+                                pi->setCurrentProgram (k);
+                                MessageManager::getInstance()->runDispatchLoopUntil (100);
+                                ExportOptions o; o.destination = out.getChildFile ("skunk " + String (k) + ".wav"); o.sampleRate = 44100.0; o.loopOnly = true; o.tailSeconds = 0.0;
+                                s.exportMix (o);
+                                AudioBuffer<float> b; double bsr = 44100.0;
+                                audio::readFile (s.engine, o.destination, b, bsr);
+                                String ps;
+                                for (auto* prm : pi->getParameters())
+                                    for (auto* nm : { "Biblioteca", "Captura: modo", "Granos: mezcla", "Granos con el teclado", "Espectro: encendido", "Espectro: congelar" })
+                                        if (prm->getName (64) == String::fromUTF8 (nm)) ps << nm << "=" << prm->getCurrentValueAsText() << " ";
+                                std::cout << "      skunk " << k << " " << pi->getProgramName (k) << ": " << String (Decibels::gainToDecibels (b.getMagnitude (0, b.getNumSamples())), 1) << " dB | " << ps << std::endl;
+                            }
+                            t->setSolo (false);
+                        }
+        check (presets > 40 && lost.isEmpty(), "cambiar el sonido de Chinchilla, Skunk, Mole y Badger (" + String (presets)
+               + " presets) conserva cómo tocan la rola " + lost.joinIntoString ("; ").substring (0, 300));
+        ExportOptions so; so.destination = out.getChildFile ("stems presets"); so.sampleRate = 44100.0; so.stems = true; so.loopOnly = true;
+        Array<File> written;
+        s.exportStems (so, &written);
+        StringArray silent, heard;
+        for (auto& f : written)
+        {
+            const auto n = f.getFileNameWithoutExtension();
+            if (! (n.contains ("Chinchilla") || n.contains ("Skunk") || n.contains ("Mole") || n.contains ("Badger"))) continue;
+            AudioBuffer<float> b; double bsr = 44100.0;
+            const bool ok = audio::readFile (s.engine, f, b, bsr);
+            const float rms = ok ? b.getRMSLevel (0, 0, b.getNumSamples()) : 0.0f;
+            (rms > 0.001f ? heard : silent).add (n + " " + String (Decibels::gainToDecibels (rms), 1) + " dB");
+        }
+        check (silent.isEmpty() && heard.size() == 4, "y después de cambiarles el sonido siguen sonando en la maqueta: " + heard.joinIntoString (", ")
+               + (silent.isEmpty() ? String() : String::fromUTF8 (" | callados: ") + silent.joinIntoString (", ")));
+    }
+
+    {
+        // two blocks of the same genre: another motif, other sounds, the header names the sound, and the lines sit low
+        std::cout << "-- bloques que no se repiten" << std::endl;
+        StringArray melodies, sounds, headers;
+        double sum = 0.0, bassSum = 0.0; int count = 0, bassCount = 0;
+        for (int k = 1; k <= 2; ++k)
+        {
+            setenv ("RACOON_SEMILLA_SONIDOS", String (k * 104729).toRawUTF8(), 1);
+            s.newProject (true, false, findGenre ("deephouse"));
+            MessageManager::getInstance()->runDispatchLoopUntil (1500);
+            sounds.add (s.getEdit().state.getProperty ("racoonSounds").toString());
+            String mel;
+            for (auto* t : te::getAudioTracks (s.getEdit()))
+            {
+                for (auto* c : t->getClips())
+                    if (auto* mc = dynamic_cast<te::MidiClip*> (c); mc != nullptr && mc->getName().startsWith (String::fromUTF8 ("Melodía")))
+                        for (auto* n : mc->getSequence().getNotes()) { mel << n->getNoteNumber() << " "; sum += n->getNoteNumber(); ++count; }
+                if (t->getName().startsWith ("Badger"))
+                    for (auto* c : t->getClips())
+                        if (auto* mc = dynamic_cast<te::MidiClip*> (c))
+                            for (auto* n : mc->getSequence().getNotes()) { bassSum += n->getNoteNumber(); ++bassCount; }
+                if (auto* ext = dynamic_cast<te::ExternalPlugin*> (Session::instrumentOf (*t)))
+                    if (auto* pi = ext->getAudioPluginInstance(); pi != nullptr && t->getName().containsIgnoreCase ("Acordes"))
+                    {
+                        if (auto xml = parseXML (Session::pluginStateXml (*pi)))
+                            headers.add (xml->getStringAttribute ("preset"));
+                    }
+            }
+            melodies.add (mel);
+        }
+        unsetenv ("RACOON_SEMILLA_SONIDOS");
+        check (melodies.size() == 2 && melodies[0].isNotEmpty() && melodies[0] != melodies[1], "dos bloques del mismo género traen otro motivo");
+        check (sounds[0] != sounds[1], "y otros sonidos: " + sounds.joinIntoString (" / ").replace ("\n", "; "));
+        check (headers.size() == 2 && ! headers.contains ("Inicial") && ! headers.contains ({}), "el encabezado de Chipmunk nombra su sonido: " + headers.joinIntoString (", "));
+        const double avg = count > 0 ? sum / count : 99.0;
+        check (avg < 62.0, "la melodía va grave: nota media " + String (avg, 1));
+        const double bassAvg = bassCount > 0 ? bassSum / bassCount : 99.0;
+        check (bassAvg < 38.0, "el bajo va profundo: nota media " + String (bassAvg, 1));
+        bool shrill = false;
+        for (auto& x : sounds) shrill = shrill || x.contains ("Voz aguda") || x.contains ("Campanas") || x.containsIgnoreCase ("cristal");
+        check (! shrill, "nada de voces agudas, campanas ni cristal en los sonidos de los bloques");
+    }
+
     s.newProject (false);
     MessageManager::getInstance()->runDispatchLoopUntil (6000);
     return djFailures;

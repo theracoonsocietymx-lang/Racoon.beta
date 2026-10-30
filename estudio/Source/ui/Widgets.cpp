@@ -53,6 +53,27 @@ void drawGlyph (Graphics& g, Glyph glyph, Rectangle<float> r, Colour c)
             g.fillPath (a2);
             break;
         }
+        case Glyph::brush:
+        {
+            // a paintbrush, tilted: the handle from the top right, the ferrule, the bristles, and the stroke it leaves
+            const float x0 = b.getX(), y0 = b.getY();
+            g.drawLine (x0 + s * 0.82f, y0 + s * 0.12f, x0 + s * 0.52f, y0 + s * 0.44f, s * 0.11f);
+            Path ferrule;
+            ferrule.addRectangle (-s * 0.08f, -s * 0.06f, s * 0.16f, s * 0.12f);
+            ferrule.applyTransform (AffineTransform::rotation (-MathConstants<float>::pi * 0.25f).translated (x0 + s * 0.47f, y0 + s * 0.49f));
+            g.fillPath (ferrule);
+            Path tip;
+            tip.startNewSubPath (x0 + s * 0.48f, y0 + s * 0.58f);
+            tip.quadraticTo (x0 + s * 0.30f, y0 + s * 0.58f, x0 + s * 0.20f, y0 + s * 0.76f);
+            tip.quadraticTo (x0 + s * 0.34f, y0 + s * 0.74f, x0 + s * 0.42f, y0 + s * 0.68f);
+            tip.closeSubPath();
+            g.fillPath (tip);
+            Path stroke;
+            stroke.startNewSubPath (x0 + s * 0.12f, y0 + s * 0.88f);
+            stroke.quadraticTo (x0 + s * 0.40f, y0 + s * 0.80f, x0 + s * 0.70f, y0 + s * 0.88f);
+            g.strokePath (stroke, PathStrokeType (s * 0.07f, PathStrokeType::curved, PathStrokeType::rounded));
+            break;
+        }
         case Glyph::metronome:
             p.addTriangle (b.getCentreX(), b.getY() + s * 0.1f, b.getX() + s * 0.18f, b.getBottom() - s * 0.1f, b.getRight() - s * 0.18f, b.getBottom() - s * 0.1f);
             g.strokePath (p, PathStrokeType (s * 0.09f));

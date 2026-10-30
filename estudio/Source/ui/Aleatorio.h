@@ -308,13 +308,13 @@ inline void bajo (const Opciones& o, juce::Random& rng, const std::vector<Bar>& 
         if (rng.nextBool()) { cell2.pop_back(); colour2.pop_back(); }
         else for (auto& c : colour2) if (c == 0 && rng.nextBool()) c = 7;
     }
-    const int base = o.root >= 5 ? 24 : 36;      // the tonic between Fa1 and Mi2
+    const int base = o.root >= 3 ? 24 : 36;      // the tonic between Re#1 and Re2: deep, under the old line
     const int tonic = base + o.root;
     auto place = [&] (int deg)
     {
         int p = degreePitch (base, o.root, o.minor, deg);
         while (p > tonic + 12) p -= 12;
-        while (p < tonic - 5) p += 12;
+        while (p < juce::jmax (24, tonic - 5)) p += 12;           // never under Do1 (it would be felt, not heard)
         return p;
     };
     for (auto& bar : bars)
@@ -366,7 +366,7 @@ inline void pad (const Opciones& o, juce::Random& rng, const std::vector<Bar>& b
     {
         auto& bar = bars[b];
         auto pcs = chordPcs (o, bar.degree, seventh);
-        auto v = voiceLead (pcs, 52, 76, prev);
+        auto v = voiceLead (pcs, 43, 67, prev);
         const int phrase = (int) b / juce::jmax (1, juce::jmin (4, (int) bars.size()));
         std::vector<size_t> now;
         for (int p : v)
@@ -391,11 +391,17 @@ inline void pad (const Opciones& o, juce::Random& rng, const std::vector<Bar>& b
 inline void coro (const Opciones& o, juce::Random& rng, const std::vector<Bar>& bars, std::vector<Nota>& out)
 {
     // ranges: soprano Do4-Sol5, alto Sol3-Do5, tenor Do3-Sol4, bass Mi2-Do4
-    const int lo[4] { 40, 48, 55, 60 }, hi[4] { 60, 67, 72, 79 };
+    const int lo[4] { 33, 40, 46, 50 }, hi[4] { 52, 58, 64, 70 };
     std::array<int, 4> prev { 0, 0, 0, 0 };
     bool first = true;
     std::array<size_t, 4> idx {};
     int prevPhrase = -1;
+    // each time another choir: where the sopranos sit (low and warm or high and open), how close the voices go, and
+    // how they sing (held chords, two "ah" a bar, an "ooh" on 2 and 4, the 3+3+2 of the dance floor, or a swell that
+    // breathes in the middle of the bar)
+    const int topTarget = 58 + rng.nextInt (9);
+    const int spread = rng.nextInt (3);                          // 0 close, 1 middle, 2 open
+    const int rhythm = rng.nextInt (5);
     for (size_t b = 0; b < bars.size(); ++b)
     {
         auto& bar = bars[b];
@@ -418,7 +424,8 @@ inline void coro (const Opciones& o, juce::Random& rng, const std::vector<Bar>& 
             for (int x : v) { third = third || pc (x) == pcs[1]; fifth = fifth || pc (x) == pcs[2]; }
             if (! third) continue;                                            // a chord without its third is not a chord
             int cost = fifth ? 0 : 6;
-            if (first) cost += std::abs (S - 72) + std::abs (A - 64) + std::abs (T - 57) + std::abs (B - 48);
+            cost += std::abs ((S - B) - (22 + spread * 6)) / 2;
+            if (first) cost += std::abs (S - topTarget) * 2 + std::abs (A - (topTarget - 8)) + std::abs (T - (topTarget - 15)) + std::abs (B - 41);
             else
             {
                 for (int k = 0; k < 4; ++k) cost += std::abs (v[(size_t) k] - prev[(size_t) k]) * (k == 0 ? 1 : 3);
@@ -439,23 +446,43 @@ inline void coro (const Opciones& o, juce::Random& rng, const std::vector<Bar>& 
         if (bestCost == (1 << 30))
         {
             // no four-part answer in range (a very low or high key): the triad, close, over its root
-            const auto v = voiceLead (pcs, 55, 74, {});
+            const auto v = voiceLead (pcs, 46, 65, {});
             best = { juce::jlimit (40, 60, v[0] - 12), v[0], v[1], v[2] };
         }
         const int phrase = (int) b / juce::jmax (1, juce::jmin (4, (int) bars.size()));
         // held notes: a voice that keeps its note inside a phrase is tied, not sung again; the phrase's last bar
         // ends an eighth early so the choir breathes
-        for (int k = 0; k < 4; ++k)
-        {
-            const double len = bar.phraseEnd ? bar.length - 0.5 : bar.length;
-            if (! first && phrase == prevPhrase && best[(size_t) k] == prev[(size_t) k])
+        if (rhythm == 0)
+            for (int k = 0; k < 4; ++k)
             {
-                out[idx[(size_t) k]].length = bar.start + len - out[idx[(size_t) k]].start;
-                continue;
+                const double len = bar.phraseEnd ? bar.length - 0.5 : bar.length;
+                if (! first && phrase == prevPhrase && best[(size_t) k] == prev[(size_t) k])
+                {
+                    out[idx[(size_t) k]].length = bar.start + len - out[idx[(size_t) k]].start;
+                    continue;
+                }
+                const int vel = 66 + bar.inPhrase * 5 + (k == 3 ? 6 : 0);
+                out.push_back ({ bar.start, len, clampPitch (best[(size_t) k]), humanVel (rng, vel, 3) });
+                idx[(size_t) k] = out.size() - 1;
             }
-            const int vel = 66 + bar.inPhrase * 5 + (k == 3 ? 6 : 0);
-            out.push_back ({ bar.start, len, clampPitch (best[(size_t) k]), humanVel (rng, vel, 3) });
-            idx[(size_t) k] = out.size() - 1;
+        else
+        {
+            // the attacks of the bar, in quarters: when each "ah" starts and how long it lasts
+            std::vector<std::pair<double, double>> hits;
+            const double L = bar.length;
+            if (rhythm == 1) hits = { { 0.0, L * 0.5 - 0.1 }, { L * 0.5, L * 0.5 - (bar.phraseEnd ? 0.5 : 0.1) } };
+            else if (rhythm == 2) for (double q = 1.0; q < L; q += 2.0) hits.push_back ({ q, 0.9 });
+            else if (rhythm == 3) hits = { { 0.0, 1.4 }, { 1.5, 1.4 }, { 3.0, juce::jmax (0.5, L - 3.1) } };
+            else hits = { { 0.0, L * 0.75 - 0.05 }, { L * 0.75, L * 0.25 - 0.05 } };
+            for (auto& [at, len] : hits)
+            {
+                if (at >= L) continue;
+                for (int k = 0; k < 4; ++k)
+                {
+                    const int vel = 62 + bar.inPhrase * 5 + (k == 3 ? 6 : 0) + (at == 0.0 ? 6 : 0);
+                    out.push_back ({ bar.start + at, juce::jmax (0.25, len), clampPitch (best[(size_t) k]), humanVel (rng, vel, 4) });
+                }
+            }
         }
         prev = best;
         first = false;
@@ -494,7 +521,7 @@ inline void acordes (const Opciones& o, juce::Random& rng, const std::vector<Bar
         if (colour == 4) pcs.push_back (ninth);
         return pcs;
     };
-    const int lo = 53 + rng.nextInt (5), hi = lo + 22;
+    const int lo = 45 + rng.nextInt (5), hi = lo + 22;
     std::vector<int> prev;
     for (auto& bar : bars)
     {
@@ -691,7 +718,7 @@ inline void guitarra (const Opciones& o, juce::Random& rng, const std::vector<Ba
             }
             case riff:
             {
-                int root = 52;
+                int root = 40;                                             // the riff on the low strings
                 while (pc (root) != chordPcs (o, bar.degree, false)[0]) ++root;
                 for (size_t k = 0; k < riffSteps.size(); ++k)
                 {
@@ -721,8 +748,8 @@ inline void arpegio (const Opciones& o, juce::Random& rng, const std::vector<Bar
     {
         std::vector<int> tones;
         for (int oct = 0; oct < 2; ++oct)
-            for (int d : { 0, 2, 4 }) tones.push_back (degreePitch (60, o.root, o.minor, bar.degree + d + oct * 7));
-        while (tones.back() > 88) for (auto& t : tones) t -= 12;
+            for (int d : { 0, 2, 4 }) tones.push_back (degreePitch (48, o.root, o.minor, bar.degree + d + oct * 7));
+        while (tones.back() > 77) for (auto& t : tones) t -= 12;
         std::vector<int> order;
         if (shape == 0) order = tones;
         else if (shape == 1) order.assign (tones.rbegin(), tones.rend());
@@ -776,8 +803,8 @@ inline void melodia (const Opciones& o, juce::Random& rng, const std::vector<Bar
         deg = juce::jlimit (-2, sung ? 7 : 9, deg + move);
         lastMove = move;
     }
-    const int base = sung ? (o.root >= 9 ? 48 : 60) : (o.root >= 6 ? 48 : 60);
-    const int top = sung ? 74 : 84, bottom = sung ? 57 : 50;
+    const int base = sung ? 48 : (o.root >= 6 ? 36 : 48);   // low and dark, an octave under the old line
+    const int top = sung ? 67 : 74, bottom = sung ? 48 : 40;
     auto chordTone = [&] (int d, int chordDeg)
     {
         int bestD = d, bestDist = 99;
@@ -847,21 +874,82 @@ inline void melodia (const Opciones& o, juce::Random& rng, const std::vector<Bar
 // ============================================================================================================ texture
 inline void textura (const Opciones& o, juce::Random& rng, const std::vector<Bar>& bars, std::vector<Nota>& out)
 {
-    // a pedal on the key, not on each chord: the tonic low and its fifth held across each phrase; the octave
-    // (or the ninth) enters in the second half of the phrase and rises with it
-    const int low = degreePitch (36, o.root, o.minor, 0) + (o.root >= 7 ? -12 : 0);
-    const int fifth = degreePitch (36, o.root, o.minor, 4) + (o.root >= 7 ? -12 : 0);
+    // each time another texture over the key: a pedal held through each phrase (the tonic low, its fifth, the octave
+    // or the ninth entering halfway), a slow line on the chord tones over the low tonic, a pulse that breathes with
+    // gaps, or a bloom (the chord entering one note per beat and held to the end of the bar pair)
+    const int lowOct = rng.nextBool() ? 0 : 12;
+    const int low = degreePitch (36, o.root, o.minor, 0) + (o.root >= 7 ? -12 : 0) + lowOct;
+    const int fifth = degreePitch (36, o.root, o.minor, 4) + (o.root >= 7 ? -12 : 0) + lowOct;
     const bool ninth = rng.nextBool();
-    const int high = degreePitch (60, o.root, o.minor, ninth ? 1 : 0);
+    const int high = degreePitch (48, o.root, o.minor, ninth ? 1 : 0);
     const int phrase = juce::jmin (4, (int) bars.size());
-    for (size_t b = 0; b < bars.size(); b += (size_t) phrase)
+    const int kind = rng.nextInt (4);
+    if (kind == 0)
     {
-        const double s = bars[b].start;
-        const int n = juce::jmin (phrase, (int) (bars.size() - b));
-        const double len = n * bars[b].length;
-        out.push_back ({ s, len * 0.995, clampPitch (low), humanVel (rng, 70, 3) });
-        out.push_back ({ s, len * 0.995, clampPitch (fifth + 12), humanVel (rng, 58, 3) });
-        if (n >= 2) out.push_back ({ s + len / 2.0, len / 2.0 * 0.99, clampPitch (high), humanVel (rng, 52, 3) });
+        for (size_t b = 0; b < bars.size(); b += (size_t) phrase)
+        {
+            const double s = bars[b].start;
+            const int n = juce::jmin (phrase, (int) (bars.size() - b));
+            const double len = n * bars[b].length;
+            out.push_back ({ s, len * 0.995, clampPitch (low), humanVel (rng, 70, 3) });
+            out.push_back ({ s, len * 0.995, clampPitch (fifth + 12), humanVel (rng, 58, 3) });
+            if (n >= 2) out.push_back ({ s + len / 2.0, len / 2.0 * 0.99, clampPitch (high), humanVel (rng, 52, 3) });
+        }
+    }
+    else if (kind == 1)
+    {
+        // the slow line: a chord tone each bar, moving by the nearest step, over the tonic held through the phrase
+        int last = 60 + rng.nextInt (8);
+        for (size_t b = 0; b < bars.size(); ++b)
+        {
+            const auto pcs = chordPcs (o, bars[b].degree, false);
+            int best = last, bestD = 99;
+            for (int c : pcs)
+                for (int p = 55; p <= 76; ++p)
+                    if (pc (p) == pc (c))
+                    {
+                        const int d = std::abs (p - last) + (p == last ? 3 : 0) + rng.nextInt (3);
+                        if (d < bestD) { bestD = d; best = p; }
+                    }
+            last = best;
+            out.push_back ({ bars[b].start, bars[b].length * 0.98, clampPitch (best), humanVel (rng, 56, 5) });
+            if (b % (size_t) phrase == 0)
+                out.push_back ({ bars[b].start, juce::jmin (phrase, (int) (bars.size() - b)) * bars[b].length * 0.99, clampPitch (low), humanVel (rng, 64, 3) });
+        }
+    }
+    else if (kind == 2)
+    {
+        // the pulse: the tonic and its fifth in quarters or eighths, some beats left out, louder towards the phrase end
+        const double step = rng.nextBool() ? 1.0 : 0.5;
+        const int gaps = 15 + rng.nextInt (25);
+        for (size_t b = 0; b < bars.size(); ++b)
+            for (double t = 0.0; t < bars[b].length - 1.0e-6; t += step)
+            {
+                if (t > 0.0 && rng.nextInt (100) < gaps) continue;
+                const int vel = 46 + bars[b].inPhrase * 6 + (t == 0.0 ? 8 : 0);
+                out.push_back ({ bars[b].start + t, step * 0.8, clampPitch (low), humanVel (rng, vel, 4) });
+                if (rng.nextInt (3) > 0) out.push_back ({ bars[b].start + t, step * 0.8, clampPitch (fifth + 12), humanVel (rng, vel - 8, 4) });
+            }
+    }
+    else
+    {
+        // the bloom: every two bars the chord comes in from the bottom, one note per beat, all held to the end
+        for (size_t b = 0; b < bars.size(); b += 2)
+        {
+            const int n = juce::jmin (2, (int) (bars.size() - b));
+            const double end = bars[b].start + n * bars[b].length - 0.05;
+            const auto pcs = chordPcs (o, bars[b].degree, false);
+            std::vector<int> notes { low, fifth + 12 };
+            for (int c : pcs) { int p = 60; while (pc (p) != pc (c)) ++p; notes.push_back (p); }
+            notes.push_back (high + 12 <= 84 ? high : high - 12);
+            std::sort (notes.begin(), notes.end());
+            for (size_t k = 0; k < notes.size(); ++k)
+            {
+                const double at = bars[b].start + (double) k * (rng.nextBool() ? 1.0 : 0.5);
+                if (at >= end - 0.25) break;
+                out.push_back ({ at, end - at, clampPitch (notes[k]), humanVel (rng, 50 + (int) k * 3, 4) });
+            }
+        }
     }
 }
 

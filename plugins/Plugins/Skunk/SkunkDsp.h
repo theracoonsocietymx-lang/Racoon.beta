@@ -130,6 +130,7 @@ private:
     std::vector<float> tmpMag, tmpFreq, tmpEnv, tmpEnvSc;   // scratch, sized once
     int pos = 0, count = 0;
     bool wasFrozen = false;
+    float frozenEnergy[2] { 0.0f, 0.0f };
     void frame (int c, const SpectralParams&, Rand&);
 };
 

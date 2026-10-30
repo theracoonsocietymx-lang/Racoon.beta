@@ -48,6 +48,37 @@ Efectos de Racoon (55 en el navegador, pestaña Efectos):
 - Vinilo, Reductor, Filtro automatico, Multibanda y Bus de bateria ya suenan al cargarlos.
 - El modo Paralelo del compresor mezcla una copia aplastada debajo del original, como en Nueva York.
 
+Ajustes del 28 de octubre (bloques que no se repiten y registro mas grave):
+- Cada bloque nuevo sale con su propia semilla: otro bajo, otro sonido de acordes, otro coro, otra textura y otro kit,
+  y tambien otro motivo de melodia y otro ritmo de voz. Dos bloques del mismo genero ya no suenan igual.
+- Chipmunk, Skunk, Mole y Squirrel muestran en su encabezado el sonido que les toco (antes decia "Inicial" aunque
+  el sonido si habia cambiado, porque esos plugins cambian un parametro y no un programa).
+- Todo bajo de registro, sobre todo la melodia: la melodia del bloque baja una octava (su nota media queda cerca de
+  Sol#3), los pads, los acordes y el coro bajan entre 7 y 8 semitonos, la voz de Chinchilla canta entre Si2 y Mi4.
+- ALEATORIA tambien escribe mas grave: melodia, arpegio, acordes, pads, coro y textura entre 7 y 12 semitonos abajo, en Racoon y
+  en el boton Aleatoria de cada plugin.
+- Los bajos van mas profundos: las fundamentales del bajo en el bloque caen entre Do1 y Si1 (nota media cerca de Sol1, unos 49 Hz) y
+  ALEATORIA pone la tonica del bajo entre Re#1 y Re2, nunca abajo de Do1. El riff de guitarra baja a las cuerdas graves.
+- Fuera los sonidos agudos de lo que elige un bloque o ALEATORIA: sin la voz aguda de Chinchilla (la voz grave sale el
+  doble de veces que la media), sin "Octava arriba" en Squirrel, sin campanas en Chipmunk ni en la melodia, sin la
+  onda Cristal en Dormouse y sin "Pad de cristal" ni "Campanas suaves" en Skunk. Siguen en el plugin si los quieres a mano.
+
+Ajustes del 28 de octubre (cambiar el sonido ya no calla el canal):
+- Dentro de Racoon, cambiar el sonido de un plugin cambia el timbre y deja igual como toca la rola. Antes, los sonidos
+  de Chinchilla (hechos para una voz grabada) apagaban "Cantar las notas MIDI" y el canal se quedaba mudo en la
+  maqueta. Lo mismo pasaba con Skunk (volvia a capturar en vivo el silencio del canal), con Mole ("Reproducir") y con
+  Badger (5 sonidos encendian su propio secuenciador y tocaban sus notas en vez las del clip).
+- Probado con los 104 sonidos de Chinchilla, Skunk, Mole y Badger, uno tras otro: los 4 canales siguen sonando.
+- Skunk: el congelado del espectro ya no congela el silencio de antes de la primera nota; espera el sonido.
+  "Sotano congelado" y "Drone de catedral" pasaron de mudos a -31 dB.
+- En otro programa (fuera de Racoon) los sonidos se cargan completos, como siempre.
+
+Ajustes del 28 de octubre (menu de la Mac y boton del pincel):
+- El menu de arriba de la Mac (Archivo, Editar...) ya no se pone gris. Pasaba cuando el foco quedaba en la ventana de
+  un plugin: la Mac no encontraba quien atendiera Guardar, Nuevo o Abrir y los apagaba. Ahora siempre los atiende Racoon.
+- Boton nuevo con un pincel, junto a deshacer y rehacer: Crear la rola completa. Con una seleccion usa esa; sin
+  seleccion toma los 4 compases donde mas canales suenan juntos (en un bloque, su ultima frase) y abre la ventana.
+
 Ajustes del 28 de octubre (Aleatoria respeta la estructura):
 - ALEATORIA ya no llena todo el clip. En un bloque, el patron nuevo suena solo donde el canal sonaba: la intro sigue
   entrando con bombo y charles, el break sigue sin bombo, el bajo espera sus dos compases y la guitarra, los acordes
@@ -55,6 +86,10 @@ Ajustes del 28 de octubre (Aleatoria respeta la estructura):
   boton Aleatoria del Piano y para Editar > ALEATORIA en todos los canales, clic tras clic.
 - Si borras o agregas notas a mano, la siguiente ALEATORIA lee la estructura nueva de tus notas.
 - Un boceto (3 notas sueltas, o una idea de un compas al inicio de un clip largo) se sigue llenando en todo el clip.
+- Skunk y Porcupine ya cambian en cada clic de ALEATORIA (antes cambiaban una vez y luego repetian lo mismo). El coro
+  canta ahora de 5 maneras (acordes sostenidos, dos "ah" por compas, "ooh" en 2 y 4, el 3+3+2, o un respiro a mitad
+  del compas), en otro registro y con otra apertura cada vez. La textura sale de 4 formas: pedal de frase, una linea
+  lenta sobre la tonica, un pulso que respira con huecos, o el acorde que florece nota por nota.
 
 Ajustes del 26 de octubre (modo DJ y Aleatoria que aprende tu gusto, fase 5):
 - Archivo > Modo DJ (Cmd+Opcion+J). Arrastra tus rolas (wav, aiff, flac, mp3) o usa "Agregar rolas". Racoon mide

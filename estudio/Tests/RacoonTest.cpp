@@ -691,7 +691,11 @@ int main (int argc, char** argv)
                        "nada queda por revisar y los créditos CC BY están listos para pegar: " + c.creditos.joinIntoString ("; ").substring (0, 160));
                 // a muted channel does not sound: it leaves the certificate
                 te::AudioTrack* muted = nullptr;
-                for (auto* t : te::getAudioTracks (s.getEdit())) if (t->getName().contains ("Squirrel")) muted = t;
+                // a channel that brings samples to the certificate (Squirrel when it plays a library instrument; its own
+                // sounds bring none, and the block draws one or the other)
+                for (auto* t : te::getAudioTracks (s.getEdit()))
+                    for (auto& l : c.lineas)
+                        if (l.startsWith (t->getName()) && (muted == nullptr || t->getName().contains ("Squirrel"))) muted = t;
                 if (muted != nullptr)
                 {
                     muted->setMute (true);

@@ -170,7 +170,7 @@ StringArray pads (Grupo g)
     }
     return {};
 }
-StringArray tablasPad() { return u8 ({ "Analógica", "Cálida", "Vocal", "Cristal", "Órgano", "Hueca", "VA Sierra", "VA Pulso" }); }
+StringArray tablasPad() { return u8 ({ "Analógica", "Cálida", "Vocal", "Órgano", "Hueca", "VA Sierra", "VA Pulso" }); }   // no Cristal: too bright
 
 StringArray sonidosChipmunk (Grupo g)
 {
@@ -178,14 +178,14 @@ StringArray sonidosChipmunk (Grupo g)
     switch (g)
     {
         case Grupo::house:  return u8 ({ "Teclas", "Pluck", "Órgano", "Piano eléctrico", "Supersierra", "Pad", "Piano de cola", "Piano Splendid", "Piano FM", "Órgano de tubos" });
-        case Grupo::afro:   return u8 ({ "Marimba", "Piano eléctrico", "Pluck", "Campanas", "Vibráfono", "Arpa", "Piano de cola", "Piano FM" });
+        case Grupo::afro:   return u8 ({ "Marimba", "Piano eléctrico", "Pluck", "Vibráfono", "Arpa", "Piano de cola", "Piano FM" });
         case Grupo::disco:  return u8 ({ "Teclas", "Órgano", "Piano eléctrico", "Supersierra", "Piano Splendid", "Piano FM", "Cuerdas de orquesta", "Clavecín" });
-        case Grupo::techno: return u8 ({ "Pluck", "Supersierra", "Campanas", "Pad", "Cuerdas", "Órgano de tubos", "Cuerdas de orquesta" });
+        case Grupo::techno: return u8 ({ "Pluck", "Supersierra", "Pad", "Cuerdas", "Órgano de tubos", "Cuerdas de orquesta" });
         case Grupo::breaks: return u8 ({ "Pad", "Cuerdas", "Piano eléctrico", "Supersierra", "Piano de cola", "Cuerdas de orquesta" });
-        case Grupo::trap:   return u8 ({ "Campanas", "Piano eléctrico", "Pluck", "Pad", "Piano de cola", "Piano vertical", "Cuerdas de orquesta", "Arpa", "Clavecín" });
+        case Grupo::trap:   return u8 ({ "Piano eléctrico", "Pluck", "Pad", "Piano de cola", "Piano vertical", "Cuerdas de orquesta", "Arpa", "Clavecín" });
         case Grupo::latino: return u8 ({ "Piano eléctrico", "Marimba", "Pluck", "Órgano", "Piano de cola", "Piano de cantina", "Vibráfono" });
         case Grupo::hiphop: return u8 ({ "Piano eléctrico", "Teclas", "Órgano", "Piano vertical", "Piano de cantina", "Vibráfono", "Cuerdas de orquesta", "Piano FM" });
-        case Grupo::chill:  return u8 ({ "Piano eléctrico", "Campanas", "Pad", "Piano de cola", "Piano vertical", "Vibráfono", "Arpa", "Cuerdas de orquesta" });
+        case Grupo::chill:  return u8 ({ "Piano eléctrico", "Pad", "Piano de cola", "Piano vertical", "Vibráfono", "Arpa", "Cuerdas de orquesta" });
     }
     return {};
 }
@@ -198,7 +198,7 @@ StringArray coros (Grupo g)
 }
 
 // the melody: Squirrel's own presets, or an instrument of the library of these families
-StringArray presetsMelodia() { return u8 ({ "Inicial", "Tecla suave", "Octava arriba", "Pad en loop", "Filtro que respira", "Cinta lenta", "Pluck", "Vibrato" }); }
+StringArray presetsMelodia() { return u8 ({ "Inicial", "Tecla suave", "Pad en loop", "Filtro que respira", "Cinta lenta", "Pluck", "Vibrato" }); }
 StringArray familiasMelodia (Grupo g)
 {
     switch (g)
@@ -206,12 +206,12 @@ StringArray familiasMelodia (Grupo g)
         case Grupo::house:  return { "piano", "piano_electrico", "mallets", "mundo", "sintetizador", "maderas", "saxofon", "teclado" };
         case Grupo::afro:   return { "mallets", "mundo", "piano", "piano_electrico", "maderas", "cuerda_pulsada" };
         case Grupo::disco:  return { "piano_electrico", "teclado", "sintetizador", "cuerdas", "saxofon", "metales", "piano" };
-        case Grupo::techno: return { "sintetizador", "piano_electrico", "mallets", "campanas", "cuerdas" };
+        case Grupo::techno: return { "sintetizador", "piano_electrico", "mallets", "cuerdas" };
         case Grupo::breaks: return { "piano", "piano_electrico", "cuerdas", "sintetizador", "saxofon" };
-        case Grupo::trap:   return { "piano", "campanas", "mallets", "mundo", "cuerdas", "arpa", "maderas", "sintetizador" };
+        case Grupo::trap:   return { "piano", "mallets", "mundo", "cuerdas", "arpa", "maderas", "sintetizador" };
         case Grupo::latino: return { "mallets", "mundo", "piano", "metales", "maderas", "saxofon", "cuerda_pulsada" };
         case Grupo::hiphop: return { "piano", "piano_electrico", "saxofon", "mallets", "cuerdas", "maderas", "armonica" };
-        case Grupo::chill:  return { "piano", "mallets", "mundo", "campanas", "maderas", "arpa", "cuerda_pulsada", "piano_electrico", "cuerdas" };
+        case Grupo::chill:  return { "piano", "mallets", "mundo", "maderas", "arpa", "cuerda_pulsada", "piano_electrico", "cuerdas" };
     }
     return {};
 }
@@ -220,23 +220,23 @@ StringArray materialesSkunk (Grupo g)
 {
     switch (g)
     {
-        case Grupo::house:  return u8 ({ "Pad de cristal", "Cuerdas lejanas", "Coro oscuro", "Campanas suaves", "Agua profunda" });
-        case Grupo::afro:   return u8 ({ "Agua profunda", "Campanas suaves", "Cuerdas lejanas", "Viento afinado", "Pad de cristal" });
-        case Grupo::disco:  return u8 ({ "Cuerdas lejanas", "Pad de cristal", "Órgano grave", "Coro oscuro" });
-        case Grupo::techno: return u8 ({ "Viento afinado", "Órgano grave", "Pad de cristal", "Coro oscuro", "Agua profunda" });
-        case Grupo::breaks: return u8 ({ "Agua profunda", "Viento afinado", "Órgano grave", "Pad de cristal" });
-        case Grupo::trap:   return u8 ({ "Coro oscuro", "Agua profunda", "Campanas suaves", "Viento afinado" });
-        case Grupo::latino: return u8 ({ "Coro oscuro", "Campanas suaves", "Agua profunda", "Cuerdas lejanas" });
-        case Grupo::hiphop: return u8 ({ "Polvo de cinta", "Campanas suaves", "Coro oscuro", "Cuerdas lejanas" });
-        case Grupo::chill:  return u8 ({ "Agua profunda", "Campanas suaves", "Polvo de cinta", "Viento afinado", "Pad de cristal" });
+        case Grupo::house:  return u8 ({ "Cuerdas lejanas", "Coro oscuro", "Agua profunda", "Órgano grave", "Polvo de cinta" });
+        case Grupo::afro:   return u8 ({ "Agua profunda", "Cuerdas lejanas", "Viento afinado", "Órgano grave", "Polvo de cinta" });
+        case Grupo::disco:  return u8 ({ "Cuerdas lejanas", "Órgano grave", "Coro oscuro", "Polvo de cinta" });
+        case Grupo::techno: return u8 ({ "Viento afinado", "Órgano grave", "Coro oscuro", "Agua profunda", "Polvo de cinta" });
+        case Grupo::breaks: return u8 ({ "Agua profunda", "Viento afinado", "Órgano grave", "Polvo de cinta", "Coro oscuro" });
+        case Grupo::trap:   return u8 ({ "Coro oscuro", "Agua profunda", "Viento afinado", "Órgano grave", "Polvo de cinta" });
+        case Grupo::latino: return u8 ({ "Coro oscuro", "Agua profunda", "Cuerdas lejanas", "Órgano grave", "Polvo de cinta" });
+        case Grupo::hiphop: return u8 ({ "Polvo de cinta", "Coro oscuro", "Cuerdas lejanas", "Órgano grave" });
+        case Grupo::chill:  return u8 ({ "Agua profunda", "Polvo de cinta", "Viento afinado", "Órgano grave", "Coro oscuro" });
     }
     return {};
 }
 
 StringArray vocesChinchilla (Grupo g)
 {
-    if (g == Grupo::house || g == Grupo::disco || g == Grupo::afro) return { "Grave", "Media", "Aguda" };
-    return { "Grave", "Media" };
+    juce::ignoreUnused (g);
+    return { "Grave", "Grave", "Media" };         // dark: the low voice twice as often, never the high one
 }
 StringArray efectosChinchilla (Grupo g)
 {
@@ -435,17 +435,6 @@ String Session::pluginStateXml (juce::AudioPluginInstance& pi)
 
 namespace
 {
-// a property of the plugin's EXTRA state (Mole's kit, the instrument Squirrel should load)
-bool setExtraState (juce::AudioPluginInstance& pi, const String& attribute, const String& value)
-{
-    return editPluginXml (pi, [&] (juce::XmlElement& xml)
-    {
-        auto* extra = xml.getChildByName ("EXTRA");
-        if (extra == nullptr) extra = xml.createNewChildElement ("EXTRA");
-        extra->setAttribute (attribute, value);
-    });
-}
-
 String pickOf (juce::Random& r, const StringArray& a) { return a.isEmpty() ? String() : a[r.nextInt (a.size())]; }
 }
 
@@ -643,7 +632,15 @@ StringArray Session::varySounds (juce::uint32 seed, const juce::Array<te::AudioT
                     for (auto* f : fit) ids.add (f->nombre);
                     const auto pick = gusto::elegir (rng, "instrumento de melodía"_u, ids);
                     const auto* in = fit[(size_t) jmax (0, ids.indexOf (pick))];
-                    if (setExtraState (*pi, "cargarInstrumento", in->id)) what = in->nombre;
+                    // one write: the instrument to load and the header's name (a second write while it loads would empty it)
+                    if (editPluginXml (*pi, [&] (juce::XmlElement& xml)
+                        {
+                            auto* extra = xml.getChildByName ("EXTRA");
+                            if (extra == nullptr) extra = xml.createNewChildElement ("EXTRA");
+                            extra->setAttribute ("cargarInstrumento", in->id);
+                            if (xml.hasTagName ("RACOON")) xml.setAttribute ("preset", in->nombre);
+                        }))
+                        what = in->nombre;
                 }
                 else
                 {
@@ -657,7 +654,15 @@ StringArray Session::varySounds (juce::uint32 seed, const juce::Array<te::AudioT
                 StringArray pool;
                 if (reales) for (auto& k : variedad::kitsReales (grupo)) if (cat.kit (k) != nullptr && "Muestras / " + k != hamsterKit) pool.add (k);
                 const auto k = (! pool.isEmpty() && rng.nextInt (100) < 75) ? gusto::elegir (rng, "kit de percusión"_u, pool) : String();
-                if (setExtraState (*pi, "kit", k)) what = k.isEmpty() ? String::fromUTF8 ("kit sintetizado") : k;
+                const auto name = k.isEmpty() ? String::fromUTF8 ("Kit sintetizado") : k;
+                if (editPluginXml (*pi, [&] (juce::XmlElement& xml)        // the kit and the header's name in one write
+                    {
+                        auto* extra = xml.getChildByName ("EXTRA");
+                        if (extra == nullptr) extra = xml.createNewChildElement ("EXTRA");
+                        extra->setAttribute ("kit", k);
+                        if (xml.hasTagName ("RACOON")) xml.setAttribute ("preset", name);
+                    }))
+                    what = k.isEmpty() ? String::fromUTF8 ("kit sintetizado") : k;
             }
             else if (animal == "Skunk")
             {
@@ -675,6 +680,13 @@ StringArray Session::varySounds (juce::uint32 seed, const juce::Array<te::AudioT
                 if (setParamText (*pi, "Cantar: voz", v)) what << (what.isEmpty() ? "" : ", ") << "Voz " << v.toLowerCase();
             }
             if (what.isNotEmpty()) changed.add (animal + ": " + what);
+            // the plugin's header names the sound it got (Chipmunk and Skunk change a parameter, not a program, and the
+            // header kept saying "Inicial"; Mole's kit and Squirrel's library instrument name it in their own write above)
+            if (what.isNotEmpty() && (animal == "Chipmunk" || animal == "Skunk"))
+            {
+                const auto shown = what.upToFirstOccurrenceOf (",", false, false).trim();
+                editPluginXml (*pi, [&] (juce::XmlElement& x) { if (x.hasTagName ("RACOON")) x.setAttribute ("preset", shown); });
+            }
             break;   // the channel's Racoon instrument (the effects after it keep theirs)
         }
     }

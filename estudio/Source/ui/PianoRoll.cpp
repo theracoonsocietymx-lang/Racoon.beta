@@ -1951,6 +1951,10 @@ StringArray structureOf (const std::vector<aleatorio::Nota>& notes, int bars, do
         if (b < 0 || b >= bars) continue;
         const String part = drums ? String::charToString ((juce_wchar) drumPart (n.pitch, d)) : String ("x");
         if (! out[b].contains (part)) out.set (b, out[b] + part);
+        // an instrument also sounds in the bars its note rings through (a pad, a choir or a texture held for a phrase)
+        if (! drums)
+            for (int k = b + 1; k < bars && k * bpb < n.start + n.length - 0.05; ++k)
+                if (out[k].isEmpty()) out.set (k, "x");
     }
     return out;
 }
@@ -2201,6 +2205,13 @@ bool PianoRoll::generateRandom (std::optional<aleatorio::Rol> role, int64 seed, 
                 const auto part = (juce_wchar) drumPart (x.pitch, o.drums);
                 return known.containsChar (part) && ! here.containsChar (part);    // this hit waits for its bars
             }), notes.end());
+            // and nothing rings into a silent bar (a hit or a held note at the end of a bar stops at the bar line)
+            for (auto& x : notes)
+            {
+                const int b = (int) std::floor (x.start / o.beatsPerBar + 1.0e-6);
+                for (int nb = b + 1; nb < shape.size() && nb * o.beatsPerBar < x.start + x.length - 1.0e-6; ++nb)
+                    if (shape[nb].isEmpty()) { x.length = juce::jmax (1.0 / 32.0, nb * o.beatsPerBar - x.start); break; }
+            }
             clip->state.setProperty ("racoonEstructura", shape.joinIntoString ("|"), nullptr);
         }
         else clip->state.removeProperty ("racoonEstructura", nullptr);
