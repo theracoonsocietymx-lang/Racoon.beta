@@ -1,0 +1,20 @@
+// Contrabajo de orquesta pizzicato (Biblioteca Racoon)
+// fuente: vsco
+<control>
+default_path=contrabajo-orquesta-pizz/
+
+<global>
+ampeg_release=0.20
+amp_veltrack=85
+
+<region> sample=E-1-v1.flac pitch_keycenter=4 lokey=0 hikey=5 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G-1-v1.flac pitch_keycenter=7 lokey=6 hikey=8 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As-1-v1.flac pitch_keycenter=10 lokey=9 hikey=11 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C0-v1.flac pitch_keycenter=12 lokey=12 hikey=14 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E0-v1.flac pitch_keycenter=16 lokey=15 hikey=17 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs0-v1.flac pitch_keycenter=18 lokey=18 hikey=19 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A0-v1.flac pitch_keycenter=21 lokey=20 hikey=23 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs1-v1.flac pitch_keycenter=25 lokey=24 hikey=26 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E1-v1.flac pitch_keycenter=28 lokey=27 hikey=30 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs1-v1.flac pitch_keycenter=32 lokey=31 hikey=33 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B1-v1.flac pitch_keycenter=35 lokey=34 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

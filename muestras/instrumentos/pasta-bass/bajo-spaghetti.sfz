@@ -1,0 +1,21 @@
+// Bajo Spaghetti (Biblioteca Racoon)
+// fuente: pastabass
+<control>
+default_path=bajo-spaghetti/
+
+<global>
+ampeg_release=0.12
+amp_veltrack=85
+
+<region> sample=Cs1-v1.flac pitch_keycenter=25 lokey=0 hikey=26 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E1-v1.flac pitch_keycenter=28 lokey=27 hikey=31 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As1-v1.flac pitch_keycenter=34 lokey=32 hikey=35 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs2-v1.flac pitch_keycenter=37 lokey=36 hikey=40 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G2-v1.flac pitch_keycenter=43 lokey=41 hikey=44 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As2-v1.flac pitch_keycenter=46 lokey=45 hikey=49 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E3-v1.flac pitch_keycenter=52 lokey=50 hikey=53 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G3-v1.flac pitch_keycenter=55 lokey=54 hikey=58 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs4-v1.flac pitch_keycenter=61 lokey=59 hikey=62 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E4-v1.flac pitch_keycenter=64 lokey=63 hikey=67 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As4-v1.flac pitch_keycenter=70 lokey=68 hikey=71 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs5-v1.flac pitch_keycenter=73 lokey=72 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

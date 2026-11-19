@@ -1,0 +1,20 @@
+// Fagot (Biblioteca Racoon)
+// fuente: vsco
+<control>
+default_path=fagot/
+
+<global>
+ampeg_release=0.25
+amp_veltrack=85
+
+<region> sample=As1-v1.flac pitch_keycenter=34 lokey=0 hikey=35 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=85932 loop_end=110908
+<region> sample=Cs2-v1.flac pitch_keycenter=37 lokey=36 hikey=39 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=52046 loop_end=77502
+<region> sample=F2-v1.flac pitch_keycenter=41 lokey=40 hikey=43 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=89678 loop_end=116447
+<region> sample=A2-v1.flac pitch_keycenter=45 lokey=44 hikey=46 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=81171 loop_end=107629
+<region> sample=C3-v1.flac pitch_keycenter=48 lokey=47 hikey=51 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=56208 loop_end=82502
+<region> sample=G3-v1.flac pitch_keycenter=55 lokey=52 hikey=57 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=64558 loop_end=90874
+<region> sample=C4-v1.flac pitch_keycenter=60 lokey=58 hikey=61 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=77110 loop_end=103404
+<region> sample=Ds4-v1.flac pitch_keycenter=63 lokey=62 hikey=65 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=77067 loop_end=103417
+<region> sample=Gs4-v1.flac pitch_keycenter=68 lokey=66 hikey=70 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=56182 loop_end=82727
+<region> sample=C5-v1.flac pitch_keycenter=72 lokey=71 hikey=73 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=85409 loop_end=111786
+<region> sample=Ds5-v1.flac pitch_keycenter=75 lokey=74 hikey=127 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=72873 loop_end=99304

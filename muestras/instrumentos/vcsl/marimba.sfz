@@ -1,0 +1,19 @@
+// Marimba (Biblioteca Racoon)
+// fuente: vcsl
+<control>
+default_path=marimba/
+
+<global>
+ampeg_release=0.30
+amp_veltrack=85
+
+<region> sample=F2-v1.flac pitch_keycenter=41 lokey=0 hikey=44 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C3-v1.flac pitch_keycenter=48 lokey=45 hikey=51 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G3-v1.flac pitch_keycenter=55 lokey=52 hikey=57 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B3-v1.flac pitch_keycenter=59 lokey=58 hikey=62 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F4-v1.flac pitch_keycenter=65 lokey=63 hikey=68 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C5-v1.flac pitch_keycenter=72 lokey=69 hikey=75 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G5-v1.flac pitch_keycenter=79 lokey=76 hikey=81 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B5-v1.flac pitch_keycenter=83 lokey=82 hikey=86 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F6-v1.flac pitch_keycenter=89 lokey=87 hikey=92 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C7-v1.flac pitch_keycenter=96 lokey=93 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

@@ -1,0 +1,21 @@
+// Saxofón alto (Biblioteca Racoon)
+// fuente: weresax
+<control>
+default_path=sax-alto/
+
+<global>
+ampeg_release=0.20
+amp_veltrack=85
+
+<region> sample=Cs3-v1.flac pitch_keycenter=49 lokey=0 hikey=50 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E3-v1.flac pitch_keycenter=52 lokey=51 hikey=53 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G3-v1.flac pitch_keycenter=55 lokey=54 hikey=56 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A3-v1.flac pitch_keycenter=57 lokey=57 hikey=58 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C4-v1.flac pitch_keycenter=60 lokey=59 hikey=61 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds4-v1.flac pitch_keycenter=63 lokey=62 hikey=64 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs4-v1.flac pitch_keycenter=66 lokey=65 hikey=67 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A4-v1.flac pitch_keycenter=69 lokey=68 hikey=70 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C5-v1.flac pitch_keycenter=72 lokey=71 hikey=73 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D5-v1.flac pitch_keycenter=74 lokey=74 hikey=75 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F5-v1.flac pitch_keycenter=77 lokey=76 hikey=78 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs5-v1.flac pitch_keycenter=80 lokey=79 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

@@ -1,0 +1,21 @@
+// Arpa folk (Biblioteca Racoon)
+// fuente: vcsl
+<control>
+default_path=arpa-folk/
+
+<global>
+ampeg_release=0.60
+amp_veltrack=85
+
+<region> sample=C2-v1.flac pitch_keycenter=36 lokey=0 hikey=39 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs2-v1.flac pitch_keycenter=42 lokey=40 hikey=44 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As2-v1.flac pitch_keycenter=46 lokey=45 hikey=49 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E3-v1.flac pitch_keycenter=52 lokey=50 hikey=54 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs3-v1.flac pitch_keycenter=56 lokey=55 hikey=59 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D4-v1.flac pitch_keycenter=62 lokey=60 hikey=64 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs4-v1.flac pitch_keycenter=66 lokey=65 hikey=69 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C5-v1.flac pitch_keycenter=72 lokey=70 hikey=74 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E5-v1.flac pitch_keycenter=76 lokey=75 hikey=79 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As5-v1.flac pitch_keycenter=82 lokey=80 hikey=84 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D6-v1.flac pitch_keycenter=86 lokey=85 hikey=89 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs6-v1.flac pitch_keycenter=92 lokey=90 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

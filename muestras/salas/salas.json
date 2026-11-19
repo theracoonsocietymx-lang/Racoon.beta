@@ -1,0 +1,77 @@
+{
+ "version": 1,
+ "salas": [
+  {
+   "id": "sotano",
+   "nombre": "Taller en sótano",
+   "descripcion": "Un taller de carpintería en un sótano: cuarto chico de madera.",
+   "archivo": "salas/sotano.flac",
+   "licencia": "Dominio público (CC0)",
+   "autor": "OpenAIR, Universidad de York",
+   "origen": "http://www.openairlib.net/auralizationdb/content/basement",
+   "via": "https://github.com/andibrae/Reverb.js",
+   "segundos": 0.69,
+   "t60": 0.16
+  },
+  {
+   "id": "sala-casa",
+   "nombre": "Sala de una casa",
+   "descripcion": "La sala de una casa con muebles: corta y cálida.",
+   "archivo": "salas/sala-casa.flac",
+   "licencia": "Dominio público (CC0)",
+   "autor": "OpenAIR, Universidad de York",
+   "origen": "http://www.openairlib.net/auralizationdb/content/domestic-living-room",
+   "via": "https://github.com/andibrae/Reverb.js",
+   "segundos": 0.89,
+   "t60": 0.14
+  },
+  {
+   "id": "recamara-vacia",
+   "nombre": "Recámara vacía",
+   "descripcion": "Un cuarto de departamento sin muebles: rebota brillante.",
+   "archivo": "salas/recamara-vacia.flac",
+   "licencia": "Dominio público (CC0)",
+   "autor": "OpenAIR, Universidad de York",
+   "origen": "http://www.openairlib.net/auralizationdb/content/empty-apartment-bedroom",
+   "via": "https://github.com/andibrae/Reverb.js",
+   "segundos": 2.32,
+   "t60": 1.48
+  },
+  {
+   "id": "tunel-tren",
+   "nombre": "Túnel de tren",
+   "descripcion": "Un túnel de ferrocarril: largo y oscuro.",
+   "archivo": "salas/tunel-tren.flac",
+   "licencia": "Dominio público (CC0)",
+   "autor": "OpenAIR, Universidad de York",
+   "origen": "http://www.openairlib.net/auralizationdb/content/railroad-tunnel-purnodes-tunnel",
+   "via": "https://github.com/andibrae/Reverb.js",
+   "segundos": 1.52,
+   "t60": 1.75
+  },
+  {
+   "id": "iglesia-san-lorenzo",
+   "nombre": "Iglesia de San Lorenzo",
+   "descripcion": "Una iglesia de pueblo en Bélgica.",
+   "archivo": "salas/iglesia-san-lorenzo.flac",
+   "licencia": "Dominio público (CC0)",
+   "autor": "OpenAIR, Universidad de York",
+   "origen": "http://www.openairlib.net/auralizationdb/content/saint-lawrence-church-molenbeek-wersbeek-belgium",
+   "via": "https://github.com/andibrae/Reverb.js",
+   "segundos": 1.1,
+   "t60": 1.24
+  },
+  {
+   "id": "salon-spokane",
+   "nombre": "Salón de baile Spokane",
+   "descripcion": "Un salón de 25 por 13 metros con piso de madera y techo curvo.",
+   "archivo": "salas/salon-spokane.flac",
+   "licencia": "CC BY",
+   "autor": "OpenAIR, Universidad de York",
+   "origen": "http://www.openairlib.net/auralizationdb/content/spokane-womans-club",
+   "via": "https://github.com/andibrae/Reverb.js",
+   "segundos": 2.26,
+   "t60": 2.21
+  }
+ ]
+}

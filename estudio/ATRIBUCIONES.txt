@@ -1,0 +1,34 @@
+Código de terceros adaptado en Racoon
+
+SoundCraft (https://github.com/storytold/soundcraft)
+Copyright (c) 2026 ArtCraft Team and the SoundCraft contributors
+Licencia MIT (texto completo en docs/licencias/SoundCraft-LICENSE-MIT.txt).
+Racoon reescribió en C++ estos algoritmos de SoundCraft (en Rust):
+  - detección de golpes por flujo espectral en 24 bandas por octava y búsqueda del borde del ataque
+    (crates/dsp/src/offline.rs, detect_transients y attack_start) -> Source/engine/AudioTools.cpp, detectTransients
+  - quitar silencios con margen y unión de regiones (SilenceScan) -> AudioTools.cpp, nonSilentRanges
+  - YIN y paso de audio a notas (crates/dsp/src/pitch_detect.rs) -> AudioTools.cpp, yin y audioToNotes
+  - cuantizar con fuerza, swing, ventanas, finales y azar (crates/midi/src/ops.rs) -> Source/ui/NoteTools.cpp, quantize
+  - la revisión del proyecto al abrir (session.audio_health) y el registro de fallos (logging.rs), como idea
+
+Otros métodos publicados que usa Racoon:
+  - YIN: A. de Cheveigné y H. Kawahara, 2002.
+  - Perfiles de tonalidad de C. Krumhansl y E. Kessler, 1982.
+  - Sonoridad ITU-R BS.1770-4 y EBU R128 (fórmulas de los filtros K como las de libebur128, licencia MIT).
+
+Métodos y fuentes añadidos en 2026 (tandas 2 a 6):
+  - ADAA de primer orden: J. Parker, V. Zavalishin y E. Le Bivic, "Reducing the aliasing of nonlinear waveshaping
+    using continuous-time convolution", DAFx 2016; S. Bilbao, F. Esqueda, J. Parker y V. Välimäki, IEEE SPL 2017.
+  - Filtro de estado variable con integradores trapezoidales (TPT): V. Zavalishin, "The Art of VA Filter Design".
+  - PolyBLEP: V. Välimäki y A. Huovilainen, 2007.
+  - Interpolación sinc con ventana de Kaiser: J. O. Smith, "Digital Audio Resampling Home Page" (CCRMA).
+  - Reverb FDN con matriz de Hadamard: J.-M. Jot y A. Chaigne, 1991.
+  - Platillos con seis osciladores cuadrados: las seis frecuencias que se suelen citar del circuito del Roland TR-808
+    (205.3, 304.4, 369.6, 522.7, 540 y 800 Hz).
+  - Tipografías JetBrains Mono, Alumni Sans, Dela Gothic One y Golos Text, todas con SIL Open Font License 1.1,
+    en Resources/fonts, cada una con su texto de licencia (*-OFL.txt).
+
+Separar en stems:
+  - Demucs v4 (Hybrid Transformer), A. Défossez y S. Rouard, Meta AI, licencia MIT. Los pesos se descargan aparte.
+  - demucs.cpp de Sevag Hanssian, licencia MIT, en ThirdParty/demucs.cpp (ver ThirdParty/LEEME.txt).
+  - Eigen 3.4.0, Mozilla Public License 2.0, en ThirdParty/eigen (texto completo en ThirdParty/eigen/COPYING.MPL2).

@@ -1,0 +1,21 @@
+// Campanas de mano (Biblioteca Racoon)
+// fuente: vcsl
+<control>
+default_path=campanas-de-mano/
+
+<global>
+ampeg_release=1.00
+amp_veltrack=85
+
+<region> sample=C4-v1.flac pitch_keycenter=60 lokey=0 hikey=62 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E4-v1.flac pitch_keycenter=64 lokey=63 hikey=65 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs4-v1.flac pitch_keycenter=66 lokey=66 hikey=68 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As4-v1.flac pitch_keycenter=70 lokey=69 hikey=72 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D5-v1.flac pitch_keycenter=74 lokey=73 hikey=75 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E5-v1.flac pitch_keycenter=76 lokey=76 hikey=78 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs5-v1.flac pitch_keycenter=80 lokey=79 hikey=82 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C6-v1.flac pitch_keycenter=84 lokey=83 hikey=85 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D6-v1.flac pitch_keycenter=86 lokey=86 hikey=88 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs6-v1.flac pitch_keycenter=90 lokey=89 hikey=91 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs6-v1.flac pitch_keycenter=92 lokey=92 hikey=94 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C7-v1.flac pitch_keycenter=96 lokey=95 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

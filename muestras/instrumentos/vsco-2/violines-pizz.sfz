@@ -1,0 +1,20 @@
+// Violines pizzicato (Biblioteca Racoon)
+// fuente: vsco
+<control>
+default_path=violines-pizz/
+
+<global>
+ampeg_release=0.15
+amp_veltrack=85
+
+<region> sample=G3-v1.flac pitch_keycenter=55 lokey=0 hikey=56 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A3-v1.flac pitch_keycenter=57 lokey=57 hikey=58 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B3-v1.flac pitch_keycenter=59 lokey=59 hikey=60 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D4-v1.flac pitch_keycenter=62 lokey=61 hikey=64 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs4-v1.flac pitch_keycenter=66 lokey=65 hikey=67 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A4-v1.flac pitch_keycenter=69 lokey=68 hikey=70 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C5-v1.flac pitch_keycenter=72 lokey=71 hikey=74 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E5-v1.flac pitch_keycenter=76 lokey=75 hikey=77 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G5-v1.flac pitch_keycenter=79 lokey=78 hikey=81 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B5-v1.flac pitch_keycenter=83 lokey=82 hikey=84 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D6-v1.flac pitch_keycenter=86 lokey=85 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

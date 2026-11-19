@@ -1,0 +1,16 @@
+// Glockenspiel (Biblioteca Racoon)
+// fuente: vcsl
+<control>
+default_path=glockenspiel/
+
+<global>
+ampeg_release=0.50
+amp_veltrack=85
+
+<region> sample=G3-v1.flac pitch_keycenter=55 lokey=0 hikey=57 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C4-v1.flac pitch_keycenter=60 lokey=58 hikey=63 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G4-v1.flac pitch_keycenter=67 lokey=64 hikey=69 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C5-v1.flac pitch_keycenter=72 lokey=70 hikey=75 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G5-v1.flac pitch_keycenter=79 lokey=76 hikey=79 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs5-v1.flac pitch_keycenter=80 lokey=80 hikey=82 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C6-v1.flac pitch_keycenter=84 lokey=83 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

@@ -1,0 +1,21 @@
+// Bajo Fettuccine (Biblioteca Racoon)
+// fuente: pastabass
+<control>
+default_path=bajo-fettuccine/
+
+<global>
+ampeg_release=0.12
+amp_veltrack=85
+
+<region> sample=E1-v1.flac pitch_keycenter=28 lokey=0 hikey=29 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G1-v1.flac pitch_keycenter=31 lokey=30 hikey=34 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs2-v1.flac pitch_keycenter=37 lokey=35 hikey=38 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E2-v1.flac pitch_keycenter=40 lokey=39 hikey=41 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G2-v1.flac pitch_keycenter=43 lokey=42 hikey=46 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs3-v1.flac pitch_keycenter=49 lokey=47 hikey=50 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E3-v1.flac pitch_keycenter=52 lokey=51 hikey=55 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As3-v1.flac pitch_keycenter=58 lokey=56 hikey=59 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs4-v1.flac pitch_keycenter=61 lokey=60 hikey=62 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E4-v1.flac pitch_keycenter=64 lokey=63 hikey=67 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As4-v1.flac pitch_keycenter=70 lokey=68 hikey=71 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs5-v1.flac pitch_keycenter=73 lokey=72 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

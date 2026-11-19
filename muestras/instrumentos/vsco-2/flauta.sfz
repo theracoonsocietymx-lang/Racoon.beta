@@ -1,0 +1,19 @@
+// Flauta (Biblioteca Racoon)
+// fuente: vsco
+<control>
+default_path=flauta/
+
+<global>
+ampeg_release=0.25
+amp_veltrack=85
+
+<region> sample=C4-v1.flac pitch_keycenter=60 lokey=0 hikey=62 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=85471 loop_end=111631
+<region> sample=E4-v1.flac pitch_keycenter=64 lokey=63 hikey=66 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=68722 loop_end=95079
+<region> sample=A4-v1.flac pitch_keycenter=69 lokey=67 hikey=70 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=60344 loop_end=86803
+<region> sample=C5-v1.flac pitch_keycenter=72 lokey=71 hikey=74 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=89582 loop_end=115961
+<region> sample=E5-v1.flac pitch_keycenter=76 lokey=75 hikey=78 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=68711 loop_end=95133
+<region> sample=A5-v1.flac pitch_keycenter=81 lokey=79 hikey=82 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=85399 loop_end=111858
+<region> sample=C6-v1.flac pitch_keycenter=84 lokey=83 hikey=86 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=56202 loop_end=82624
+<region> sample=E6-v1.flac pitch_keycenter=88 lokey=87 hikey=90 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=64551 loop_end=90973
+<region> sample=A6-v1.flac pitch_keycenter=93 lokey=91 hikey=94 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=85440 loop_end=111874
+<region> sample=C7-v1.flac pitch_keycenter=96 lokey=95 hikey=127 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=72923 loop_end=99344

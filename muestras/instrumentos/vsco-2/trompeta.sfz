@@ -1,0 +1,19 @@
+// Trompeta (Biblioteca Racoon)
+// fuente: vsco
+<control>
+default_path=trompeta/
+
+<global>
+ampeg_release=0.25
+amp_veltrack=85
+
+<region> sample=F3-v1.flac pitch_keycenter=53 lokey=0 hikey=55 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=64580 loop_end=90605
+<region> sample=A3-v1.flac pitch_keycenter=57 lokey=56 hikey=58 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=68675 loop_end=94985
+<region> sample=C4-v1.flac pitch_keycenter=60 lokey=59 hikey=61 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=81290 loop_end=107625
+<region> sample=Ds4-v1.flac pitch_keycenter=63 lokey=62 hikey=65 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=52022 loop_end=78250
+<region> sample=G4-v1.flac pitch_keycenter=67 lokey=66 hikey=68 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=89522 loop_end=115908
+<region> sample=As4-v1.flac pitch_keycenter=70 lokey=69 hikey=72 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=85391 loop_end=111744
+<region> sample=D5-v1.flac pitch_keycenter=74 lokey=73 hikey=75 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=47848 loop_end=74232
+<region> sample=F5-v1.flac pitch_keycenter=77 lokey=76 hikey=79 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=85382 loop_end=111875
+<region> sample=A5-v1.flac pitch_keycenter=81 lokey=80 hikey=82 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=81226 loop_end=107688
+<region> sample=C6-v1.flac pitch_keycenter=84 lokey=83 hikey=127 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=47848 loop_end=74268

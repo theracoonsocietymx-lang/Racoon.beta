@@ -1,0 +1,21 @@
+// Mbira (Biblioteca Racoon)
+// fuente: vcsl
+<control>
+default_path=mbira/
+
+<global>
+ampeg_release=0.40
+amp_veltrack=85
+
+<region> sample=As2-v1.flac pitch_keycenter=46 lokey=0 hikey=48 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds3-v1.flac pitch_keycenter=51 lokey=49 hikey=52 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs3-v1.flac pitch_keycenter=54 lokey=53 hikey=55 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A3-v1.flac pitch_keycenter=57 lokey=56 hikey=59 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs4-v1.flac pitch_keycenter=61 lokey=60 hikey=62 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E4-v1.flac pitch_keycenter=64 lokey=63 hikey=66 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs4-v1.flac pitch_keycenter=68 lokey=67 hikey=69 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B4-v1.flac pitch_keycenter=71 lokey=70 hikey=73 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds5-v1.flac pitch_keycenter=75 lokey=74 hikey=76 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs5-v1.flac pitch_keycenter=78 lokey=77 hikey=79 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A5-v1.flac pitch_keycenter=81 lokey=80 hikey=83 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs6-v1.flac pitch_keycenter=85 lokey=84 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

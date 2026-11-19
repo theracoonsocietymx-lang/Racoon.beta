@@ -1,0 +1,20 @@
+// Vibráfono (Biblioteca Racoon)
+// fuente: vcsl
+<control>
+default_path=vibrafono/
+
+<global>
+ampeg_release=0.60
+amp_veltrack=85
+
+<region> sample=F3-v1.flac pitch_keycenter=53 lokey=0 hikey=55 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A3-v1.flac pitch_keycenter=57 lokey=56 hikey=58 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C4-v1.flac pitch_keycenter=60 lokey=59 hikey=62 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E4-v1.flac pitch_keycenter=64 lokey=63 hikey=65 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G4-v1.flac pitch_keycenter=67 lokey=66 hikey=69 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B4-v1.flac pitch_keycenter=71 lokey=70 hikey=72 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D5-v1.flac pitch_keycenter=74 lokey=73 hikey=75 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F5-v1.flac pitch_keycenter=77 lokey=76 hikey=79 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A5-v1.flac pitch_keycenter=81 lokey=80 hikey=82 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C6-v1.flac pitch_keycenter=84 lokey=83 hikey=86 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E6-v1.flac pitch_keycenter=88 lokey=87 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

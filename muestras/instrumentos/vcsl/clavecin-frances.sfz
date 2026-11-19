@@ -1,0 +1,21 @@
+// Clavecín francés (Biblioteca Racoon)
+// fuente: vcsl
+<control>
+default_path=clavecin-frances/
+
+<global>
+ampeg_release=0.25
+amp_veltrack=85
+
+<region> sample=D1-v1.flac pitch_keycenter=26 lokey=0 hikey=29 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs1-v1.flac pitch_keycenter=32 lokey=30 hikey=34 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C2-v1.flac pitch_keycenter=36 lokey=35 hikey=39 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs2-v1.flac pitch_keycenter=42 lokey=40 hikey=45 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C3-v1.flac pitch_keycenter=48 lokey=46 hikey=50 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E3-v1.flac pitch_keycenter=52 lokey=51 hikey=55 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As3-v1.flac pitch_keycenter=58 lokey=56 hikey=60 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D4-v1.flac pitch_keycenter=62 lokey=61 hikey=65 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs4-v1.flac pitch_keycenter=68 lokey=66 hikey=71 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D5-v1.flac pitch_keycenter=74 lokey=72 hikey=76 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs5-v1.flac pitch_keycenter=78 lokey=77 hikey=81 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C6-v1.flac pitch_keycenter=84 lokey=82 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

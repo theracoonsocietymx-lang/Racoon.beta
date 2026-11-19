@@ -1,0 +1,21 @@
+// Guitarra acústica Shiny (Biblioteca Racoon)
+// fuente: shinyguitar
+<control>
+default_path=guitarra-shiny-acustica/
+
+<global>
+ampeg_release=0.25
+amp_veltrack=85
+
+<region> sample=Cs2-v1.flac pitch_keycenter=37 lokey=0 hikey=39 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs2-v1.flac pitch_keycenter=42 lokey=40 hikey=43 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A2-v1.flac pitch_keycenter=45 lokey=44 hikey=48 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds3-v1.flac pitch_keycenter=51 lokey=49 hikey=52 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs3-v1.flac pitch_keycenter=54 lokey=53 hikey=55 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A3-v1.flac pitch_keycenter=57 lokey=56 hikey=60 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds4-v1.flac pitch_keycenter=63 lokey=61 hikey=64 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs4-v1.flac pitch_keycenter=66 lokey=65 hikey=69 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C5-v1.flac pitch_keycenter=72 lokey=70 hikey=73 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds5-v1.flac pitch_keycenter=75 lokey=74 hikey=78 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A5-v1.flac pitch_keycenter=81 lokey=79 hikey=82 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C6-v1.flac pitch_keycenter=84 lokey=83 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

@@ -1,0 +1,21 @@
+// Bajo acústico chico (Biblioteca Racoon)
+// fuente: biglittlebass
+<control>
+default_path=bajo-acustico-chico/
+
+<global>
+ampeg_release=0.15
+amp_veltrack=85
+
+<region> sample=B0-v1.flac pitch_keycenter=23 lokey=0 hikey=25 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds1-v1.flac pitch_keycenter=27 lokey=26 hikey=29 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G1-v1.flac pitch_keycenter=31 lokey=30 hikey=33 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B1-v1.flac pitch_keycenter=35 lokey=34 hikey=37 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds2-v1.flac pitch_keycenter=39 lokey=38 hikey=41 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G2-v1.flac pitch_keycenter=43 lokey=42 hikey=44 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As2-v1.flac pitch_keycenter=46 lokey=45 hikey=48 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D3-v1.flac pitch_keycenter=50 lokey=49 hikey=52 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs3-v1.flac pitch_keycenter=54 lokey=53 hikey=56 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As3-v1.flac pitch_keycenter=58 lokey=57 hikey=60 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D4-v1.flac pitch_keycenter=62 lokey=61 hikey=64 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs4-v1.flac pitch_keycenter=66 lokey=65 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

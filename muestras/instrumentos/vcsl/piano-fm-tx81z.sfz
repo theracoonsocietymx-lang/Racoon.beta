@@ -1,0 +1,45 @@
+// Piano FM TX81Z (Biblioteca Racoon)
+// fuente: vcsl
+<control>
+default_path=piano-fm-tx81z/
+
+<global>
+ampeg_release=0.30
+amp_veltrack=85
+
+<region> sample=C0-v1.flac pitch_keycenter=12 lokey=0 hikey=14 lovel=1 hivel=63 loop_mode=no_loop
+<region> sample=C0-v2.flac pitch_keycenter=12 lokey=0 hikey=14 lovel=64 hivel=127 loop_mode=no_loop
+<region> sample=E0-v1.flac pitch_keycenter=16 lokey=15 hikey=18 lovel=1 hivel=63 loop_mode=no_loop
+<region> sample=E0-v2.flac pitch_keycenter=16 lokey=15 hikey=18 lovel=64 hivel=127 loop_mode=no_loop
+<region> sample=Gs0-v1.flac pitch_keycenter=20 lokey=19 hikey=24 lovel=1 hivel=63 loop_mode=no_loop
+<region> sample=Gs0-v2.flac pitch_keycenter=20 lokey=19 hikey=24 lovel=64 hivel=127 loop_mode=no_loop
+<region> sample=E1-v1.flac pitch_keycenter=28 lokey=25 hikey=30 lovel=1 hivel=63 loop_mode=no_loop
+<region> sample=E1-v2.flac pitch_keycenter=28 lokey=25 hikey=30 lovel=64 hivel=127 loop_mode=no_loop
+<region> sample=Gs1-v1.flac pitch_keycenter=32 lokey=31 hikey=34 lovel=1 hivel=63 loop_mode=no_loop
+<region> sample=Gs1-v2.flac pitch_keycenter=32 lokey=31 hikey=34 lovel=64 hivel=127 loop_mode=no_loop
+<region> sample=C2-v1.flac pitch_keycenter=36 lokey=35 hikey=38 lovel=1 hivel=63 loop_mode=no_loop
+<region> sample=C2-v2.flac pitch_keycenter=36 lokey=35 hikey=38 lovel=64 hivel=127 loop_mode=no_loop
+<region> sample=E2-v1.flac pitch_keycenter=40 lokey=39 hikey=44 lovel=1 hivel=63 loop_mode=no_loop
+<region> sample=E2-v2.flac pitch_keycenter=40 lokey=39 hikey=44 lovel=64 hivel=127 loop_mode=no_loop
+<region> sample=C3-v1.flac pitch_keycenter=48 lokey=45 hikey=50 lovel=1 hivel=63 loop_mode=no_loop
+<region> sample=C3-v2.flac pitch_keycenter=48 lokey=45 hikey=50 lovel=64 hivel=127 loop_mode=no_loop
+<region> sample=E3-v1.flac pitch_keycenter=52 lokey=51 hikey=54 lovel=1 hivel=63 loop_mode=no_loop
+<region> sample=E3-v2.flac pitch_keycenter=52 lokey=51 hikey=54 lovel=64 hivel=127 loop_mode=no_loop
+<region> sample=Gs3-v1.flac pitch_keycenter=56 lokey=55 hikey=58 lovel=1 hivel=63 loop_mode=no_loop
+<region> sample=Gs3-v2.flac pitch_keycenter=56 lokey=55 hikey=58 lovel=64 hivel=127 loop_mode=no_loop
+<region> sample=C4-v1.flac pitch_keycenter=60 lokey=59 hikey=64 lovel=1 hivel=63 loop_mode=no_loop
+<region> sample=C4-v2.flac pitch_keycenter=60 lokey=59 hikey=64 lovel=64 hivel=127 loop_mode=no_loop
+<region> sample=Gs4-v1.flac pitch_keycenter=68 lokey=65 hikey=70 lovel=1 hivel=63 loop_mode=no_loop
+<region> sample=Gs4-v2.flac pitch_keycenter=68 lokey=65 hikey=70 lovel=64 hivel=127 loop_mode=no_loop
+<region> sample=C5-v1.flac pitch_keycenter=72 lokey=71 hikey=74 lovel=1 hivel=63 loop_mode=no_loop
+<region> sample=C5-v2.flac pitch_keycenter=72 lokey=71 hikey=74 lovel=64 hivel=127 loop_mode=no_loop
+<region> sample=E5-v1.flac pitch_keycenter=76 lokey=75 hikey=78 lovel=1 hivel=63 loop_mode=no_loop
+<region> sample=E5-v2.flac pitch_keycenter=76 lokey=75 hikey=78 lovel=64 hivel=127 loop_mode=no_loop
+<region> sample=Gs5-v1.flac pitch_keycenter=80 lokey=79 hikey=84 lovel=1 hivel=63 loop_mode=no_loop
+<region> sample=Gs5-v2.flac pitch_keycenter=80 lokey=79 hikey=84 lovel=64 hivel=127 loop_mode=no_loop
+<region> sample=E6-v1.flac pitch_keycenter=88 lokey=85 hikey=90 lovel=1 hivel=63 loop_mode=no_loop
+<region> sample=E6-v2.flac pitch_keycenter=88 lokey=85 hikey=90 lovel=64 hivel=127 loop_mode=no_loop
+<region> sample=Gs6-v1.flac pitch_keycenter=92 lokey=91 hikey=94 lovel=1 hivel=63 loop_mode=no_loop
+<region> sample=Gs6-v2.flac pitch_keycenter=92 lokey=91 hikey=94 lovel=64 hivel=127 loop_mode=no_loop
+<region> sample=C7-v1.flac pitch_keycenter=96 lokey=95 hikey=127 lovel=1 hivel=63 loop_mode=no_loop
+<region> sample=C7-v2.flac pitch_keycenter=96 lokey=95 hikey=127 lovel=64 hivel=127 loop_mode=no_loop

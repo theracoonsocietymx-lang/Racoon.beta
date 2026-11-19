@@ -1,0 +1,21 @@
+// Cosmonauta: bajo (Biblioteca Racoon)
+// fuente: caveman
+<control>
+default_path=cosmonauta-bajo/
+
+<global>
+ampeg_release=0.20
+amp_veltrack=85
+
+<region> sample=C2-v1.flac pitch_keycenter=36 lokey=0 hikey=37 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=36155 loop_end=61799
+<region> sample=D2-v1.flac pitch_keycenter=38 lokey=38 hikey=38 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=33865 loop_end=60311
+<region> sample=Ds2-v1.flac pitch_keycenter=39 lokey=39 hikey=40 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=36957 loop_end=63081
+<region> sample=F2-v1.flac pitch_keycenter=41 lokey=41 hikey=42 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=45311 loop_end=71603
+<region> sample=G2-v1.flac pitch_keycenter=43 lokey=43 hikey=43 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=37790 loop_end=63896
+<region> sample=Gs2-v1.flac pitch_keycenter=44 lokey=44 hikey=45 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=47539 loop_end=73888
+<region> sample=As2-v1.flac pitch_keycenter=46 lokey=46 hikey=46 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=67497 loop_end=93287
+<region> sample=B2-v1.flac pitch_keycenter=47 lokey=47 hikey=48 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=54085 loop_end=80172
+<region> sample=Cs3-v1.flac pitch_keycenter=49 lokey=49 hikey=50 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=57966 loop_end=84080
+<region> sample=Ds3-v1.flac pitch_keycenter=51 lokey=51 hikey=51 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=76751 loop_end=102874
+<region> sample=E3-v1.flac pitch_keycenter=52 lokey=52 hikey=53 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=85531 loop_end=111806
+<region> sample=Fs3-v1.flac pitch_keycenter=54 lokey=54 hikey=127 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=56222 loop_end=82473

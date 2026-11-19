@@ -1,0 +1,21 @@
+// Arpa de concierto (Biblioteca Racoon)
+// fuente: vcsl
+<control>
+default_path=arpa-concierto/
+
+<global>
+ampeg_release=0.60
+amp_veltrack=85
+
+<region> sample=E1-v1.flac pitch_keycenter=28 lokey=0 hikey=31 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B1-v1.flac pitch_keycenter=35 lokey=32 hikey=38 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F2-v1.flac pitch_keycenter=41 lokey=39 hikey=44 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C3-v1.flac pitch_keycenter=48 lokey=45 hikey=51 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G3-v1.flac pitch_keycenter=55 lokey=52 hikey=58 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D4-v1.flac pitch_keycenter=62 lokey=59 hikey=65 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A4-v1.flac pitch_keycenter=69 lokey=66 hikey=72 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E5-v1.flac pitch_keycenter=76 lokey=73 hikey=79 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B5-v1.flac pitch_keycenter=83 lokey=80 hikey=86 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F6-v1.flac pitch_keycenter=89 lokey=87 hikey=92 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B6-v1.flac pitch_keycenter=95 lokey=93 hikey=98 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F7-v1.flac pitch_keycenter=101 lokey=99 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

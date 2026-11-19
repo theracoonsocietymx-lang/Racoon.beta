@@ -1,0 +1,20 @@
+// Trombón tenor (Biblioteca Racoon)
+// fuente: vsco
+<control>
+default_path=trombon/
+
+<global>
+ampeg_release=0.25
+amp_veltrack=85
+
+<region> sample=As1-v1.flac pitch_keycenter=34 lokey=0 hikey=35 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=47848 loop_end=73580
+<region> sample=Cs2-v1.flac pitch_keycenter=37 lokey=36 hikey=38 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=77239 loop_end=103965
+<region> sample=Ds2-v1.flac pitch_keycenter=39 lokey=39 hikey=40 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=56247 loop_end=82329
+<region> sample=F2-v1.flac pitch_keycenter=41 lokey=41 hikey=43 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=68763 loop_end=95532
+<region> sample=As2-v1.flac pitch_keycenter=46 lokey=44 hikey=48 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=89820 loop_end=115926
+<region> sample=D3-v1.flac pitch_keycenter=50 lokey=49 hikey=51 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=93698 loop_end=119827
+<region> sample=F3-v1.flac pitch_keycenter=53 lokey=52 hikey=56 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=60397 loop_end=86663
+<region> sample=C4-v1.flac pitch_keycenter=60 lokey=57 hikey=60 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=60389 loop_end=86516
+<region> sample=Cs4-v1.flac pitch_keycenter=61 lokey=61 hikey=62 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=81207 loop_end=107617
+<region> sample=Ds4-v1.flac pitch_keycenter=63 lokey=63 hikey=64 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=85415 loop_end=111778
+<region> sample=F4-v1.flac pitch_keycenter=65 lokey=65 hikey=127 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=77049 loop_end=103439

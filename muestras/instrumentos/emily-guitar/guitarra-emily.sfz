@@ -1,0 +1,21 @@
+// Guitarra acústica Emily (Biblioteca Racoon)
+// fuente: emilyguitar
+<control>
+default_path=guitarra-emily/
+
+<global>
+ampeg_release=0.25
+amp_veltrack=85
+
+<region> sample=Cs2-v1.flac pitch_keycenter=37 lokey=0 hikey=39 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs2-v1.flac pitch_keycenter=42 lokey=40 hikey=43 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A2-v1.flac pitch_keycenter=45 lokey=44 hikey=48 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds3-v1.flac pitch_keycenter=51 lokey=49 hikey=52 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs3-v1.flac pitch_keycenter=54 lokey=53 hikey=57 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C4-v1.flac pitch_keycenter=60 lokey=58 hikey=61 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds4-v1.flac pitch_keycenter=63 lokey=62 hikey=66 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A4-v1.flac pitch_keycenter=69 lokey=67 hikey=70 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C5-v1.flac pitch_keycenter=72 lokey=71 hikey=75 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs5-v1.flac pitch_keycenter=78 lokey=76 hikey=79 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A5-v1.flac pitch_keycenter=81 lokey=80 hikey=83 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D6-v1.flac pitch_keycenter=86 lokey=84 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

@@ -1,0 +1,17 @@
+// Xilófono (Biblioteca Racoon)
+// fuente: vcsl
+<control>
+default_path=xilofono/
+
+<global>
+ampeg_release=0.20
+amp_veltrack=85
+
+<region> sample=G4-v1.flac pitch_keycenter=67 lokey=0 hikey=69 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C5-v1.flac pitch_keycenter=72 lokey=70 hikey=75 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G5-v1.flac pitch_keycenter=79 lokey=76 hikey=81 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C6-v1.flac pitch_keycenter=84 lokey=82 hikey=87 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G6-v1.flac pitch_keycenter=91 lokey=88 hikey=93 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C7-v1.flac pitch_keycenter=96 lokey=94 hikey=99 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=G7-v1.flac pitch_keycenter=103 lokey=100 hikey=105 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C8-v1.flac pitch_keycenter=108 lokey=106 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

@@ -1,0 +1,21 @@
+// Bajo Dark Black (Biblioteca Racoon)
+// fuente: blackblue
+<control>
+default_path=bajo-dark-black/
+
+<global>
+ampeg_release=0.12
+amp_veltrack=85
+
+<region> sample=B0-v1.flac pitch_keycenter=23 lokey=0 hikey=25 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds1-v1.flac pitch_keycenter=27 lokey=26 hikey=28 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs1-v1.flac pitch_keycenter=30 lokey=29 hikey=32 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=As1-v1.flac pitch_keycenter=34 lokey=33 hikey=36 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D2-v1.flac pitch_keycenter=38 lokey=37 hikey=40 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs2-v1.flac pitch_keycenter=42 lokey=41 hikey=43 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A2-v1.flac pitch_keycenter=45 lokey=44 hikey=47 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Cs3-v1.flac pitch_keycenter=49 lokey=48 hikey=51 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F3-v1.flac pitch_keycenter=53 lokey=52 hikey=55 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A3-v1.flac pitch_keycenter=57 lokey=56 hikey=58 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C4-v1.flac pitch_keycenter=60 lokey=59 hikey=62 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=E4-v1.flac pitch_keycenter=64 lokey=63 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

@@ -1,0 +1,21 @@
+// Bajo Fashion (Biblioteca Racoon)
+// fuente: fashionbass
+<control>
+default_path=bajo-fashion/
+
+<global>
+ampeg_release=0.12
+amp_veltrack=85
+
+<region> sample=Fs0-v1.flac pitch_keycenter=18 lokey=0 hikey=21 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C1-v1.flac pitch_keycenter=24 lokey=22 hikey=25 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D1-v1.flac pitch_keycenter=26 lokey=26 hikey=29 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs1-v1.flac pitch_keycenter=32 lokey=30 hikey=35 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D2-v1.flac pitch_keycenter=38 lokey=36 hikey=39 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F2-v1.flac pitch_keycenter=41 lokey=40 hikey=44 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B2-v1.flac pitch_keycenter=47 lokey=45 hikey=48 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D3-v1.flac pitch_keycenter=50 lokey=49 hikey=53 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Gs3-v1.flac pitch_keycenter=56 lokey=54 hikey=57 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=B3-v1.flac pitch_keycenter=59 lokey=58 hikey=62 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=F4-v1.flac pitch_keycenter=65 lokey=63 hikey=67 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A4-v1.flac pitch_keycenter=69 lokey=68 hikey=127 lovel=1 hivel=127 loop_mode=no_loop

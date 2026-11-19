@@ -1,0 +1,18 @@
+// Oboe (Biblioteca Racoon)
+// fuente: vsco
+<control>
+default_path=oboe/
+
+<global>
+ampeg_release=0.25
+amp_veltrack=85
+
+<region> sample=As3-v1.flac pitch_keycenter=58 lokey=0 hikey=60 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=93829 loop_end=120112
+<region> sample=D4-v1.flac pitch_keycenter=62 lokey=61 hikey=63 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=47848 loop_end=74270
+<region> sample=F4-v1.flac pitch_keycenter=65 lokey=64 hikey=67 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=56191 loop_end=82692
+<region> sample=As4-v1.flac pitch_keycenter=70 lokey=68 hikey=72 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=47848 loop_end=74253
+<region> sample=D5-v1.flac pitch_keycenter=74 lokey=73 hikey=75 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=68700 loop_end=95120
+<region> sample=F5-v1.flac pitch_keycenter=77 lokey=76 hikey=79 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=47848 loop_end=74256
+<region> sample=As5-v1.flac pitch_keycenter=82 lokey=80 hikey=84 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=72895 loop_end=99307
+<region> sample=D6-v1.flac pitch_keycenter=86 lokey=85 hikey=87 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=68734 loop_end=95163
+<region> sample=F6-v1.flac pitch_keycenter=89 lokey=88 hikey=127 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=56200 loop_end=82656

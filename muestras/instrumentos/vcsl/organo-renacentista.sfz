@@ -1,0 +1,21 @@
+// Órgano renacentista 8 pies (Biblioteca Racoon)
+// fuente: vcsl
+<control>
+default_path=organo-renacentista/
+
+<global>
+ampeg_release=0.30
+amp_veltrack=85
+
+<region> sample=C2-v1.flac pitch_keycenter=36 lokey=0 hikey=38 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=77110 loop_end=103476
+<region> sample=E2-v1.flac pitch_keycenter=40 lokey=39 hikey=43 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=56222 loop_end=82435
+<region> sample=As2-v1.flac pitch_keycenter=46 lokey=44 hikey=48 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=56242 loop_end=82375
+<region> sample=D3-v1.flac pitch_keycenter=50 lokey=49 hikey=52 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=52016 loop_end=78443
+<region> sample=Fs3-v1.flac pitch_keycenter=54 lokey=53 hikey=57 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=81344 loop_end=107573
+<region> sample=C4-v1.flac pitch_keycenter=60 lokey=58 hikey=62 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=56208 loop_end=82506
+<region> sample=E4-v1.flac pitch_keycenter=64 lokey=63 hikey=67 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=77072 loop_end=103300
+<region> sample=As4-v1.flac pitch_keycenter=70 lokey=68 hikey=72 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=47848 loop_end=74239
+<region> sample=D5-v1.flac pitch_keycenter=74 lokey=73 hikey=76 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=72871 loop_end=99303
+<region> sample=Fs5-v1.flac pitch_keycenter=78 lokey=77 hikey=81 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=89608 loop_end=116023
+<region> sample=C6-v1.flac pitch_keycenter=84 lokey=82 hikey=86 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=85443 loop_end=111899
+<region> sample=E6-v1.flac pitch_keycenter=88 lokey=87 hikey=127 lovel=1 hivel=127 loop_mode=loop_continuous loop_start=64551 loop_end=91011

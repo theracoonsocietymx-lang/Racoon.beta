@@ -1,0 +1,21 @@
+// Bajo Swag (Biblioteca Racoon)
+// fuente: swagbass
+<control>
+default_path=bajo-swag/
+
+<global>
+ampeg_release=0.12
+amp_veltrack=85
+
+<region> sample=A0-v1.flac pitch_keycenter=21 lokey=0 hikey=22 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C1-v1.flac pitch_keycenter=24 lokey=23 hikey=27 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs1-v1.flac pitch_keycenter=30 lokey=28 hikey=31 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A1-v1.flac pitch_keycenter=33 lokey=32 hikey=35 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=D2-v1.flac pitch_keycenter=38 lokey=36 hikey=40 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs2-v1.flac pitch_keycenter=42 lokey=41 hikey=45 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C3-v1.flac pitch_keycenter=48 lokey=46 hikey=49 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Ds3-v1.flac pitch_keycenter=51 lokey=50 hikey=54 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A3-v1.flac pitch_keycenter=57 lokey=55 hikey=58 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=C4-v1.flac pitch_keycenter=60 lokey=59 hikey=63 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=Fs4-v1.flac pitch_keycenter=66 lokey=64 hikey=67 lovel=1 hivel=127 loop_mode=no_loop
+<region> sample=A4-v1.flac pitch_keycenter=69 lokey=68 hikey=127 lovel=1 hivel=127 loop_mode=no_loop
