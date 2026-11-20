@@ -25,7 +25,7 @@ jobs:
           fi
 
       - name: Configurar
-        run: cmake -S plugins -B plugins/build-win -G "Visual Studio 17 2022" -A x64 -DRF_TESTS=ON
+        run: cmake -S plugins -B plugins/build-win -A x64 -DRF_TESTS=ON
 
       - name: Compilar los VST3 y las pruebas
         shell: bash
@@ -65,7 +65,7 @@ jobs:
         run: bash estudio/scripts/fetch_deps.sh
 
       - name: Configurar
-        run: cmake -S estudio -B estudio/build-win -G "Visual Studio 17 2022" -A x64 -DRACOON_TESTS=ON
+        run: cmake -S estudio -B estudio/build-win -A x64 -DRACOON_TESTS=ON
 
       - name: Compilar Racoon y sus pruebas
         run: cmake --build estudio/build-win --config Release --parallel --target Racoon RacoonTest FxTest
