@@ -112,6 +112,7 @@ private:
     int lastMatchVersion = -1;
     float lastMatchAmount = -1.0f;
     double dcSum[2] {};
+    float dcX[2] {}, dcY[2] {};       // the direct-current filter
     juce::int64 dcCount = 0;
     std::atomic<float>* eqP[numEqBands][9] {};
     std::atomic<float>* mbP[numMbBands][6] {};

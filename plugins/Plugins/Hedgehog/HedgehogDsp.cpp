@@ -502,8 +502,7 @@ void Limiter::prepare (double sampleRate)
     look = jmax (8, (int) std::round (0.0015 * sr));
     const int d = look + TruePeak::latency + 1;
     delayL.assign ((size_t) d, 0.0f); delayR.assign ((size_t) d, 0.0f);
-    avg.assign ((size_t) look, 1.0f);
-    qT.assign ((size_t) look + 4, 0); qV.assign ((size_t) look + 4, 1.0f);
+    for (int c = 0; c < 2; ++c) { avg[c].assign ((size_t) look, 1.0f); qT[c].assign ((size_t) look + 4, 0); qV[c].assign ((size_t) look + 4, 1.0f); }
     reset();
 }
 
@@ -511,44 +510,84 @@ void Limiter::reset()
 {
     tp[0].reset(); tp[1].reset();
     std::fill (delayL.begin(), delayL.end(), 0.0f); std::fill (delayR.begin(), delayR.end(), 0.0f);
-    std::fill (avg.begin(), avg.end(), 1.0f);
-    avgSum = (double) look;
-    dPos = 0; rPos = 0; relNow = 1.0f; grDb = 0.0f; t = 0;
-    qHead = qTail = qCount = 0;
+    for (int c = 0; c < 2; ++c)
+    {
+        std::fill (avg[c].begin(), avg[c].end(), 1.0f);
+        avgSum[c] = (double) look; relNow[c] = 1.0f;
+        qHead[c] = qTail[c] = qCount[c] = 0;
+        clipKnee[c].reset(); clipCubic[c].reset(); clipHardC[c].reset();
+    }
+    dPos = 0; rPos = 0; grDb = 0.0f; clipGrDb = 0.0f; autoEnv = 0.0f; t = 0;
 }
 
-void Limiter::process (float* L, float* R, int n, float inputGainDb, float ceilingDb, float releaseMs)
+void Limiter::process (float* L, float* R, int n, float inputGainDb, float ceilingDb, float releaseMs, const LimiterOptions& o)
 {
-    const float g = dsp::dbToGain (inputGainDb), ceil = dsp::dbToGain (ceilingDb);
-    const float relCoef = 1.0f - std::exp (-1.0f / (jmax (1.0f, releaseMs) * 0.001f * (float) sr));
-    const int cap = (int) qT.size();
+    const float g = dsp::dbToGain (inputGainDb);
+    // a clipped wave carries more between its samples than the 4x detector sees: with the clip on, the wall sits
+    // 1 dB lower so the true peak still stays under the ceiling
+    const float ceil = dsp::dbToGain (ceilingDb - (o.clip ? 1.0f : 0.0f));
+    auto coefFor = [this] (float ms) { return 1.0f - std::exp (-1.0f / (jmax (1.0f, ms) * 0.001f * (float) sr)); };
+    const float relCoef = coefFor (releaseMs), fastCoef = coefFor (40.0f), slowCoef = coefFor (400.0f);
+    const float densC = std::exp (-1.0f / (0.3f * (float) sr));
+    const int cap = (int) qT[0].size();
     const int dLen = (int) delayL.size();
-    float minGain = 1.0f;
+    const float link = jlimit (0.0f, 1.0f, o.link);
+    // the clip sits above the ceiling by up to 3 dB: the harder, the lower it sits and the more it takes
+    const float clipT = ceil * dsp::dbToGain (3.0f * (1.0f - (float) jlimit (0, 9, o.clipHard) / 9.0f) + 0.3f);
+    float minGain = 1.0f, clipMax = 0.0f;
     for (int i = 0; i < n; ++i, ++t)
     {
-        const float xl = L[i] * g, xr = R[i] * g;
-        const float p = jmax (tp[0].process (xl), tp[1].process (xr));
-        const float need = p > ceil ? ceil / p : 1.0f;
-        // minimum of the last look + 1 needs
-        while (qCount > 0 && qV[(size_t) ((qTail - 1 + cap) % cap)] >= need) { qTail = (qTail - 1 + cap) % cap; --qCount; }
-        qT[(size_t) qTail] = t; qV[(size_t) qTail] = need; qTail = (qTail + 1) % cap; ++qCount;
-        while (qCount > 0 && qT[(size_t) qHead] <= t - (look + 1)) { qHead = (qHead + 1) % cap; --qCount; }
-        const float m = qV[(size_t) qHead];
-        relNow = m < relNow ? m : relNow + (m - relNow) * relCoef;
-        avgSum += relNow - avg[(size_t) rPos];
-        avg[(size_t) rPos] = relNow;
+        float x[2] { L[i] * g, R[i] * g };
+        if (o.clip)
+            for (int c = 0; c < 2; ++c)
+            {
+                const float u = x[c] / clipT;
+                const float y = o.clipHard <= 2 ? clipKnee[c].process (u) : o.clipHard <= 6 ? clipCubic[c].process (u) : clipHardC[c].process (u);
+                clipMax = jmax (clipMax, std::abs (x[c]) - std::abs (y * clipT));
+                x[c] = y * clipT;
+            }
+        float p[2] { tp[0].process (x[0]), tp[1].process (x[1]) };
+        if (o.clip)
+        {
+            // a clipped wave has flat tops: the sample itself can sit above the interpolated phases, so it counts too
+            const int at = (dPos - TruePeak::latency + dLen) % dLen;
+            p[0] = jmax (p[0], std::abs (TruePeak::latency == 0 ? x[0] : delayL[(size_t) at]));
+            p[1] = jmax (p[1], std::abs (TruePeak::latency == 0 ? x[1] : delayR[(size_t) at]));
+        }
+        const float own[2] { p[0] > ceil ? ceil / p[0] : 1.0f, p[1] > ceil ? ceil / p[1] : 1.0f };
+        const float both = jmin (own[0], own[1]);
+        float s[2];
+        for (int c = 0; c < 2; ++c)
+        {
+            const float need = own[c] + (both - own[c]) * link;
+            auto& qv = qV[c]; auto& qt = qT[c];
+            while (qCount[c] > 0 && qv[(size_t) ((qTail[c] - 1 + cap) % cap)] >= need) { qTail[c] = (qTail[c] - 1 + cap) % cap; --qCount[c]; }
+            qt[(size_t) qTail[c]] = t; qv[(size_t) qTail[c]] = need; qTail[c] = (qTail[c] + 1) % cap; ++qCount[c];
+            while (qCount[c] > 0 && qt[(size_t) qHead[c]] <= t - (look + 1)) { qHead[c] = (qHead[c] + 1) % cap; --qCount[c]; }
+            const float m = qv[(size_t) qHead[c]];
+            float rc = relCoef;
+            if (o.release == 2) rc = 1.0f;
+            else if (o.release == 1) rc = slowCoef + (fastCoef - slowCoef) * jlimit (0.0f, 1.0f, 1.0f - autoEnv * 4.0f);
+            relNow[c] = m < relNow[c] ? m : relNow[c] + (m - relNow[c]) * rc;
+            avgSum[c] += relNow[c] - avg[c][(size_t) rPos];
+            avg[c][(size_t) rPos] = relNow[c];
+            s[c] = (float) jmin (1.0, avgSum[c] / look);
+        }
         rPos = (rPos + 1) % look;
-        const float s = (float) jmin (1.0, avgSum / look);
+        // how busy the limiter is lately (automatic release: dense passages let go slowly)
+        autoEnv = (1.0f - jmin (s[0], s[1])) + (autoEnv - (1.0f - jmin (s[0], s[1]))) * densC;
         // the audio waits for the gain
         const int readPos = (dPos + 1) % dLen;   // oldest = look + latency samples ago
-        const float yl = delayL[(size_t) readPos] * s, yr = delayR[(size_t) readPos] * s;
-        delayL[(size_t) dPos] = xl; delayR[(size_t) dPos] = xr;
+        const float il = delayL[(size_t) readPos], ir = delayR[(size_t) readPos];
+        const float yl = jlimit (-ceil, ceil, il * s[0]), yr = jlimit (-ceil, ceil, ir * s[1]);
+        delayL[(size_t) dPos] = x[0]; delayR[(size_t) dPos] = x[1];
         dPos = (dPos + 1) % dLen;
-        L[i] = jlimit (-ceil, ceil, yl);
-        R[i] = jlimit (-ceil, ceil, yr);
-        minGain = jmin (minGain, s);
+        if (o.delta && g > 0.0f) { L[i] = (il - yl) / g; R[i] = (ir - yr) / g; }
+        else { L[i] = yl; R[i] = yr; }
+        minGain = jmin (minGain, s[0], s[1]);
     }
     grDb = -dsp::gainToDb (minGain);
+    clipGrDb = clipMax > 0.0f ? dsp::gainToDb (1.0f + clipMax / jmax (1.0e-6f, ceil)) : 0.0f;
 }
 
 // ===================================================================== exciter

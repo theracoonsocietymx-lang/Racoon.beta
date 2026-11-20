@@ -37,7 +37,12 @@ juce_add_binary_data(RacoonData SOURCES
     Resources/animals/chinchilla.png
     Resources/animals/dormouse.png
     Resources/animals/squirrel.png
-    Resources/animals/chipmunk.png)
+    Resources/animals/chipmunk.png
+    Resources/animals/marmot.png
+    Resources/animals/opossum.png
+    Resources/animals/jerboa.png
+    Resources/animals/otter.png
+    Resources/animals/beaver.png)
 set_target_properties(RacoonData PROPERTIES POSITION_INDEPENDENT_CODE TRUE)
 
 file(GLOB_RECURSE RACOON_CORE CONFIGURE_DEPENDS

@@ -30,8 +30,13 @@ Las ventanas abren al ancho de la pantalla y a la altura que cabe arriba del Doc
 | Racoon - Chinchilla Vocals | Vocal Lab: afinación, editor de notas, formantes, 8 armonías, doble, vocoder, talkbox, robot, chopper y matriz | Efecto (con MIDI y sidechain) |
 | Racoon - Badger Bass | Sinte de bajo ácido con secuenciador y piano roll | Instrumento |
 | Racoon - Hamster Drums | Caja de ritmos de 16 pistas con salidas separadas | Instrumento |
+| Racoon - Marmot Synth | Sinte polifónico para leads, plucks, stabs y arpegios: dos osciladores clásicos (sierra, pulso con ancho, cuadrada, triángulo), sub, ruido, sync y modulación cruzada, paso altos y filtro resonante, dos envolventes, dos LFO, matriz de 6, arpegiador y salida con saturación, chorus de ensamble, EQ, delay y reverb | Instrumento |
+| Racoon - Opossum FM | FM de seis operadores con 12 conexiones: bajos metálicos, gruñidos con Wobble al tempo, campanas oscuras y leads. Mordida, Retro, Metal, caída de tono, filtro con vocales, destrucción (tubo, plegado, rectificar) sobremuestreada, graves en mono, eco y sala | Instrumento |
+| Racoon - Jerboa Time | Tiempo y volumen por patrones al tempo: tartamudeos, medio tiempo, frenos de cinta, reversas, compuertas y rascados, 6 bancos de 24 patrones que se cambian con notas (Do 2 a Si 3) | Efecto (con MIDI) |
+| Racoon - Otter Strings | Cuerdas y barras modeladas: cuerda pulsada, golpeada, frotada con arco, raspada o con imán; barras de marimba, xilófono, lengüeta, campana y cuenco; cuerpo, seis cuerdas simpáticas y oscuridad | Instrumento |
+| Racoon - Beaver Additive | Sinte aditivo de hasta 511 armónicos: dos capas (formas, dibujo, resíntesis de audio, imágenes), filtros por armónico, armonizador, barrido, difuminar, pulsado y unison | Instrumento |
 
-Son once plugins, y Racoon (el estudio) completa los doce. Todos empiezan con "Racoon - " para que salgan juntos en Aplicaciones y en la lista de plugins, y el nombre dice el animal y lo que hace. Los nombres de antes (Racoon Badger, Racoon Badger Bass...) se borran al instalar para que no aparezcan dos veces.
+Son dieciséis plugins, y Racoon (el estudio) completa los diecisiete. Todos empiezan con "Racoon - " para que salgan juntos en Aplicaciones y en la lista de plugins, y el nombre dice el animal y lo que hace. Los nombres de antes (Racoon Badger, Racoon Badger Bass...) se borran al instalar para que no aparezcan dos veces.
 
 Los seis efectos que antes estaban aquí (compresor, saturador, filtro, EQ, delay y reverb) ya no son VST: viven dentro de Racoon como efectos nativos, junto con los otros 39 de su lista.
 

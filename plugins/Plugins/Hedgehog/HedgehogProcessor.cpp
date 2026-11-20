@@ -96,6 +96,13 @@ AudioProcessorValueTreeState::ParameterLayout Processor::layout()
     P::choice (l, "listen", "Escuchar", { "Estéreo"_u, "Mono", "Centro (mid)", "Lados (side)" }, 0);
     P::choice (l, "refplay", "Comparar con", { "Tu master", "Referencia 1", "Referencia 2" }, 0);
     P::toggle (l, "refmatch", "Igualar volumen de referencia", true);
+    // added on 19 November, at the end so saved masters keep their values (all off or neutral: the sound of before)
+    P::pct (l, "lim_link", "Enlace estéreo"_u, 0.0f, 100.0f, 100.0f);
+    P::toggle (l, "clip_on", "Recorte", false);
+    P::integer (l, "clip_hard", "Recorte: dureza", 0, 9, 4);
+    P::choice (l, "lim_relmode", "Limitador: soltar", { "Perilla", "Automático"_u, "Instantáneo"_u }, 0);
+    P::toggle (l, "dc_on", "Quitar corriente continua", false);
+    P::toggle (l, "delta", "Escuchar lo que se quita", false);
     return l;
 }
 
@@ -222,6 +229,17 @@ void Processor::processDsp (AudioBuffer<float>& buffer, MidiBuffer&)
             if (std::abs (L[i]) >= 0.999f || std::abs (R[i]) >= 0.999f) ++clipped;
             L[i] *= inGain; R[i] *= inGain;
         }
+        // the direct current, out before anything works on it (a one-pole high pass at 5 Hz)
+        if (value ("dc_on") > 0.5f)
+        {
+            const float a = std::exp (-MathConstants<float>::twoPi * 5.0f / (float) getSampleRate());
+            for (int i = 0; i < n; ++i)
+            {
+                const float yl = L[i] - dcX[0] + a * dcY[0], yr = R[i] - dcX[1] + a * dcY[1];
+                dcX[0] = L[i]; dcX[1] = R[i]; dcY[0] = yl; dcY[1] = yr;
+                L[i] = yl; R[i] = yr;
+            }
+        }
         if (clipped > 0) clippedIn.fetch_add (clipped);
         for (int i = 0; i < n; ++i)
         {
@@ -252,7 +270,10 @@ void Processor::processDsp (AudioBuffer<float>& buffer, MidiBuffer&)
         imager.process (L, R, n, im ? value ("im_low") * 0.01f : 1.0f, im ? value ("im_mid") * 0.01f : 1.0f, im ? value ("im_high") * 0.01f : 1.0f,
                         lo ? value ("lo_mono") : 0.0f, corr);
         // with the limiter off it still delays the same, so the latency never changes
-        limiter.process (L, R, n, limOn ? value ("lim_gain") : 0.0f, limOn ? ceilDb : 24.0f, value ("lim_rel"));
+        LimiterOptions lo2;
+        lo2.link = value ("lim_link") * 0.01f; lo2.clip = limOn && value ("clip_on") > 0.5f; lo2.clipHard = (int) value ("clip_hard");
+        lo2.release = (int) value ("lim_relmode"); lo2.delta = limOn && value ("delta") > 0.5f;
+        limiter.process (L, R, n, limOn ? value ("lim_gain") : 0.0f, limOn ? ceilDb : 24.0f, value ("lim_rel"), lo2);
         if (outGain != 1.0f) for (int i = 0; i < n; ++i) { L[i] *= outGain; R[i] *= outGain; }
         for (int i = 0; i < n; ++i)
         {
@@ -440,6 +461,21 @@ StringArray Processor::runAssistant()
                   + " dBTP para " + platformNames()[platform] + ".");
     }
 
+    // direct current: out before the chain
+    if (dcOffsetDb.load() > -45.0f && value ("dc_on") < 0.5f)
+    {
+        setRealValue ("dc_on", 1.0f);
+        done.add ("Prendí Quitar corriente continua: la mezcla trae "_u + String (roundToInt (dcOffsetDb.load())) + " dB de desplazamiento."_u);
+    }
+    // a loud destination with a limiter working hard: a clip takes part of the work
+    if ((platform == 2 || platform == 3) && value ("lim_gain") > 6.0f && value ("clip_on") < 0.5f)
+    {
+        setRealValue ("clip_on", 1.0f);
+        setRealValue ("clip_hard", 6.0f);
+        setRealValue ("lim_gain", jmax (0.0f, value ("lim_gain") - 2.0f));
+        done.add ("Prendí el Recorte (dureza 6) y le quité 2 dB al limitador: a ese volumen bombea menos."_u);
+    }
+
     // tonal balance against the genre
     float cur[numThirds], tgt[numThirds];
     for (int b = 0; b < numThirds; ++b) { cur[b] = specIn[b].load(); tgt[b] = targetDb ((int) value ("genre"), b); }
@@ -493,7 +529,7 @@ std::vector<Processor::Check> Processor::qualityChecks() const
     const float c = correlationMin.load();
     v.push_back ({ c >= -0.2f, "Fase: correlación mínima "_u + String (c, 2) });
     const float dc = dcOffsetDb.load();
-    v.push_back ({ dc < -45.0f, "Corriente continua " + String (roundToInt (dc)) + " dB" });
+    v.push_back ({ dc < -45.0f, "Corriente continua " + String (roundToInt (dc)) + " dB" + (dc < -45.0f || value ("dc_on") > 0.5f ? String() : ": prende Quitar corriente continua."_u) });
     const int clips = clippedIn.load();
     v.push_back ({ clips == 0, clips == 0 ? String ("La mezcla llega sin saturar") : "La mezcla llega saturada en " + String (clips) + " muestras" });
     float cur[numThirds], tgt[numThirds];
@@ -725,6 +761,10 @@ std::vector<FactoryPreset> Processor::factoryPresets() const
         { "Cine (-24)", "Destino", join ({ { { "target", 5 }, { "genre", 5 }, { "ceiling", -2 }, { "lim_rel", 400 } } }) },
         { "Domar estridencias", "Corregir", join ({ { { "res_on", 1 }, { "res_depth", 60 }, { "res_lo", 1500 }, { "res_hi", 9000 } }, eqBand (8, 0, 3500, 0.0f, 1.5f, 1, -30.0f, 6.0f) }) },
         { "Graves en mono", "Corregir", join ({ { { "lo_on", 1 }, { "lo_mono", 150 }, { "im_on", 1 }, { "im_low", 50 } } }) },
+        { "Club con recorte (-8)", "Destino", join ({ { { "target", 2 }, { "lim_gain", 9 }, { "clip_on", 1 }, { "clip_hard", 7 }, { "ceiling", -0.3f } } }) },
+        { "Streaming transparente (-14)", "Destino", join ({ { { "target", 0 }, { "lim_gain", 4 }, { "lim_relmode", 1 }, { "dc_on", 1 } } }) },
+        { "Recorte parejo", "Corregir", join ({ { { "lim_gain", 6 }, { "clip_on", 1 }, { "clip_hard", 4 }, { "lim_relmode", 1 } } }) },
+        { "Imagen libre", "Corregir", join ({ { { "lim_gain", 5 }, { "lim_link", 60 } } }) },
     };
     for (size_t i = 6; i < list.size(); ++i) list[i].values = lab (list[i].values);
     return list;

@@ -134,10 +134,10 @@ mezcla::Papel papelDe (Session& s, te::AudioTrack& t)
     String animal;
     if (auto* p = s.familyPluginOf (t)) animal = Catalog::animalFor (p->getName());
     if (animal == "Hamster") return name.contains ("kick") || name.contains ("bombo") ? P::kick : P::drums;
-    if (animal == "Badger") return P::bass;
-    if (animal == "Dormouse") return P::pad;
-    if (animal == "Chipmunk") return P::chords;
-    if (animal == "Squirrel") return P::melody;
+    if (animal == "Badger" || animal == "Opossum") return P::bass;
+    if (animal == "Dormouse" || animal == "Beaver") return P::pad;
+    if (animal == "Chipmunk" || animal == "Otter") return P::chords;
+    if (animal == "Squirrel" || animal == "Marmot") return P::melody;
     if (animal == "Ferret") return P::guitar;
     if (animal == "Porcupine") return P::choir;
     if (animal == "Mole") return P::perc;

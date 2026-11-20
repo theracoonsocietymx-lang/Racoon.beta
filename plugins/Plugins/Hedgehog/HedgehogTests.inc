@@ -427,3 +427,68 @@ static void shotsHedgehog (const juce::File& out)
     check (true, "pantallas de la Partícula, medidores, balance, EQ, multibanda y asistente"_u);
 }
 static RegisterTest hedgehogShots ("HedgehogPantallas", shotsHedgehog);
+
+// the limiter's new parts (19 November): link, clip, delta and the direct current
+static void testLimitador (const juce::File&)
+{
+    using namespace juce;
+    using namespace hedgehog_test;
+    std::cout << "limitador" << std::endl;
+    const int lat = make()->getLatencySamples();
+
+    // the ceiling holds with the clip at every hardness and with the link at 0, 50 and 100
+    {
+        auto in = pink (0.5f, 3.0);
+        float worst = -100.0f;
+        for (int hard : { -1, 0, 4, 9 }) for (float link : { 0.0f, 50.0f, 100.0f })
+        {
+            auto p = make ([&] (Processor& q) { q.setRealValue ("lim_gain", (float) (hard == 4 ? 6 : 12)); q.setRealValue ("clip_on", hard >= 0 ? 1.0f : 0.0f); q.setRealValue ("clip_hard", (float) jmax (0, hard));
+                                                q.setRealValue ("lim_link", link); q.setRealValue ("ceiling", -1.0f); });
+            auto o = run (*p, in);
+            TruePeak tp[2]; float pk = 0.0f;
+            for (int i = 4800; i < o.getNumSamples(); ++i) pk = jmax (pk, tp[0].process (o.getSample (0, i)), tp[1].process (o.getSample (1, i)));
+            worst = jmax (worst, Decibels::gainToDecibels (pk));
+            if (Decibels::gainToDecibels (pk) > -0.9f) std::cout << "      dureza " << hard << " enlace " << link << ": " << Decibels::gainToDecibels (pk) << std::endl;
+        }
+        check (worst <= -0.9f, "recorte de 0 a 9 y enlace 0 / 50 / 100: el pico real no pasa el techo (" + String (worst, 2) + " dBTP con techo -1)");
+    }
+    // link 0: a hit on the left leaves the right alone
+    {
+        AudioBuffer<float> in (2, (int) sr * 2);
+        for (int i = 0; i < in.getNumSamples(); ++i)
+        {
+            const float r = 0.2f * (float) std::sin (MathConstants<double>::twoPi * 300.0 * i / sr);
+            const float l = (i % 24000) < 400 ? 0.95f * (float) std::sin (MathConstants<double>::twoPi * 80.0 * i / sr) : 0.0f;
+            in.setSample (0, i, l); in.setSample (1, i, r);
+        }
+        auto free = run (*make ([] (Processor& q) { q.setRealValue ("lim_gain", 6); q.setRealValue ("lim_link", 0); }), in);
+        auto tied = run (*make ([] (Processor& q) { q.setRealValue ("lim_gain", 6); q.setRealValue ("lim_link", 100); }), in);
+        float errFree = 0.0f, dipTied = 0.0f;
+        const float g = Decibels::decibelsToGain (6.0f);
+        for (int i = (int) sr / 2; i < in.getNumSamples(); ++i)
+        {
+            const float want = in.getSample (1, i - lat) * g;
+            errFree = jmax (errFree, std::abs (free.getSample (1, i) - want));
+            dipTied = jmax (dipTied, std::abs (tied.getSample (1, i) - want));
+        }
+        check (errFree < 0.01f && dipTied > 0.05f, "enlace 0: el lado derecho no se mueve con el golpe del izquierdo (error " + String (errFree, 4) + "; enlazado baja " + String (dipTied, 3) + ")");
+    }
+    // delta: below the ceiling it is silence
+    {
+        auto in = sine (440.0, 0.1f, 1.0);
+        auto o = run (*make ([] (Processor& q) { q.setRealValue ("lim_gain", 0); q.setRealValue ("delta", 1); }), in);
+        const float pk = o.getMagnitude (0, (int) sr / 4, (int) sr / 2);
+        check (pk < 3.0e-5f, "Escuchar lo que se quita: sin trabajo del limitador es silencio (" + String (Decibels::gainToDecibels (pk + 1.0e-9f), 0) + " dB)");
+    }
+    // the direct current goes away
+    {
+        auto in = sine (220.0, 0.2f, 2.0);
+        for (int c = 0; c < 2; ++c) for (int i = 0; i < in.getNumSamples(); ++i) in.setSample (c, i, in.getSample (c, i) + 0.1f);
+        auto o = run (*make ([] (Processor& q) { q.setRealValue ("dc_on", 1); q.setRealValue ("lim_on", 0); }), in);
+        double dc = 0.0;
+        for (int i = (int) sr; i < in.getNumSamples(); ++i) dc += o.getSample (0, i);
+        dc /= sr;
+        check (std::abs (dc) < 0.001, "Quitar corriente continua: el desplazamiento de +0.1 baja a " + String (Decibels::gainToDecibels ((float) std::abs (dc) + 1.0e-9f), 0) + " dB");
+    }
+}
+static RegisterTest limitadorTestReg ("HedgehogLimitador", testLimitador);

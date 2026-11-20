@@ -191,7 +191,7 @@ void RacoonProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midi
     if (hasDemoSource() && outCh > 0 && demoSourceOn.load())
     {
         demoVoice.setBeat (seqPlay.load() && demoSourceKind() == PreviewSound::Kind::mix, hostBpm, seqBeat);
-        demoVoice.render (buffer, extraMidi, 0, n, 0.6f);
+        demoVoice.render (buffer, demoPlaysNotes() ? extraMidi : noMidi, 0, n, 0.6f);
     }
     if (acceptsMidi() && ! extraMidi.isEmpty()) midi.addEvents (extraMidi, 0, n, 0);
 

@@ -1,13 +1,13 @@
 # Racoon
 
-Racoon es un estudio para hacer música electrónica y una familia de 11 plugins (VST3) gratuitos. Lo hacemos para que cualquiera pueda producir sin piratear nada. Todo el código está aquí, con licencia libre, y las muestras que trae se pueden usar y repartir.
+Racoon es un estudio para hacer música electrónica y una familia de 16 plugins (VST3) gratuitos. Lo hacemos para que cualquiera pueda producir sin piratear nada. Todo el código está aquí, con licencia libre, y las muestras que trae se pueden usar y repartir.
 
 El historial de cambios, versión por versión, está en `LEEME.txt`.
 
 ## Qué hay en este repositorio
 
 - `estudio/`: Racoon, el estudio (la app). C++ con JUCE 8 y Tracktion Engine 3.2.
-- `plugins/`: los 11 plugins de la familia (Badger, Hamster, Dormouse, Squirrel, Ferret, Porcupine, Chipmunk, Mole, Skunk, Hedgehog y Chinchilla). C++ con JUCE 8.
+- `plugins/`: los 16 plugins de la familia (Badger, Hamster, Dormouse, Squirrel, Ferret, Porcupine, Chipmunk, Mole, Skunk, Hedgehog, Chinchilla, Marmot, Opossum, Jerboa, Otter y Beaver). C++ con JUCE 8.
 - `muestras/`: Muestras Racoon, 3060 golpes de batería, 76 instrumentos SFZ y 5063 ondas de 55 bibliotecas gratuitas. El autor y la licencia de cada una están en `muestras/CREDITOS.txt`.
 - `Instalar Racoon.command`: el instalador para Mac. Compila los plugins y el estudio y los deja en su lugar.
 

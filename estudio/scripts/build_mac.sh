@@ -63,7 +63,7 @@ find_family () {
   return 0
 }
 for entry in Badger:Bass Hamster:Drums Dormouse:Pads Squirrel:Sampler Chipmunk:Chords Mole:Rhythm Skunk:Sound_Design \
-             Ferret:Guitar Porcupine:Choir Hedgehog:Mastering Chinchilla:Vocals; do
+             Ferret:Guitar Porcupine:Choir Hedgehog:Mastering Chinchilla:Vocals Marmot:Synth Jerboa:Time Opossum:FM Otter:Strings Beaver:Additive; do
   IFS=: read -r animal what <<< "$entry"
   find_family "Racoon - $animal ${what//_/ }" "Racoon$animal"
 done

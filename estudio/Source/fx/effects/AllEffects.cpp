@@ -12,6 +12,8 @@ void registerDelays (std::vector<FxDef>&);
 void registerReverbs (std::vector<FxDef>&);
 void registerSpectral (std::vector<FxDef>&);
 void registerExtras1 (std::vector<FxDef>&);
+void registerSeparador (std::vector<FxDef>&);
+void registerPulir (std::vector<FxDef>&);
 void registerExtras2 (std::vector<FxDef>&);
 void registerPrisma (std::vector<FxDef>&);
 void registerMidiEffects (std::vector<FxDef>&);
@@ -37,6 +39,8 @@ void appendAllEffects (std::vector<FxDef>& v)
     registerReverbs (v);
     registerSpectral (v);
     registerExtras1 (v);
+    registerSeparador (v);
+    registerPulir (v);
     registerExtras2 (v);
     registerPrisma (v);
     registerMidiEffects (v);

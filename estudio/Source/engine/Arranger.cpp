@@ -241,10 +241,10 @@ TrackKindGuess guessFromName (te::AudioTrack& t)
     auto has = [&] (const char* a) { return animal == a || name.contains (String (a).toLowerCase()); };
     if (has ("Hamster")) return { Kind::drums, Role::perc, true };
     if (has ("Mole"))      return { Kind::drums, Role::perc, true };
-    if (has ("Badger"))    return { Kind::single, Role::bass, true };
-    if (has ("Dormouse"))  return { Kind::single, Role::pad, true };
-    if (has ("Chipmunk") || has ("Ferret")) return { Kind::single, Role::chords, true };
-    if (has ("Squirrel"))  return { Kind::single, Role::lead, true };
+    if (has ("Badger") || has ("Opossum")) return { Kind::single, Role::bass, true };
+    if (has ("Dormouse") || has ("Beaver")) return { Kind::single, Role::pad, true };
+    if (has ("Chipmunk") || has ("Ferret") || has ("Otter")) return { Kind::single, Role::chords, true };
+    if (has ("Squirrel") || has ("Marmot")) return { Kind::single, Role::lead, true };
     if (has ("Porcupine")) return { Kind::single, Role::choir, true };
     if (has ("Skunk"))     return { Kind::single, Role::texture, true };
     if (has ("Chinchilla")) return { Kind::single, Role::voice, true };

@@ -15,6 +15,7 @@ struct RegisterTest { RegisterTest (const char* n, std::function<void (const juc
  #include "NewEffectsTests.inc"
 #endif
 #include "ExtrasTests.inc"
+#include "SeparadorTests.inc"
 #include "SidechainTests.inc"
 #include "ArpTests.inc"
 

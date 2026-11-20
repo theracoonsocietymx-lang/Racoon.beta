@@ -32,6 +32,21 @@ struct RegisterTest { RegisterTest (const char* n, std::function<void (const juc
 #if __has_include("ChipmunkTests.inc")
  #include "ChipmunkTests.inc"
 #endif
+#if __has_include("JerboaTests.inc")
+ #include "JerboaTests.inc"
+#endif
+#if __has_include("OpossumTests.inc")
+ #include "OpossumTests.inc"
+#endif
+#if __has_include("BeaverTests.inc")
+ #include "BeaverTests.inc"
+#endif
+#if __has_include("OtterTests.inc")
+ #include "OtterTests.inc"
+#endif
+#if __has_include("MarmotTests.inc")
+ #include "MarmotTests.inc"
+#endif
 
 #include "AdsrTests.inc"
 

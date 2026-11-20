@@ -1315,7 +1315,7 @@ int runUiTests (Session& s, const File& out)
             auto item = [&s] (const char* animal) { for (auto& it : Catalog::racoonItems (s.engine)) if (Catalog::animalFor (it.name) == animal) return it; return CatalogItem(); };
             int listed = 0;
             for (auto& it : Catalog::racoonItems (s.engine)) if (Catalog::listedAsInstrument (it)) ++listed;
-            check (listed == 10 && ! Catalog::listedAsInstrument (item ("Hedgehog")), "10 de la familia en Instrumentos, Hedgehog aparte: " + String (listed));
+            check (listed == 15 && ! Catalog::listedAsInstrument (item ("Hedgehog")), "15 de la familia en Instrumentos, Hedgehog aparte: " + String (listed));
             for (auto* animal : { "Chipmunk", "Mole" })
                 if (item (animal).available)
                 {

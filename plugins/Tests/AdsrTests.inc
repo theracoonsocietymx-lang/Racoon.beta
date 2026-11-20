@@ -106,6 +106,12 @@ static RegisterTest adsrTest ("adsr", [] (const juce::File&)
     instrument ("Ferret", [] { return (RacoonProcessor*) new racoon::ferret::Processor(); }, { "adsr_a", "adsr_d", "adsr_s", "release", 1.0f }, 52,
                 [] (RacoonProcessor& p) { p.setRealValue ("mode", 2.0f); p.setRealValue ("rv_on", 0.0f); p.setRealValue ("dl_on", 0.0f); });
     instrument ("Dormouse", [] { return (RacoonProcessor*) new racoon::dormouse::Processor(); }, { "env1_a", "env1_d", "env1_s", "env1_r", 0.001f }, 60);
+    instrument ("Opossum", [] { return (RacoonProcessor*) new racoon::opossum::Processor(); }, { "adsr_a", "adsr_d", "adsr_s", "adsr_r", 1.0f }, 45);
+    instrument ("Otter", [] { return (RacoonProcessor*) new racoon::otter::Processor(); }, { "adsr_a", "adsr_d", "adsr_s", "adsr_r", 1.0f }, 45,
+                [] (RacoonProcessor& p) { p.setRealValue ("espacio", 0.0f); p.setRealValue ("simp", 0.0f); });
+    instrument ("Beaver", [] { return (RacoonProcessor*) new racoon::beaver::Processor(); }, { "adsr_a", "adsr_d", "adsr_s", "adsr_r", 1.0f }, 45,
+                [] (RacoonProcessor& p) { p.setRealValue ("espacio", 0.0f); });
+    instrument ("Marmot", [] { return (RacoonProcessor*) new racoon::marmot::Processor(); }, { "adsr_a", "adsr_d", "adsr_s", "adsr_r", 1.0f }, 60);
     {
         std::unique_ptr<RacoonProcessor> sq (new racoon::squirrel::Processor());
         bool have = true;

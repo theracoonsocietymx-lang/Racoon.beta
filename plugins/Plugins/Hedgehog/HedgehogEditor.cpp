@@ -629,6 +629,12 @@ static EditorSpec makeSpec()
     s.sections = {
         { "Destino", { { "target", "Destino", "Volumen y techo pensados para cada plataforma." }, { "ceiling", "Techo", "Pico real máximo (dBTP), medido con sobremuestreo 4x."_u },
                        { "lim_on", "Limitador", "" }, { "lim_rel", "Soltar", "" } } },
+        { "Recorte y limitador", { { "clip_on", "Recorte", "Un recorte suave antes del limitador se lleva parte del trabajo."_u },
+                                   { "clip_hard", "Dureza", "0: el limitador hace todo, limpio. 9: el recorte hace casi todo, más volumen en música densa."_u },
+                                   { "lim_link", "Enlace", "En 100 % los dos lados bajan juntos y la imagen no se mueve. Más bajo, más ancho y menos estable."_u },
+                                   { "lim_relmode", "Modo", "Perilla usa Soltar. Automático suelta rápido después de un pico solo y lento en pasajes densos. Instantáneo funciona como maximizador."_u },
+                                   { "dc_on", "Corriente", "Quita la corriente continua antes de toda la cadena."_u },
+                                   { "delta", "Delta", "Escucha solo lo que el recorte y el limitador le quitan a la canción."_u } }, true },
         { "Comparar", { { "refplay", "Escuchar", "Tu master o una referencia, con el mismo volumen." }, { "refmatch", "Igualar", "" },
                         { "listen", "Monitor", "Estéreo, mono, solo centro o solo lados."_u } } },
         { "Color", { { "ex_on", "Excitador", "" }, { "ex_drive", "Drive", "" }, { "tr_on", "Transitorios", "" }, { "tr_att", "Ataque", "Más o menos golpe."_u } }, true },

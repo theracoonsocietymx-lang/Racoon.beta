@@ -724,7 +724,7 @@ SequencerDock::~SequencerDock() { proc.keyboardState.allNotesOff (1); }
 void SequencerDock::generateRandom (int64 seed)
 {
     aleatorio::Opciones o;
-    o.rol = aleatorio::rolDe (proc.info.animal);
+    o.rol = proc.aleatoriaRol().isNotEmpty() ? aleatorio::rolPorNombre (proc.aleatoriaRol()) : aleatorio::rolDe (proc.info.animal);
     o.estilo = aleatorio::estiloDe ({}, proc.patternBpm());
     if (o.rol == aleatorio::Rol::percusion) { o.drums.congaLo = o.drums.congaHi; o.drums.bongoLo = o.drums.bongoHi; }   // Mole: one conga, one bongo
     o.bars = jlimit (1, 16, proc.patternBars());
@@ -747,6 +747,7 @@ void SequencerDock::generateRandom (int64 seed)
     {
         SeqNote s;
         s.start = n.start; s.length = n.length; s.pitch = n.pitch; s.velocity = n.velocity;
+        if (proc.info.animal == "Otter") while (s.pitch > 64) s.pitch -= 12;      // a harp never climbs into the bright register
         notes.push_back (s);
     }
     proc.undoManager.beginNewTransaction ("Aleatoria");      // each click is its own step: Deshacer takes back only the last one

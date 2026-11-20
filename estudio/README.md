@@ -2,7 +2,7 @@
 
 El DAW de la familia Racoon. Producción por arreglo (línea de tiempo), mezcla y exportación. No tiene Session View.
 Aloja VST3 y Audio Unit. Los plugins de la familia (todos se llaman "Racoon - ...") aparecen arriba del navegador: los diez en INSTRUMENTOS (Badger Bass, Hamster Drums, Dormouse Pads, Squirrel Sampler, Ferret Guitar, Porcupine Choir, Chipmunk Chords, Mole Rhythm, Skunk Sound Design y Chinchilla Vocals) y Hedgehog Mastering arriba de EFECTOS, porque va en el Master. Chipmunk crea su canal con Dormouse Pads detrás, Mole con Hamster Drums; Skunk y Chinchilla crean un canal de audio.
-Trae 45 efectos propios, en español, que no son VST: viven dentro de Racoon y se guardan con el proyecto.
+Trae 47 efectos propios, en español, que no son VST: viven dentro de Racoon y se guardan con el proyecto.
 
 ## Cómo se trabaja
 
@@ -36,9 +36,9 @@ Aparte de la Biblioteca (que Racoon sintetiza), el paquete trae Muestras Racoon 
 - En los plugins: Hamster (MUESTRAS y KIT DE MUESTRAS, y 42 kits de fábrica «Muestras / ...»), Squirrel (instrumentos, golpes y kits en el teclado; ahora lee SFZ), Mole (su BATERÍA puede ser cualquier kit), Badger (ondas AKWF, tablas WaveEdit y bajos 808) y Skunk (texturas y voces como material).
 - scripts/muestras tiene el programa que la arma desde las bibliotecas originales; ver su LEEME.txt.
 
-## Los 45 efectos
+## Los 47 efectos
 
-- Dinámica: Compresor, Compresor de bus, Puerta, Limitador, Dinámica multibanda, Bus de batería.
+- Dinámica: Compresor, Compresor de bus, Puerta, Limitador, Dinámica multibanda, Bus de batería, Separador de golpe (parte el sonido en golpe y cuerpo, cada uno con su color, ancho y nivel), Pulir (una perilla y cuatro modos: voz, bajo, pad, instrumento).
 - EQ y filtros: EQ de ocho bandas, EQ de tres bandas, EQ de canal, Filtro automático.
 - Distorsión y color: Saturador, Amplificador, Gabinete, Válvula dinámica, Erosión, Overdrive, Pedal, Reductor, Vinilo.
 - Modulación: Chorus y ensamble, Phaser y flanger, Paneo automático.

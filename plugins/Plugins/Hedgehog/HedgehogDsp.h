@@ -148,26 +148,39 @@ private:
 };
 
 // ------------------------------------------------------------------------------------------- true-peak limiter
+// what the limiter does besides its gain: stereo link, a clip stage before it, how it lets go, and the delta
+struct LimiterOptions
+{
+    float link = 1.0f;            // 1: both sides move together (the classic); 0: each side on its own
+    bool clip = false;            // a soft clip before the limiter takes part of the work
+    int clipHard = 4;             // 0..9: at 0 the limiter does everything, at 9 the clip does almost everything
+    int release = 0;              // 0 the knob, 1 automatic (fast after a lone peak, slow in dense passages), 2 instant
+    bool delta = false;           // listen to what the clip and the limiter take away
+};
 class Limiter
 {
 public:
     void prepare (double sampleRate);
     void reset();
-    void process (float* L, float* R, int n, float inputGainDb, float ceilingDb, float releaseMs);
+    void process (float* L, float* R, int n, float inputGainDb, float ceilingDb, float releaseMs, const LimiterOptions& o = {});
     int latency() const { return look + TruePeak::latency; }
     float reductionDb() const { return grDb; }
+    float clipDb() const { return clipGrDb; }
 private:
     double sr = 48000.0;
     int look = 72;
     TruePeak tp[2];
-    std::vector<float> delayL, delayR, req, rel, avg;
+    std::vector<float> delayL, delayR, avg[2];
     int dPos = 0, rPos = 0;
-    double avgSum = 0.0;
-    float relNow = 1.0f, grDb = 0.0f;
-    // window minimum (monotonic queue in fixed arrays: nothing allocated while playing)
-    std::vector<juce::int64> qT;
-    std::vector<float> qV;
-    int qHead = 0, qTail = 0, qCount = 0;
+    double avgSum[2] {};
+    float relNow[2] { 1.0f, 1.0f }, grDb = 0.0f, clipGrDb = 0.0f, autoEnv = 0.0f;
+    racoon::sdsp::Adaa1<racoon::sdsp::curve::Knee> clipKnee[2];
+    racoon::sdsp::Adaa1<racoon::sdsp::curve::Cubic15> clipCubic[2];
+    racoon::sdsp::Adaa1<racoon::sdsp::curve::Hard> clipHardC[2];
+    // window minimum per side (monotonic queue in fixed arrays: nothing allocated while playing)
+    std::vector<juce::int64> qT[2];
+    std::vector<float> qV[2];
+    int qHead[2] {}, qTail[2] {}, qCount[2] {};
     juce::int64 t = 0;
 };
 

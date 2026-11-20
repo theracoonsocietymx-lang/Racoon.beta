@@ -126,6 +126,11 @@ maybe_plugin(Ferret     CODE RcFr SUFFIX "Guitar" KIND instrument DESC "Laborato
 maybe_plugin(Porcupine  CODE RcPr SUFFIX "Choir" KIND instrument DESC "Coro y ensamble" CATEGORIES Instrument)
 maybe_plugin(Hedgehog   CODE RcHg SUFFIX "Mastering" KIND effect DESC "Laboratorio de mastering" CATEGORIES Fx Mastering)
 maybe_plugin(Chinchilla CODE RcCn SUFFIX "Vocals" KIND effect MIDI_IN SIDECHAIN DESC "Laboratorio vocal" CATEGORIES Fx)
+maybe_plugin(Jerboa     CODE RcJb SUFFIX "Time" KIND effect MIDI_IN DESC "Tiempo y volumen por patrones" CATEGORIES Fx)
+maybe_plugin(Beaver     CODE RcBv SUFFIX "Additive" KIND instrument DESC "Sintetizador aditivo y resintesis" CATEGORIES Instrument Synth)
+maybe_plugin(Otter      CODE RcOt SUFFIX "Strings" KIND instrument DESC "Cuerdas y barras modeladas" CATEGORIES Instrument Synth)
+maybe_plugin(Opossum    CODE RcOp SUFFIX "FM" KIND instrument DESC "Sintetizador FM de bajos, gruñidos y campanas" CATEGORIES Instrument Synth)
+maybe_plugin(Marmot     CODE RcMr SUFFIX "Synth" KIND instrument DESC "Sintetizador de leads, plucks y arpegios" CATEGORIES Instrument Synth)
 
 # Badger (bajos) y Hamster (bateria): tienen su propio codigo y sus fuentes, pero se compilan aqui con los demas
 # (mismos codigos y bundle id que antes: instalarlos reemplaza las versiones anteriores)

@@ -357,8 +357,8 @@ public:
 Browser::Browser (ViewState& v) : vs (v)
 {
     const char* names[] { "INSTRUMENTOS", "EFECTOS", "SAMPLES" };
-    const char* help[] { "Instrumentos: Badger Bass, Hamster Drums, Dormouse Pads, Squirrel Sampler, Ferret Guitar, Porcupine Choir y los tuyos",
-                         "Efectos: los 45 de Racoon, Hedgehog Mastering, Skunk Sound Design, Chinchilla Vocals, Chipmunk Chords y Mole Rhythm (MIDI) y los tuyos",
+    const char* help[] { "Instrumentos: Badger Bass, Hamster Drums, Dormouse Pads, Squirrel Sampler, Ferret Guitar, Porcupine Choir, Marmot Synth, Opossum FM, Otter Strings, Beaver Additive y los tuyos",
+                         "Efectos: los 47 de Racoon, Hedgehog Mastering, Skunk Sound Design, Chinchilla Vocals, Jerboa Time, Chipmunk Chords y Mole Rhythm (MIDI) y los tuyos",
                          "Tus audios: arrástralos a la línea de tiempo" };
     for (int i = 0; i < 3; ++i)
     {

@@ -1,6 +1,6 @@
 Doble clic en "Instalar Racoon.command". Es el unico instalador.
 
-Compila los 11 plugins y Racoon, el estudio, los instala en esta Mac y arma Muestras Racoon completa.
+Compila los 16 plugins y Racoon, el estudio, los instala en esta Mac y arma Muestras Racoon completa.
 No pregunta nada: al terminar todo queda listo para producir. La primera vez tarda bastante (de 40 a 90 minutos,
 segun tu Mac y tu internet), y una ventana te dice en que paso va. Si macOS pide las herramientas de Xcode,
 acepta y vuelve a darle doble clic. Si se corta, vuelve a darle doble clic: sigue donde se quedo.
@@ -39,7 +39,7 @@ Al abrir, Racoon pregunta que genero vas a producir (44: house, techno, trap, re
 y arma un bloque de 16 compases en ese estilo, un canal por instrumento y todos los clips colocados. Dale Play y suena. Tu ultimo proyecto esta en Archivo > Abrir el ultimo proyecto.
 Cada genero es una rola distinta, en su propia tonalidad de la rueda de Camelot, y todos los instrumentos suenan en esa tonalidad (la bateria y la percusion tambien se afinan).
 
-Efectos de Racoon (55 en el navegador, pestaña Efectos):
+Efectos de Racoon (57 en el navegador, pestaña Efectos):
 - Nuevos: Transitorios, De-esser, Clipper, Bombeo, Sub grave, Excitador, Imagen estereo, Medidor (LUFS y pico real),
   Compuerta ritmica, Rotativo, Wah, Shimmer, Afinacion automatica y Efectos DJ (freno de cinta, rebobinado, tartamudeo).
 - Puerta tiene Ratio (abajo de 20:1 es expansor), Compresor tiene Ganancia automatica y Saturador dos curvas mas.
@@ -47,6 +47,92 @@ Efectos de Racoon (55 en el navegador, pestaña Efectos):
 - El ping-pong rebota izquierda, derecha, izquierda. Los filtros del delay ya tocan el primer eco.
 - Vinilo, Reductor, Filtro automatico, Multibanda y Bus de bateria ya suenan al cargarlos.
 - El modo Paralelo del compresor mezcla una copia aplastada debajo del original, como en Nueva York.
+
+Novedades del 19 de noviembre en Racoon (dos efectos nuevos y Hedgehog con recorte):
+- Separador de golpe (Dinamica): parte el sonido en golpe y cuerpo. Cada parte tiene su nivel, su color (Limpio,
+  Calor, Recorte, Lo-fi, Difusion, Eco), su inclinacion, su ancho y su mezcla. Sin colores, golpe mas cuerpo es la
+  entrada exacta (medido: error 0.000000). Anticipacion de 5 ms opcional (Racoon compensa el retraso). La envolvente
+  del golpe mueve el cuerpo dentro del mismo efecto: con Cuerpo: nivel en -100 la cola baja mas de 10 dB en cada
+  golpe. Todavia no mueve perillas de otros efectos.
+- Pulir (Dinamica): una perilla de 0 a 100 y cuatro modos (A Voz, B Bajo, C Pad, D Instrumento). Es la Particula de
+  Hedgehog hecha para un canal, con cortes, tiempos y saturacion propios por modo. En 0 suma plano; Igualar volumen
+  deja el nivel a menos de 1 dB de 0 a 100. Cambiar de modo mientras suena no truena.
+- Hedgehog Mastering: Recorte antes del limitador con dureza de 0 a 9, Enlace estereo de 0 a 100 %, Soltar en
+  Perilla, Automatico o Instantaneo, Quitar corriente continua y Escuchar lo que se quita. Todo apagado de fabrica:
+  los masters guardados suenan igual. El asistente prende Quitar corriente continua si la mezcla la trae, y el
+  Recorte en Club y CD fuerte cuando el limitador trabaja de mas. 4 presets nuevos.
+- Lo que falta de esta tanda: el navegador de sonidos con 8 macros, las mejoras de Reverb y Reverb hibrida, el
+  sobremuestreo y el caracter del limitador, y que la mezcla automatica use el Separador.
+
+Novedades del 19 de noviembre (cinco plugins nuevos: Marmot, Opossum, Jerboa, Otter y Beaver; ya son 16):
+
+Racoon - Opossum FM (instrumento):
+- FM de seis operadores con 12 conexiones (Pila y sub, Abanico, Campana, Anillo, Grunido...). Cuatro formas por
+  operador (seno, medio seno, seno absoluto, cuarto de seno), relacion, fino, nivel, retro y envolvente propia.
+- Mordida (cuanto ensucian los moduladores), Retro, Metal (relaciones inarmonicas), caida de tono y Wobble: el LFO 1
+  abre el filtro y la mordida juntos al tempo. Filtro con modo Formante (vocales U, O, A, E, I).
+- Destruccion (tubo, plegado, rectificar) a doble frecuencia de muestreo, graves en mono debajo de la frecuencia que
+  elijas (24 dB por octava), eco y sala. Hasta 16 voces con unison de 8.
+- 23 sonidos de fabrica: bajos metalicos, grunidos, campanas oscuras una o dos octavas abajo, leads, subs y drones.
+- Medido: las bandas laterales de un indice 1 caen donde dice Bessel (-4.8 y -16.5 dB); aliasing -46 dB; graves en
+  mono a -28 dB en el lado.
+
+Racoon - Jerboa Time (efecto con MIDI):
+- Mueve el tiempo y el volumen del audio con patrones al tempo de la rola: tartamudeos, medio tiempo, reversas,
+  frenos y arranques de cinta, rebobinados, compuertas y rascados. 6 bancos de 24 patrones (Inicial, Build y drop,
+  Medio tiempo, Compuertas, Cinta, Rascados).
+- Las notas de Do 2 a Si 3 cambian de patron (de Do 4 a Si 5 solo cambia el volumen), justo en el siguiente 1/16,
+  1/8, 1/4 o compas. Rascar a mano, Mantener (repite el ultimo pedazo) y tono de cinta que se oscurece al frenar.
+- Ningun patron de fabrica acelera el audio: nada sale con voz de pito. En Directo deja pasar el audio exacto.
+- Aleatoria escribe las notas de cambio: golpes en el uno, rellenos y finales.
+
+Racoon - Otter Strings (instrumento):
+- Cuerdas y barras modeladas. Cinco formas de tocar: pulsar, golpear, frotar con arco, raspar o un iman que la
+  deja sonando. Tres resonadores: cuerda, barra (marimba, vibrafono, xilofono, lenguetas, placa, campana tubular,
+  cuenco) o los dos juntos.
+- Siete cuerpos (violonchelo, contrabajo, arpa, calabaza, caja de madera, tanque de metal, tubo afinado), seis
+  cuerdas simpaticas afinadas a una tonalidad, segunda cuerda por nota, rigidez, tension y Oscuridad.
+- 22 sonidos de fabrica: Arpa de carbon, Chelo de sotano, Kora del rio, Marimba de barro, Campana de pozo, Iman
+  grave, Drone de simpaticas... El mas brillante tiene el centro de su espectro en 883 Hz.
+- Medido: afinacion a menos de 0.7 cents en 5 notas y 3 frecuencias de muestreo; Caida 4 s da 4.00 s; 16 voces con
+  arco, cuerpo y sala usan 7 % de un nucleo.
+- Aleatoria escribe arpegios cuando se pulsa o golpea, pads con el arco o el iman y texturas raspando, y nunca sube
+  arriba de Mi 4.
+
+Racoon - Beaver Additive (instrumento):
+- Hasta 511 armonicos en dos capas. Cada capa sale de una Forma (sierra, cuadrada, triangulo, organo grave, vocal
+  oscura, hueca, respiro, sub), de un Dibujo de 64 barras, de un audio convertido en armonicos (Resintesis) o de una
+  imagen leida como espectro. Arrastra un WAV, AIFF, FLAC, MP3, PNG o JPG a la pantalla.
+- Mezcla A y B de tres maneras (fundido, espectral, por armonico), armonizador, pares e impares, inclinacion, dos
+  filtros que actuan armonico por armonico (con escalon de pared), barrido de huecos, difuminar en el tiempo y entre
+  armonicos, pulsado, unison de 8 y armonicos en estereo.
+- 6 materiales hechos por codigo (Voz de garganta, Coro de ceniza, Campana hundida, Arco de piedra, Viento de tunel,
+  Organo de basalto) y 2 imagenes. 20 sonidos de fabrica, todos con el centro del espectro debajo de 1200 Hz.
+- Medido: una sierra exacta armonico por armonico; aliasing debajo de -80 dB en Do 7; un audio de prueba con
+  vibrato se analiza con su afinacion a 1.2 cents y regresa con sus armonicos a 0.3 dB; 12 voces con unison 3 usan
+  24 % de un nucleo.
+- Lo que todavia no tiene: armonicos inarmonicos, resintesis de varias notas a la vez y el panel de Muestras.
+
+Racoon - Marmot Synth (instrumento, el plugin numero 12):
+- Racoon - Marmot Synth: el sinte de la familia para leads, plucks, stabs y arpegios. Hasta hoy la melodia solo la
+  tocaba Squirrel con sonidos grabados; Marmot la sintetiza. Dos osciladores (sierra, pulso con ancho, cuadrada,
+  triangulo), un sub una octava abajo, ruido, sync (el oscilador 2 vuelve a empezar con cada ciclo del 1) y
+  modulacion cruzada (el 2 mueve la frecuencia del 1, de grano a grunido metalico).
+- Filtro: paso altos para dejarle lugar al bajo, y un paso bajos de 12 o 24 dB (o paso banda) con resonancia y drive.
+  Dos envolventes (volumen y filtro), dos LFO con entrada lenta (el vibrato que llega tarde) y matriz de 6.
+- Arpegiador: arriba, abajo, arriba y abajo, al azar, como se toco o el acorde completo; de negras a fusas con
+  tresillos, de 1 a 4 octavas, duracion, swing y Sostener (sigue sonando al soltar las teclas).
+- Salida: saturacion, chorus de ensamble (I, II, I + II), graves y agudos, delay al tempo que rebota de lado a lado
+  y reverb.
+- 24 sonidos de fabrica, todos graves: leads (Linterna, Sotano, Hilo negro, Navaja...), plucks (Gota fria, Pluma de
+  cuervo...), stabs (Puerta de hierro, Bodega, Concreto), arpegios (Escalera, Tunel, Reloj, Satelite), polifonicos
+  (Humo, Neblina, Anden), bajos (Ruido de fondo, Raiz) y efectos (Sirena lejana, Oxido). Medido: el mas brillante
+  tiene 0.1 % de su energia arriba de 5 kHz.
+- Medido en las pruebas: aliasing bajo -49 dB en Do 7 con sierra, pulso y triangulo; con sync en Do 6 todo lo que
+  suena es armonico de la nota (lo demas a -48 dB); 16 voces con unison 6, sync y modulacion cruzada usan 24 % de un
+  nucleo.
+- En Racoon aparece en INSTRUMENTOS con su icono (la marmota) y la mezcla automatica lo trata como melodia. Los
+  bloques de cada genero todavia arrancan con Squirrel en la melodia; Marmot se agrega a mano.
 
 Ajustes del 28 de octubre (bloques que no se repiten y registro mas grave):
 - Cada bloque nuevo sale con su propia semilla: otro bajo, otro sonido de acordes, otro coro, otra textura y otro kit,

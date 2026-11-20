@@ -135,6 +135,10 @@ public:
     // effects: what plays into them when you press Play or touch the keyboard
     virtual bool hasDemoSource() const { return info.kind == PluginKind::effect; }
     virtual PreviewSound::Kind demoSourceKind() const { return PreviewSound::Kind::mix; }
+    // the demo source plays the dock's notes too; Jerboa's notes switch patterns, so its demo keeps only the beat
+    virtual bool demoPlaysNotes() const { return true; }
+    // the role the dock's Aleatoria writes for (empty = the one the animal's name gives); Otter changes it with its exciter
+    virtual juce::String aleatoriaRol() const { return {}; }
     std::atomic<bool> demoSourceOn { true };                // the editor can switch it off to hear your own input only
     // MIDI generators (Chipmunk, Mole) play the notes they write with their own sound
     virtual bool playsOwnMidi() const { return false; }
@@ -206,7 +210,7 @@ private:
     double seqBeat = 0.0;
     bool seqWas = false;
     std::bitset<128> seqSounding[16];
-    juce::MidiBuffer extraMidi;
+    juce::MidiBuffer extraMidi, noMidi;
     void ensurePattern();
     void runSequencer (juce::MidiBuffer& out, int numSamples);
     void runDsp (juce::AudioBuffer<float>&, juce::MidiBuffer&);

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Doble clic: compila e instala todo Racoon en esta Mac.
-# Los 11 plugins (Badger, Hamster, Dormouse, Squirrel, Chipmunk, Mole, Skunk, Ferret, Porcupine, Hedgehog, Chinchilla)
-# y Racoon, el estudio, con los 11 adentro. Al final deja un solo instalador .dmg para otras Macs.
+# Los 16 plugins (Badger, Hamster, Dormouse, Squirrel, Chipmunk, Mole, Skunk, Ferret, Porcupine, Hedgehog, Chinchilla, Marmot, Jerboa, Opossum, Otter, Beaver)
+# y Racoon, el estudio, con los 16 adentro. Al final deja un solo instalador .dmg para otras Macs.
 cd "$(dirname "$0")"
 TOP="$(pwd)"
 export RACOON_TODO=1
@@ -57,8 +57,8 @@ paso 0.36 0.04 "Bajando los efectos por genero"
 bash "$TOP/estudio/scripts/muestras/efectos.sh" 2>&1 | tee -a "$PASO_LOG"
 
 echo ""
-echo "=== 1 de 2: los 11 plugins ==="
-paso 0.40 0.34 "Paso 1 de 2: compilando los 11 plugins"
+echo "=== 1 de 2: los 16 plugins ==="
+paso 0.40 0.34 "Paso 1 de 2: compilando los 16 plugins"
 bash "$TOP/plugins/scripts/build_mac.sh" 2>&1 | tee -a "$PASO_LOG"
 if [ "${PIPESTATUS[0]}" -ne 0 ]; then STATUS=1; fi
 
@@ -75,7 +75,7 @@ if [ $STATUS -eq 0 ]; then
   mkdir -p "$TOP/Instalador"
   cp -f "$TOP"/estudio/dist/*.dmg "$TOP/Instalador/" 2>/dev/null || true
   paso 1 0 "FIN"
-  echo "Listo. Racoon esta en Aplicaciones con los 11 plugins, y tu DAW tambien los ve."
+  echo "Listo. Racoon esta en Aplicaciones con los 16 plugins, y tu DAW tambien los ve."
   echo "Para otra Mac usa el .dmg de la carpeta Instalador: trae todo junto."
   open "$TOP/Instalador" 2>/dev/null || true
   open -a Racoon 2>/dev/null || true

@@ -27,7 +27,7 @@
 // The same file lives in Racoon (Source/ui/Aleatorio.h) and in the family (Shared/Aleatorio.h): keep them equal.
 namespace racoon::aleatorio
 {
-enum class Rol { bateria, bajo, acordes, melodia, arpegio, textura, pad, coro, guitarra, percusion, voz };
+enum class Rol { bateria, bajo, acordes, melodia, arpegio, textura, pad, coro, guitarra, percusion, voz, cambios };
 
 // the groove family of the song
 enum class Estilo { cuatro, afro, trap, dnb, latino, boombap, ambient };
@@ -47,9 +47,20 @@ inline juce::String nombreRol (Rol r)
         case Rol::guitarra:  return "guitarra";
         case Rol::percusion: return juce::String::fromUTF8 ("percusión");
         case Rol::voz:       return "voz";
+        case Rol::cambios:   return "cambios";
     }
     return {};
 }
+
+// the role by its name ("arpegio", "pad"...), for plugins that pick it themselves; unknown names give melodia
+inline Rol rolPorNombre (const juce::String& n)
+{
+    for (auto r : { Rol::bateria, Rol::bajo, Rol::acordes, Rol::melodia, Rol::arpegio, Rol::textura, Rol::pad, Rol::coro, Rol::guitarra,
+                    Rol::percusion, Rol::voz, Rol::cambios })
+        if (nombreRol (r) == n) return r;
+    return Rol::melodia;
+}
+
 
 inline juce::String nombreEstilo (Estilo e)
 {
@@ -872,6 +883,38 @@ inline void melodia (const Opciones& o, juce::Random& rng, const std::vector<Bar
 }
 
 // ============================================================================================================ texture
+// Jerboa: pattern switches (notes 36-59 pick one of the bank's 24 patterns). The bank's slots follow a convention:
+// 36 Directo, 37-41 bases that can play whole bars, 42-53 fills, 54-59 endings. Every 4-bar phrase starts Directo
+// (or on a base held for the whole phrase); bar 4 ends with a fill, bar 2 sometimes too; the last phrase may end on
+// an ending instead. Short notes (the plugin keeps the pattern after the note-off).
+inline void cambios (const Opciones& o, juce::Random& rng, std::vector<Nota>& out)
+{
+    const int bars = juce::jmax (1, o.bars), bpb = juce::jmax (1, o.beatsPerBar);
+    int lastEnd = -1;
+    for (int ph = 0; ph < bars; ph += 4)
+    {
+        const bool base = ph > 0 && rng.nextInt (5) == 0;
+        const int baseNote = base ? 37 + rng.nextInt (5) : 36;
+        for (int b = ph; b < juce::jmin (bars, ph + 4); ++b)
+        {
+            const double bar0 = b * (double) bpb;
+            out.push_back ({ bar0, 0.25, b == 0 ? 36 : baseNote, 100 });
+            const bool lastOfPhrase = b == ph + 3 || b == bars - 1;
+            const bool lastOfClip = b == bars - 1;
+            if (lastOfPhrase)
+            {
+                const bool ending = lastOfClip && rng.nextInt (3) == 0 && lastEnd != b - 4;
+                const int note = ending ? 54 + rng.nextInt (6) : 42 + rng.nextInt (12);
+                const double at = bar0 + bpb - (rng.nextInt (10) < 6 || ending ? 1.0 : 2.0);
+                out.push_back ({ juce::jmax (bar0 + 0.5, at), 0.25, note, 100 });
+                if (ending) lastEnd = b;
+            }
+            else if (b == ph + 1 && rng.nextInt (10) < 3)
+                out.push_back ({ bar0 + bpb - 1.0, 0.25, 42 + rng.nextInt (12), 100 });
+        }
+    }
+}
+
 inline void textura (const Opciones& o, juce::Random& rng, const std::vector<Bar>& bars, std::vector<Nota>& out)
 {
     // each time another texture over the key: a pedal held through each phrase (the tonic low, its fifth, the octave
@@ -1731,7 +1774,9 @@ inline std::vector<Nota> generar (const Opciones& o)
     shape.bars = bars;
     shape.beatsPerBar = bpb;
 
-    if (! o.molde.empty())
+    if (o.rol == Rol::cambios)
+        cambios (shape, rng, out);                                // switches are never "varied": a new plan each time
+    else if (! o.molde.empty())
         out = variar (shape, rng, plan, bpb);
     else switch (o.rol)
     {
@@ -1746,6 +1791,7 @@ inline std::vector<Nota> generar (const Opciones& o)
         case Rol::melodia:   melodia (shape, rng, plan, steps, false, out); break;
         case Rol::voz:       melodia (shape, rng, plan, steps, true, out); break;
         case Rol::textura:   textura (shape, rng, plan, out); break;
+        case Rol::cambios:   break;
     }
     // nothing outside the clip, nothing shorter than a thirty-second
     const double end = bars * (double) bpb;
@@ -1774,6 +1820,10 @@ inline Rol rolDe (const juce::String& animal)
     if (a.contains ("ferret")) return Rol::guitarra;
     if (a.contains ("skunk")) return Rol::textura;
     if (a.contains ("chinchilla")) return Rol::voz;
+    if (a.contains ("jerboa")) return Rol::cambios;
+    if (a.contains ("beaver")) return Rol::pad;
+    if (a.contains ("otter")) return Rol::arpegio;
+    if (a.contains ("opossum")) return Rol::bajo;
     return Rol::melodia;     // Squirrel, anything else
 }
 

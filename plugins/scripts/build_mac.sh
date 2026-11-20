@@ -22,6 +22,11 @@ Ferret:RcFr:aumu:limon:Guitar
 Porcupine:RcPr:aumu:menta:Choir
 Hedgehog:RcHg:aufx:limon:Mastering
 Chinchilla:RcCn:aumf:rosa:Vocals
+Marmot:RcMr:aumu:limon:Synth
+Jerboa:RcJb:aumf:limon:Time
+Opossum:RcOp:aumu:rosa:FM
+Otter:RcOt:aumu:menta:Strings
+Beaver:RcBv:aumu:rosa:Additive
 "
 ONLY=("$@")
 wanted () {

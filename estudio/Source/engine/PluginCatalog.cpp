@@ -12,7 +12,9 @@ const StringArray& racoonProducts()
     // "Racoon - " first so they all sit together in the Applications folder and in any plugin list
     static StringArray a { "Racoon - Badger Bass", "Racoon - Hamster Drums", "Racoon - Dormouse Pads", "Racoon - Squirrel Sampler", "Racoon - Ferret Guitar",
                            "Racoon - Porcupine Choir", "Racoon - Chipmunk Chords", "Racoon - Mole Rhythm", "Racoon - Skunk Sound Design",
-                           "Racoon - Chinchilla Vocals", "Racoon - Hedgehog Mastering" };
+                           "Racoon - Chinchilla Vocals", "Racoon - Hedgehog Mastering", "Racoon - Marmot Synth",
+                           "Racoon - Opossum FM", "Racoon - Jerboa Time",
+                           "Racoon - Otter Strings", "Racoon - Beaver Additive" };
     return a;
 }
 
@@ -43,13 +45,18 @@ static String detailFor (const String& p)
     if (p.contains ("Porcupine"))  return "Coros SATB, cuerdas y metales";
     if (p.contains ("Ferret"))     return "Guitarras: rasgueos, arpegios, amplificador y pedales";
     if (p.contains ("Chinchilla")) return "Voces: canal para grabar, con afinación, armonías y vocoder"_u;
+    if (p.contains ("Marmot"))     return "Sinte de leads, plucks, stabs y arpegios con arpegiador";
+    if (p.contains ("Opossum"))    return "FM de seis operadores: bajos metálicos, gruñidos y campanas oscuras"_u;
+    if (p.contains ("Otter"))      return "Cuerdas y barras modeladas: arpa, arco, marimba y campanas";
+    if (p.contains ("Beaver"))     return "Sinte aditivo: resíntesis de audio, imágenes como espectro y filtros por armónico"_u;
+    if (p.contains ("Jerboa"))     return "Tiempo y volumen por patrones: tartamudeos, frenos de cinta, reversas y compuertas";
     return {};
 }
 
 static bool isInstrumentProduct (const String& p)
 {
     return p.contains ("Badger") || p.contains ("Hamster") || p.contains ("Dormouse") || p.contains ("Squirrel")
-        || p.contains ("Ferret") || p.contains ("Porcupine") || p.contains ("Chipmunk") || p.contains ("Mole");
+        || p.contains ("Ferret") || p.contains ("Porcupine") || p.contains ("Chipmunk") || p.contains ("Mole") || p.contains ("Marmot") || p.contains ("Opossum") || p.contains ("Otter") || p.contains ("Beaver");
 }
 
 Colour colourFor (const String& productName)
@@ -57,7 +64,7 @@ Colour colourFor (const String& productName)
     for (auto [animal, colour] : std::initializer_list<std::pair<const char*, uint32>> {
              { "Hamster", 0xff7fbfa8 }, { "Badger", 0xffe0789a }, { "Dormouse", 0xff7fbfa8 }, { "Squirrel", 0xffd9c452 },
              { "Chipmunk", 0xffe0789a }, { "Hedgehog", 0xffd9c452 }, { "Skunk", 0xffe0789a }, { "Mole", 0xff9a7b5c },
-             { "Porcupine", 0xff7fbfa8 }, { "Ferret", 0xffd98a4e }, { "Chinchilla", 0xffb9a3d9 } })
+             { "Porcupine", 0xff7fbfa8 }, { "Ferret", 0xffd98a4e }, { "Chinchilla", 0xffb9a3d9 }, { "Marmot", 0xffc78c54 }, { "Opossum", 0xffa9a39f }, { "Jerboa", 0xffdebb84 }, { "Otter", 0xff7fbfa8 }, { "Beaver", 0xffe0789a } })
         if (productName.containsIgnoreCase (animal)) return Colour (colour);
     return Colour (0xffd9c452);
 }
