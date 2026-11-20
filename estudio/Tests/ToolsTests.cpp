@@ -548,6 +548,75 @@ void sidechainInTheSong (Session& s, const File& out)
 
 namespace
 {
+// Aleatoria with a genre plays that genre's patterns: in bar 1 of every genre the kick, the bass and the hats are one of
+// the book's patterns (the random part only picks, varies velocities, fills the end of the phrase and grows later)
+void recipeSequences()
+{
+    std::cout << "aleatoria por genero" << std::endl;
+    using namespace racoon::aleatorio;
+    namespace rc = racoon::recetario;
+    auto stepsOf = [] (const char* pat, const char* hits)
+    {
+        std::set<int> v;
+        for (int i = 0; pat[i] != 0 && i < 16; ++i) if (std::strchr (hits, pat[i]) != nullptr) v.insert (i);
+        return v;
+    };
+    int genresOk = 0, tried = 0;
+    String wrong;
+    for (auto& r : rc::todas())
+        for (int seed = 1; seed <= 6; ++seed)
+        {
+            ++tried;
+            bool ok = true;
+            auto bar1 = [] (const std::vector<Nota>& v, std::function<bool (const Nota&)> f)
+            {
+                std::set<int> st;
+                for (auto& n : v) if (n.start < 4.0 - 1.0e-9 && f (n)) st.insert ((int) std::floor (n.start * 4.0 + 1.0e-6));
+                return st;
+            };
+            Opciones o; o.bars = 8; o.genero = r.id; o.seed = seed;
+            o.rol = Rol::bateria;
+            const auto drums = generar (o);
+            const auto kick = bar1 (drums, [&] (const Nota& n) { return n.pitch == o.drums.kick; });
+            bool kickIn = false;
+            for (auto* k : r.kicks) kickIn = kickIn || stepsOf (k, "xX") == kick;
+            if (! kickIn) { ok = false; wrong << r.id << " bombo; "; }
+            const auto hats = bar1 (drums, [&] (const Nota& n) { return n.pitch == o.drums.closedHat || n.pitch == o.drums.openHat; });
+            bool hatIn = r.tripletHats;
+            for (auto* h : r.hats) hatIn = hatIn || stepsOf (h, "xXoO") == hats;
+            if (! hatIn) { ok = false; wrong << r.id << " hats; "; }
+            o.rol = Rol::bajo;
+            const auto bass = generar (o);
+            const auto onsets = bar1 (bass, [] (const Nota&) { return true; });
+            bool bassIn = false;
+            for (auto* b : r.basses) bassIn = bassIn || stepsOf (b, "rodftsp") == onsets;
+            if (! bassIn) { ok = false; wrong << r.id << " bajo; "; }
+            // one note at a time on the bass
+            for (size_t k = 1; k < bass.size(); ++k) if (bass[k].start < bass[k - 1].start + bass[k - 1].length - 1.0e-6) { ok = false; wrong << r.id << " bajo encimado; "; break; }
+            if (ok) ++genresOk;
+        }
+    check (genresOk == tried, "Aleatoria por género: en "_u + String (genresOk) + " de " + String (tried) + " pruebas (" + String ((int) rc::todas().size())
+                               + " géneros, 6 semillas) el bombo, los hats y el bajo del compás 1 son patrones del recetario del género "_u + wrong);
+    // the variation lives inside the genre: different seeds give different parts, all of them from the book
+    std::set<String> houseBass;
+    for (int seed = 1; seed <= 20; ++seed)
+    {
+        Opciones o; o.bars = 4; o.genero = "house"; o.seed = seed; o.rol = Rol::bajo;
+        String sig;
+        for (auto& n : generar (o)) sig << n.pitch << "@" << n.start << ";";
+        houseBass.insert (sig);
+    }
+    check (houseBass.size() >= 8, "veinte semillas de bajo de house dan " + String ((int) houseBass.size()) + " líneas distintas"_u);
+    // a genre the book does not know falls back on the style of the tempo
+    {
+        Opciones o; o.bars = 4; o.genero = "polka"; o.seed = 3; o.rol = Rol::bateria;
+        check (! generar (o).empty(), "un género que el recetario no conoce cae en el estilo"_u);
+    }
+}
+}
+
+namespace
+{
 void randomSequences()
 {
     std::cout << "secuencias aleatorias" << std::endl;
@@ -1097,6 +1166,7 @@ int runToolsTests (Session& s, const File& out)
     toolFailures = 0;
     arrangementEdits (s);
     randomSequences();
+    recipeSequences();
     sidechainInTheSong (s, out);
     noteTools (s);
     audioTools();

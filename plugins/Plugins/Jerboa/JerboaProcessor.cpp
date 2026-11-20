@@ -50,6 +50,8 @@ AudioProcessorValueTreeState::ParameterLayout Processor::layout()
     P::ms (l, "inercia", "Inercia del plato", 5.0f, 400.0f, 80.0f, 80.0f);
     P::toggle (l, "mantener", "Mantener", false);
     P::choice (l, "mantlargo", "Mantener: largo", { "1/16", "1/8", "1/4", "1/2", "1 compás"_u }, 2);
+    // on a bus or the Master the notes of every channel arrive too: off, only the pattern and its automation switch it
+    P::toggle (l, "notas", "Cambiar con las notas", true);
     return l;
 }
 
@@ -114,6 +116,7 @@ void Processor::requestSwitch (int tp, int vp, float vel, double ppqNow)
 
 void Processor::handleMidi (const MidiMessage& m, double ppqNow)
 {
+    if (value ("notas") < 0.5f) return;
     if (m.isNoteOn())
     {
         const int n = m.getNoteNumber();

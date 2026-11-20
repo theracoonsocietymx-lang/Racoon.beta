@@ -125,7 +125,8 @@ static EditorSpec makeSpec()
             { "cambio", "Cambio", "Cuándo entra el patrón que pediste: al instante, en el siguiente 1/16, 1/8, 1/4 o en el compás."_u },
             { "arranque", "Arranque", "Sigue el compás: el patrón va pegado a la rola. Desde la nota: empieza donde tocas."_u },
             { "soltar", "Al soltar", "Qué pasa cuando sueltas la tecla que cambió el patrón."_u },
-            { "velvol", "Vel volumen", "Tocar suave baja el volumen del patrón."_u } }, true },
+            { "velvol", "Vel volumen", "Tocar suave baja el volumen del patrón."_u },
+            { "notas", "Con notas", "Apágalo con Jerboa en el Master o en un bus: ahí llegan las notas de todos los canales y lo cambiarían sin querer."_u } }, true },
         { "Volumen +", {
             { "vatk", "Ataque", "Qué tan rápido abre la línea de volumen."_u },
             { "vrel", "Relajación"_u, "Qué tan rápido cierra."_u } }, true },

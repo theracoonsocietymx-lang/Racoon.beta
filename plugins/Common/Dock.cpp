@@ -725,7 +725,9 @@ void SequencerDock::generateRandom (int64 seed)
 {
     aleatorio::Opciones o;
     o.rol = proc.aleatoriaRol().isNotEmpty() ? aleatorio::rolPorNombre (proc.aleatoriaRol()) : aleatorio::rolDe (proc.info.animal);
-    o.estilo = aleatorio::estiloDe ({}, proc.patternBpm());
+    // the genre of the song Racoon has open (none in another host): its patterns, or the style of the tempo
+    o.genero = recetario::generoActual();
+    o.estilo = aleatorio::estiloDe (o.genero, proc.patternBpm());
     if (o.rol == aleatorio::Rol::percusion) { o.drums.congaLo = o.drums.congaHi; o.drums.bongoLo = o.drums.bongoHi; }   // Mole: one conga, one bongo
     o.bars = jlimit (1, 16, proc.patternBars());
     o.beatsPerBar = 4;

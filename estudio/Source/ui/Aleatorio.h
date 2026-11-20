@@ -5,6 +5,8 @@
 #include <map>
 #include <set>
 #include <algorithm>
+#include <cstring>
+#include "Recetario.h"
 
 // "Aleatoria": a random sequence that follows the rules of the instrument it is for, not random notes.
 // Every part lives in 4-bar phrases (bar 4 answers or prepares the next phrase), one chord per bar from one
@@ -118,6 +120,8 @@ struct Opciones
     // were silent stay silent, the rhythm, the register, the size of the chords and the harmony stay; what changes
     // is what the rules of the instrument allow (another voicing, another bass colour, another melodic contour...)
     std::vector<Nota> molde;
+    // the song's genre (a Racoon genre id: "house", "psytrance"...): with it the patterns come from that genre's book
+    juce::String genero;
 };
 
 namespace detail
@@ -237,6 +241,326 @@ inline int weighted (juce::Random& rng, std::initializer_list<int> weights)
     int r = rng.nextInt (juce::jmax (1, total)), i = 0;
     for (int w : weights) { if (r < w) return i; r -= w; ++i; }
     return 0;
+}
+}
+
+// ============================================================================================================ the pattern book
+// When Aleatoria knows the song's genre it plays the patterns of that genre (Recetario.h) instead of building its own:
+// it picks one of the genre's kicks, backbeats, hats, bass cells, stabs, arpeggios and lead rhythms, and the random
+// part only does what a producer does with them: a sibling pattern on bar 2 or 3 of the phrase, the genre's own fill
+// at the end of the phrase, one bass note that takes the octave instead of the root, a busier hat line in the later
+// phrases, the velocity of each hit, the voicing of each chord.
+namespace detail
+{
+struct Paso { int step; char c; int hold; };       // a symbol of a pattern string, and how many '_' follow it
+inline std::vector<Paso> pasos (const char* s, int steps)
+{
+    std::vector<Paso> v;
+    if (s == nullptr) return v;
+    const int n = (int) std::strlen (s);
+    for (int i = 0; i < n && i < steps; ++i)
+    {
+        const char c = s[i];
+        if (c == '-' || c == '_') continue;
+        int h = 0;
+        while (i + 1 + h < n && i + 1 + h < steps && s[i + 1 + h] == '_') ++h;
+        v.push_back ({ i, c, h });
+    }
+    return v;
+}
+inline const char* elige (juce::Random& rng, const std::vector<const char*>& list)
+{
+    return list.empty() ? "" : list[(size_t) rng.nextInt ((int) list.size())];
+}
+// another pattern of the same list (the sibling of bar 2 or 3); the same one when there is no other
+inline const char* hermano (juce::Random& rng, const std::vector<const char*>& list, const char* a)
+{
+    if (list.size() < 2) return a;
+    for (int t = 0; t < 6; ++t) { auto* b = elige (rng, list); if (std::strcmp (b, a) != 0) return b; }
+    return a;
+}
+inline bool vacio (const char* s) { return s == nullptr || std::strspn (s, "-_") == std::strlen (s); }
+
+inline void bateriaReceta (const recetario::Receta& rc, const Opciones& o, juce::Random& rng, const std::vector<Bar>& bars, int steps, std::vector<Nota>& out)
+{
+    const double step = 0.25;
+    const auto& d = o.drums;
+    const char* kickA = elige (rng, rc.kicks);
+    const char* kickB = rng.nextInt (100) < 40 ? hermano (rng, rc.kicks, kickA) : kickA;
+    const char* backA = elige (rng, rc.backs);
+    const char* backB = rng.nextInt (100) < 35 ? hermano (rng, rc.backs, backA) : backA;
+    const char* hatA = elige (rng, rc.hats);
+    // the later phrases may take a busier hat line of the same genre (the part grows)
+    const char* hatGrow = rng.nextInt (100) < 50 ? hermano (rng, rc.hats, hatA) : hatA;
+    std::vector<const char*> perList;
+    for (auto* p : rc.percs) if (! vacio (p)) perList.push_back (p);
+    const char* perc = ! perList.empty() && rng.nextInt (100) < 45 ? elige (rng, perList) : "";
+    const bool triplets = rc.tripletHats && rng.nextInt (100) < 30;
+    const double swing = juce::jlimit (0.0, 0.4, (double) rc.swing + (rc.swing > 0.0f ? (rng.nextFloat() - 0.5) * 0.06 : 0.0));
+    const juce::String fills (rc.fills);
+    auto fillOf = [&] { return fills.isEmpty() ? 5 : fills[rng.nextInt (fills.length())] - '0'; };
+    auto percNote = [&] (char c)
+    {
+        switch (c)
+        {
+            case 'h': return d.shaker; case 'c': return d.congaHi; case 'l': return d.congaLo; case 'b': return d.cowbell;
+            case 'r': return d.rim; case 't': return d.tom; case 'p': return d.perc; default: return d.perc;
+        }
+    };
+    const int phrase = juce::jmin (4, (int) bars.size());
+    for (size_t b = 0; b < bars.size(); ++b)
+    {
+        auto& bar = bars[b];
+        const int ph = (int) b / juce::jmax (1, phrase);
+        const bool sib = bar.inPhrase == 1 || bar.inPhrase == 2;
+        const auto kick = pasos (sib && bar.inPhrase == 2 ? kickB : kickA, steps);
+        const auto back = pasos (sib && bar.inPhrase == 1 ? backB : backA, steps);
+        const auto hats = pasos (ph > 0 ? hatGrow : hatA, steps);
+        const auto pc2 = pasos (perc, steps);
+        const bool fill = bar.phraseEnd && bars.size() > 1 && rng.nextInt (100) < 85;
+        const int fk = fill ? fillOf() : 5;
+        const int fillFrom = fk == 0 && rng.nextBool() ? steps - 8 : steps - 4;
+        if (bar.inPhrase == 0 && ph > 0 && rng.nextBool()) out.push_back ({ bar.start, 1.0, d.crash, humanVel (rng, 92) });
+        auto at = [&] (int i) { return bar.start + i * step + (i % 2 == 1 ? step * swing : 0.0); };
+        auto inFill = [&] (int i) { return fk != 5 && i >= fillFrom; };
+        for (auto& k : kick)
+        {
+            if (fk == 3 && inFill (k.step)) continue;
+            if ((fk == 0 || fk == 1) && inFill (k.step) && k.step > fillFrom) continue;
+            out.push_back ({ at (k.step), step, d.kick, humanVel (rng, k.c == 'X' ? 122 : (k.step % 4 == 0 ? 114 : 100), 4) });
+        }
+        for (auto& s : back)
+        {
+            if (inFill (s.step) && fk <= 3) continue;
+            const double t = at (s.step);
+            const int v = humanVel (rng, 104, 5);
+            switch (s.c)
+            {
+                case 'c': out.push_back ({ t, step, d.clap, v }); break;
+                case 's': out.push_back ({ t, step, d.snare, v }); break;
+                case 'b': out.push_back ({ t, step, d.clap, v }); out.push_back ({ t, step, d.snare, v - 10 }); break;
+                case 'r': out.push_back ({ t, step, d.rim, v - 8 }); break;
+                case 'g': out.push_back ({ t, step * 0.5, d.snare, humanVel (rng, 40, 6) }); break;
+                default: break;
+            }
+        }
+        if (! triplets)
+            for (auto& h : hats)
+            {
+                if (fk == 3 && inFill (h.step)) continue;
+                const double t = at (h.step);
+                if (h.c == 'O') { out.push_back ({ t, step * 1.6, d.openHat, humanVel (rng, 86, 5) }); continue; }
+                const int v = h.c == 'X' ? 100 : (h.c == 'o' ? 56 : (h.step % 4 == 2 ? 84 : (h.step % 2 == 0 ? 74 : 60)));
+                out.push_back ({ t, step * 0.5, d.closedHat, humanVel (rng, v, 5) });
+                // trap and drill: rolls of thirty-seconds or sixteenth triplets, more of them at the end of the bar
+                if (rc.hatRolls && h.step % 2 == 0 && rng.nextInt (100) < (h.step >= steps - 4 ? 30 : 12))
+                {
+                    const int n = rng.nextBool() ? 2 : 3;
+                    for (int r = 1; r < n; ++r) out.push_back ({ t + r * step / n, step / n, d.closedHat, humanVel (rng, 58 + r * 8, 4) });
+                }
+            }
+        else
+            for (int beat = 0; beat < steps / 4; ++beat)
+                for (int k3 = 0; k3 < 3; ++k3)
+                {
+                    const double t = bar.start + beat + k3 / 3.0;
+                    if (fk == 3 && t >= bar.start + fillFrom * step) continue;
+                    out.push_back ({ t, 0.15, d.closedHat, humanVel (rng, k3 == 0 ? 86 : 62, 5) });
+                }
+        // the genre's percussion layer comes in from the second phrase (or from the start half the time)
+        if (ph > 0 || rng.nextBool())
+            for (auto& p : pc2)
+                if (! inFill (p.step)) out.push_back ({ at (p.step), 0.2, percNote (p.c), humanVel (rng, p.c == 'h' ? (p.step % 4 == 2 ? 78 : 64) : 80, 6) });
+        if (fk != 5)
+            for (int i = fillFrom; i < steps; ++i)
+            {
+                const double t = at (i);
+                const int k2 = i - fillFrom, n = steps - fillFrom;
+                switch (fk)
+                {
+                    case 0: out.push_back ({ t, step * 0.5, d.snare, juce::jlimit (1, 127, 62 + k2 * (56 / juce::jmax (1, n))) }); break;
+                    case 1: { const int toms[] { d.tomHi, d.tomHi, d.tom, d.tom, d.tomLo, d.tomLo, d.tomLo, d.tomLo };
+                              out.push_back ({ t, step, toms[juce::jlimit (0, 7, k2 * 8 / juce::jmax (1, n))], juce::jlimit (1, 127, 88 + k2 * 4) }); break; }
+                    case 2: if (i % 2 == 0 || k2 >= n - 2) out.push_back ({ t, step * 0.5, d.clap, juce::jlimit (1, 127, 76 + k2 * 8) }); break;
+                    case 4: if (k2 == n - 2) out.push_back ({ t, step * 2.0, d.openHat, 100 }); break;
+                    default: break;
+                }
+            }
+    }
+}
+
+inline void percusionReceta (const recetario::Receta& rc, const Opciones& o, juce::Random& rng, const std::vector<Bar>& bars, int steps, std::vector<Nota>& out)
+{
+    const auto& d = o.drums;
+    std::vector<const char*> list;
+    for (auto* p : rc.percs) if (! vacio (p)) list.push_back (p);
+    // one or two of the genre's figures (they are written to answer each other); the second one comes in later
+    const char* a = elige (rng, list);
+    const char* b = rng.nextInt (100) < 55 ? hermano (rng, list, a) : "";
+    if (b == a) b = "";
+    auto note = [&] (char c)
+    {
+        switch (c)
+        {
+            case 'h': return d.shaker; case 'c': return d.congaHi; case 'l': return d.congaLo; case 'b': return d.cowbell;
+            case 'r': return d.rim; case 't': return d.tom; case 'p': return d.perc; default: return d.perc;
+        }
+    };
+    const bool hands = juce::String (a).containsAnyOf ("cl") || juce::String (b).containsAnyOf ("cl");
+    const int phrase = juce::jmin (4, (int) bars.size());
+    for (size_t k = 0; k < bars.size(); ++k)
+    {
+        auto& bar = bars[k];
+        const bool roll = hands && bar.phraseEnd && bars.size() > 1 && rng.nextInt (100) < 60;
+        for (int pass = 0; pass < 2; ++pass)
+        {
+            if (pass == 1 && (k < (size_t) phrase && bars.size() > (size_t) phrase)) continue;
+            for (auto& p : pasos (pass == 0 ? a : b, steps))
+            {
+                if (roll && p.step >= steps - 4) continue;
+                out.push_back ({ bar.start + p.step * 0.25 + (p.step % 2 ? 0.25 * rc.swing : 0.0), p.c == 'h' ? 0.15 : 0.22, note (p.c),
+                                 humanVel (rng, p.c == 'h' ? (p.step % 4 == 2 ? 80 : 64) : (p.step % 4 == 0 ? 86 : 78), 6) });
+            }
+        }
+        if (roll)
+            for (int i = steps - 4; i < steps; ++i)
+                out.push_back ({ bar.start + i * 0.25, 0.22, i % 2 == 0 ? d.congaHi : d.congaLo, juce::jlimit (1, 127, 76 + (i - (steps - 4)) * 10) });
+    }
+}
+
+inline void bajoReceta (const recetario::Receta& rc, const Opciones& o, juce::Random& rng, const std::vector<Bar>& bars, int steps, std::vector<Nota>& out)
+{
+    const double step = 0.25;
+    const char* a = elige (rng, rc.basses);
+    const char* b = rng.nextInt (100) < 40 ? hermano (rng, rc.basses, a) : a;
+    auto cellA = pasos (a, steps), cellB = pasos (b, steps);
+    if (cellA.empty()) cellA = { { 0, 'r', 3 } };
+    if (cellB.empty()) cellB = cellA;
+    // one note of the cell may take the octave instead of the root (or the other way): the same line, another colour
+    if (cellA.size() > 2 && rng.nextInt (100) < 35)
+    {
+        auto& n = cellA[(size_t) (1 + rng.nextInt ((int) cellA.size() - 1))];
+        if (n.c == 'r') n.c = 'o'; else if (n.c == 'o') n.c = 'r';
+    }
+    const int base = o.root >= 3 ? 24 : 36;
+    const int tonic = base + o.root;
+    auto place = [&] (int deg)
+    {
+        int p = degreePitch (base, o.root, o.minor, deg);
+        while (p > tonic + 12) p -= 12;
+        while (p < juce::jmax (24, tonic - 5)) p += 12;
+        return p;
+    };
+    for (auto& bar : bars)
+    {
+        auto c = (bar.inPhrase == 1 || bar.inPhrase == 3) && ! bar.last ? cellB : cellA;
+        const int total = (int) bar.length * 4;
+        // the end of the phrase: a pickup into the next chord when the line leaves room for it
+        bool roomAtEnd = true;
+        for (auto& n : c) if (n.step + n.hold >= 13) roomAtEnd = false;
+        if (bar.phraseEnd && ! bar.last && total >= 16 && roomAtEnd && ! rc.bassLegato && rng.nextBool())
+        { c.push_back ({ 14, 'p', 0 }); }
+        for (size_t k = 0; k < c.size(); ++k)
+        {
+            const double t = bar.start + c[k].step * step;
+            const double next = k + 1 < c.size() ? bar.start + c[k + 1].step * step : bar.start + total * step;
+            const int root = place (bar.degree);
+            int p = root;
+            switch (c[k].c)
+            {
+                case 'o': p = root + 12; if (p > 52) p -= 24; if (p < tonic - 12) p += 12; break;
+                case 'd': p = root - 12; if (p < 24) p += 12; break;
+                case 'f': p = place (bar.degree + 4); break;
+                case 't': p = place (bar.degree + 2); break;
+                case 's': p = place (bar.degree + 6); if (p > root + 12) p -= 12; break;
+                case 'p':
+                {
+                    const int target = place (bar.next);
+                    p = rng.nextBool() ? place (bar.next + 1) : place (bar.next - 1);
+                    if (std::abs (p - target) > 3) p = target + (rng.nextBool() ? 1 : -1);
+                    break;
+                }
+                default: break;
+            }
+            double len;
+            if (c[k].hold > 0) len = juce::jmin ((c[k].hold + 1) * step * 0.97, next - t);
+            else if (rc.bassLegato) len = (next - t) * 0.98;
+            else len = juce::jmax (step * 0.9, juce::jmin (next - t, step * 4.0) * rc.bassGate);
+            out.push_back ({ t, juce::jmin (len, next - t), clampPitch (p), humanVel (rng, c[k].step % 4 == 0 ? 112 : 100, 6) });
+        }
+    }
+}
+
+inline void acordesReceta (const recetario::Receta& rc, const Opciones& o, juce::Random& rng, const std::vector<Bar>& bars, int steps, std::vector<Nota>& out)
+{
+    const char* a = elige (rng, rc.stabs);
+    const char* b = rng.nextInt (100) < 35 ? hermano (rng, rc.stabs, a) : a;
+    auto cellA = pasos (a, steps), cellB = pasos (b, steps);
+    if (cellA.empty()) cellA = { { 0, 'x', 15 } };
+    if (cellB.empty()) cellB = cellA;
+    const int colour = weighted (rng, { 25, 30, 20, 12, 13 });
+    auto pcsFor = [&] (int degree)
+    {
+        auto pcs = chordPcs (o, degree, colour == 1 || colour == 2);
+        const int ninth = pc (degreePitch (0, o.root, o.minor, degree + 1));
+        if (colour == 2) pcs[2] = ninth;
+        if (colour == 3) pcs[1] = ninth;
+        if (colour == 4) pcs.push_back (ninth);
+        return pcs;
+    };
+    const int lo = 45 + rng.nextInt (5), hi = lo + 22;
+    std::vector<int> prev;
+    for (auto& bar : bars)
+    {
+        const auto v = voiceLead (pcsFor (bar.degree), lo, hi, prev);
+        prev = v;
+        const auto nv = voiceLead (pcsFor (bar.next), lo, hi, v);
+        const auto& c = bar.inPhrase == 1 ? cellB : cellA;
+        for (size_t k = 0; k < c.size(); ++k)
+        {
+            const double t = bar.start + c[k].step * 0.25 + (c[k].step % 2 ? 0.25 * rc.swing : 0.0);
+            const double next = k + 1 < c.size() ? bar.start + c[k + 1].step * 0.25 : bar.start + bar.length;
+            const double len = c[k].hold > 0 ? (c[k].hold + 1) * 0.25 * 0.96 : juce::jmin ((double) rc.stabGate, (next - t) * 0.95);
+            const bool push = bar.phraseEnd && ! bar.last && k + 1 == c.size() && c[k].step >= 10 && bar.next != bar.degree;
+            for (int p : push ? nv : v)
+                out.push_back ({ t, juce::jmin (len, next - t), clampPitch (p), humanVel (rng, c[k].step % 4 == 0 ? 92 : 98, 5) });
+        }
+    }
+}
+
+inline void arpegioReceta (const recetario::Receta& rc, const Opciones& o, juce::Random& rng, const std::vector<Bar>& bars, std::vector<Nota>& out)
+{
+    const int steps = o.beatsPerBar * 4;
+    const char* a = elige (rng, rc.arps);
+    const char* b = rng.nextInt (100) < 30 ? hermano (rng, rc.arps, a) : a;
+    const auto cellA = pasos (a, steps), cellB = pasos (b, steps);
+    const int base = 48;
+    for (auto& bar : bars)
+    {
+        // the chord's tones: root, third, fifth, the three an octave up, and the seventh
+        std::vector<int> tones;
+        for (int oct = 0; oct < 2; ++oct)
+            for (int dg : { 0, 2, 4 }) tones.push_back (degreePitch (base, o.root, o.minor, bar.degree + dg + oct * 7));
+        tones.push_back (degreePitch (base, o.root, o.minor, bar.degree + 6));
+        while (tones[5] > 77) for (auto& t : tones) t -= 12;
+        const auto& c = bar.inPhrase == 2 ? cellB : cellA;
+        for (size_t k = 0; k < c.size(); ++k)
+        {
+            const int idx = juce::jlimit (0, 6, c[k].c - '0');
+            const double t = bar.start + c[k].step * 0.25;
+            const double next = k + 1 < c.size() ? bar.start + c[k + 1].step * 0.25 : bar.start + bar.length;
+            const double len = c[k].hold > 0 ? (c[k].hold + 1) * 0.25 * 0.95 : juce::jmin (0.25 * 0.85, (next - t) * 0.9) + (next - t > 0.3 ? 0.1 : 0.0);
+            out.push_back ({ t, len, clampPitch (tones[(size_t) idx]), humanVel (rng, c[k].step % 4 == 0 ? 100 : (c[k].step % 2 == 0 ? 88 : 78), 4) });
+        }
+    }
+}
+
+// the rhythm of a lead out of the genre's book (null when the genre has none)
+inline std::vector<int> ritmoLead (const recetario::Receta& rc, juce::Random& rng, int steps)
+{
+    std::vector<int> v;
+    for (auto& p : pasos (elige (rng, rc.leads), steps)) v.push_back (p.step);
+    return v;
 }
 }
 
@@ -784,8 +1108,15 @@ inline void melodia (const Opciones& o, juce::Random& rng, const std::vector<Bar
         if (o.estilo == Estilo::ambient) chance = i % 8 == 0 ? 80 : 6;
         if (rng.nextInt (100) < chance) rhythm.push_back (i);
     }
+    // the genre's own lead rhythms when the song has a genre (a melody keeps the rhythm of its genre)
+    const auto* rc = sung ? nullptr : recetario::receta (o.genero);
+    if (rc != nullptr && ! rc->leads.empty())
+    {
+        auto r = ritmoLead (*rc, rng, steps);
+        if (r.size() >= 2) rhythm = r;
+    }
     // four times in ten, a rhythm of the book instead: syncopated motifs that dance music melodies use
-    if (! sung && o.estilo != Estilo::ambient && rng.nextInt (100) < 40)
+    else if (! sung && o.estilo != Estilo::ambient && rng.nextInt (100) < 40)
         rhythm = fit (pick (rng, { { 0, 3, 6, 10 }, { 0, 2, 3, 6, 8, 10, 11 }, { 2, 4, 7, 10, 12 }, { 0, 6, 8, 14 }, { 0, 3, 6, 8, 11 },
                                    { 2, 6, 7, 10 }, { 0, 4, 6, 7, 10 }, { 0, 3, 4, 7, 10, 12 } }), steps);
     while ((int) rhythm.size() < 3)
@@ -794,8 +1125,11 @@ inline void melodia (const Opciones& o, juce::Random& rng, const std::vector<Bar
         if (std::find (rhythm.begin(), rhythm.end(), i) == rhythm.end()) rhythm.push_back (i);
     }
     std::sort (rhythm.begin(), rhythm.end());
-    while ((int) rhythm.size() > maxNotes) rhythm.erase (rhythm.begin() + 1 + rng.nextInt ((int) rhythm.size() - 1));
-    if (rhythm.back() >= steps - 2 && rhythm.size() > 3) rhythm.pop_back();          // room to breathe at the end of the bar
+    if (rc == nullptr || rc->leads.empty())
+    {
+        while ((int) rhythm.size() > maxNotes) rhythm.erase (rhythm.begin() + 1 + rng.nextInt ((int) rhythm.size() - 1));
+        if (rhythm.back() >= steps - 2 && rhythm.size() > 3) rhythm.pop_back();
+    }          // room to breathe at the end of the bar
 
     // the motif in scale degrees: a chord tone to start, then mostly steps; a leap (3 or 4 degrees at most) turns back
     std::vector<int> motif;
@@ -1773,11 +2107,25 @@ inline std::vector<Nota> generar (const Opciones& o)
     auto shape = o;
     shape.bars = bars;
     shape.beatsPerBar = bpb;
+    if (o.genero.isNotEmpty()) shape.estilo = estiloDe (o.genero, 0.0);
 
     if (o.rol == Rol::cambios)
         cambios (shape, rng, out);                                // switches are never "varied": a new plan each time
     else if (! o.molde.empty())
         out = variar (shape, rng, plan, bpb);
+    else if (auto* rc = recetario::receta (o.genero); rc != nullptr
+             && (o.rol == Rol::bateria || o.rol == Rol::bajo || o.rol == Rol::acordes || o.rol == Rol::arpegio
+                 || (o.rol == Rol::percusion && std::any_of (rc->percs.begin(), rc->percs.end(), [] (const char* q) { return ! vacio (q); }))))
+    {
+        switch (o.rol)
+        {
+            case Rol::bateria:   bateriaReceta (*rc, shape, rng, plan, steps, out); break;
+            case Rol::percusion: percusionReceta (*rc, shape, rng, plan, steps, out); break;
+            case Rol::bajo:      bajoReceta (*rc, shape, rng, plan, steps, out); break;
+            case Rol::acordes:   acordesReceta (*rc, shape, rng, plan, steps, out); break;
+            default:             arpegioReceta (*rc, shape, rng, plan, out); break;
+        }
+    }
     else switch (o.rol)
     {
         case Rol::bateria:   bateria (shape, rng, plan, steps, out); break;

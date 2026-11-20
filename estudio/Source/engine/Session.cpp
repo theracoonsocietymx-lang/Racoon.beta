@@ -14,6 +14,8 @@
 #include "DJ.h"
 #include "Gusto.h"
 #include "Arranger.h"
+#include "ui/Recetario.h"
+#include "ui/Aleatorio.h"
 
 namespace racoon
 {
@@ -85,6 +87,7 @@ Session::Session (te::Engine& e, RacoonUIBehaviour* behaviour)
 
 Session::~Session()
 {
+    racoon::recetario::guardarGenero ({});
     stopTimer();
     muteSoloTimer.stopTimer();
     if (edit != nullptr)
@@ -179,6 +182,8 @@ void Session::adopt (std::unique_ptr<te::Edit> newEdit, const File& file, bool i
     edit->filePathResolver = [this] (const String& p) { return resolveAudioPath (currentFile, p); };
     edit->playInStopEnabled = true;
     selection.edit = edit.get();
+    // the plugins' Aleatoria follows the genre of the song that is open
+    racoon::recetario::guardarGenero (edit->state.getProperty ("racoonGenre").toString());
 
     if (ui != nullptr)
     {
@@ -1532,6 +1537,44 @@ int Session::splitHamsterOutputs (te::AudioTrack& t, int numOutputs)
 #include "TarareoSession.inc"
 #include "DjSession.inc"
 
+namespace
+{
+// the part each newer animal plays in a genre's block ("" = it does not play there), and whether Jerboa makes the
+// transitions on the Master. Marmot: arp or stab; Opossum: growl (a mid bass over the sub), metal (stabs an octave
+// over the bass) or campana (dark bells in the break); Otter: pulsada (harp, kora, koto), golpeada (marimba, balafon)
+// or frotada (bowed, long notes); Beaver: pad (the break and the last phrase) or textura (the intro and the break)
+struct PartesNuevas { const char* marmot; const char* opossum; const char* otter; const char* beaver; bool jerboa; };
+PartesNuevas partesNuevas (const String& id)
+{
+    static const std::map<String, PartesNuevas> m {
+        { "house", { "", "campana", "", "pad", true } },          { "deephouse", { "", "", "golpeada", "pad", true } },
+        { "techhouse", { "", "metal", "", "textura", true } },    { "afrohouse", { "", "", "pulsada", "textura", true } },
+        { "organichouse", { "", "", "pulsada", "pad", true } },   { "progressive", { "arp", "", "", "pad", true } },
+        { "nudisco", { "arp", "", "", "", true } },               { "indiedance", { "arp", "", "", "textura", true } },
+        { "melodictechno", { "arp", "", "", "pad", true } },      { "techno", { "", "metal", "", "textura", true } },
+        { "hardtechno", { "", "metal", "", "textura", true } },   { "minimal", { "", "", "golpeada", "textura", true } },
+        { "acid", { "", "", "", "textura", true } },              { "trance", { "arp", "", "", "pad", true } },
+        { "psytrance", { "arp", "", "", "textura", true } },      { "hardstyle", { "arp", "", "", "pad", true } },
+        { "hightempo", { "", "", "pulsada", "pad", true } },      { "electro", { "arp", "metal", "", "", true } },
+        { "synthwave", { "arp", "", "", "pad", true } },          { "dnb", { "", "growl", "", "pad", true } },
+        { "liquid", { "", "", "pulsada", "pad", true } },         { "jungle", { "", "growl", "", "textura", true } },
+        { "dubstep", { "", "growl", "", "textura", true } },      { "futurebass", { "arp", "", "", "pad", true } },
+        { "ukgarage", { "", "campana", "", "pad", true } },       { "breakbeat", { "", "growl", "", "textura", true } },
+        { "jerseyclub", { "", "campana", "", "", true } },        { "trap", { "", "campana", "pulsada", "", true } },
+        { "drill", { "", "campana", "pulsada", "", true } },      { "phonk", { "", "metal", "", "textura", true } },
+        { "reggaeton", { "", "", "golpeada", "", true } },        { "dembow", { "", "", "golpeada", "", true } },
+        { "moombahton", { "", "growl", "golpeada", "", true } },  { "dancehall", { "", "", "golpeada", "", true } },
+        { "cumbia", { "", "", "golpeada", "", true } },           { "afrobeats", { "", "", "golpeada", "pad", true } },
+        { "amapiano", { "", "", "golpeada", "pad", true } },      { "hiphop", { "", "campana", "pulsada", "", true } },
+        { "lofi", { "", "", "pulsada", "textura", true } },       { "rnb", { "", "", "pulsada", "pad", true } },
+        { "funk", { "stab", "", "", "", true } },                 { "disco", { "arp", "", "", "", true } },
+        { "pop", { "arp", "", "", "pad", true } },                { "downtempo", { "", "", "pulsada", "pad", false } },
+        { "ambient", { "", "", "frotada", "textura", false } } };
+    if (auto it = m.find (id); it != m.end()) return it->second;
+    return { "", "", "", "pad", true };
+}
+}
+
 void Session::buildBlockTemplate (const Genre& g)
 {
     setBpm (g.bpm);
@@ -1539,6 +1582,7 @@ void Session::buildBlockTemplate (const Genre& g)
     for (auto* t : te::getAudioTracks (*edit))
         edit->deleteTrack (t);
     edit->state.setProperty ("racoonGenre", String (g.id), nullptr);
+    racoon::recetario::guardarGenero (g.id);
     edit->state.setProperty ("racoonKey", keyName (g.key, g.major) + " (" + camelot (g.key, g.major) + ")", nullptr);
     edit->state.setProperty ("racoonKeyRoot", g.key, nullptr);
     edit->state.setProperty ("racoonKeyMajor", g.major, nullptr);
@@ -2162,13 +2206,205 @@ void Session::buildBlockTemplate (const Genre& g)
             }
         }
 
+    // ---- the newer animals: Marmot, Opossum, Otter and Beaver where their genre uses them, each one playing that
+    // genre's patterns (the same book Aleatoria uses), in the phrases where it fits, with an automation that moves it
+    // through the block; Jerboa on the Master makes the transitions at the end of the phrases
+    // RACOON_SIN_NUEVOS: the block as it was before the newer animals (to compare by ear and in the tests)
+    // (a list of names leaves out only those: "jerboa,beaver")
+    auto np = partesNuevas (g.id);
+    {
+        const auto sin = SystemStats::getEnvironmentVariable ("RACOON_SIN_NUEVOS", {}).toLowerCase();
+        if (sin == "1") np = { "", "", "", "", false };
+        if (sin.contains ("marmot")) np.marmot = "";
+        if (sin.contains ("opossum")) np.opossum = "";
+        if (sin.contains ("otter")) np.otter = "";
+        if (sin.contains ("beaver")) np.beaver = "";
+        if (sin.contains ("jerboa")) np.jerboa = false;
+    }
+    te::AudioTrack* marmot = nullptr, *opossum = nullptr, *otter = nullptr, *beaver = nullptr;
+    te::Plugin::Ptr jerboa;
+    {
+        namespace al = racoon::aleatorio;
+        const std::vector<int> prog { g.prog[0], g.prog[1], g.prog[2], g.prog[3] };
+        auto generate = [&] (al::Rol rol, int salt)
+        {
+            al::Opciones o;
+            o.rol = rol; o.bars = (int) bars; o.beatsPerBar = (int) bpb; o.root = g.key; o.minor = ! g.major;
+            o.seed = (int64) blockSeed * 7919 + salt; o.genero = g.id; o.estilo = al::estiloDe (g.id, g.bpm); o.progresion = prog;
+            return al::generar (o);
+        };
+        auto write = [&] (te::AudioTrack* t, const std::vector<al::Nota>& notes, std::function<bool (int)> plays, int shift, const String& clipName)
+        {
+            if (t == nullptr) return;
+            if (auto* c = createMidiClip (*t, { 0_bp, bp (beats) }, clipName))
+            {
+                auto& s = c->getSequence();
+                for (auto n : notes)
+                {
+                    const int bar = (int) std::floor (n.start / bpb + 1.0e-9);
+                    if (! plays (bar)) continue;
+                    int pitch = n.pitch + shift;
+                    // the harmonic minor genres: on the V chord the seventh of the scale goes up (the leading tone of the pads)
+                    if (g.harmonic && ! g.major && mod7 (chordOf (bar)) == 4 && ((pitch - g.key) % 12 + 12) % 12 == 10) ++pitch;
+                    double len = n.length;
+                    const double barEnd = (bar + 1) * bpb;
+                    if (n.start + len > barEnd && ! plays (bar + 1)) len = barEnd - n.start;   // it stops where the part rests
+                    s.addNote (jlimit (0, 127, pitch), bp (n.start), bd (jmax (0.03, len)), jlimit (1, 127, n.velocity), 0, um);
+                }
+                if (s.getNumNotes() == 0) c->removeFromParent();
+            }
+        };
+        auto meanPitch = [] (const std::vector<al::Nota>& v) { double m = 0.0; for (auto& n : v) m += n.pitch; return v.empty() ? 60.0 : m / (double) v.size(); };
+        auto octaveTo = [&] (const std::vector<al::Nota>& v, double centre) { return 12 * (int) std::round ((centre - meanPitch (v)) / 12.0); };
+        auto inBars = [] (std::initializer_list<std::pair<int, int>> ranges)
+        {
+            std::vector<std::pair<int, int>> r (ranges);
+            return std::function<bool (int)> ([r] (int bar) { for (auto& [a, b] : r) if (bar >= a && bar <= b) return true; return false; });
+        };
+        auto part = [] (te::AudioTrack* t, const char* parte) { if (t != nullptr) t->state.setProperty ("racoonParte", String (parte), nullptr); };
+
+        if (*np.marmot != 0)
+        {
+            marmot = midiTrack ("Racoon - Marmot Synth", String::fromUTF8 (std::strcmp (np.marmot, "stab") == 0 ? "Marmot · Stabs" : "Marmot · Arpegio"));
+            part (marmot, np.marmot);
+            if (std::strcmp (np.marmot, "stab") == 0) write (marmot, generate (al::Rol::acordes, 11), inBars ({ { 4, 7 }, { 12, 15 } }), 0, "Stabs");
+            else write (marmot, generate (al::Rol::arpegio, 11), inBars ({ { 4, 7 }, { 10, 15 } }), 0, "Arpegio");
+        }
+        if (*np.opossum != 0)
+        {
+            const String p (np.opossum);
+            opossum = midiTrack ("Racoon - Opossum FM", String::fromUTF8 (p == "growl" ? "Opossum · Gruñido" : p == "metal" ? "Opossum · Metal" : "Opossum · Campanas"));
+            part (opossum, np.opossum);
+            if (p == "growl") write (opossum, generate (al::Rol::bajo, 12), inBars ({ { 12, 15 } }), 12, String::fromUTF8 ("Gruñido"));
+            else if (p == "metal")
+            {
+                // metal stabs on the genre's bass cell, an octave over the bass (the roots of the chords, one at a time)
+                const auto line = generate (al::Rol::bajo, 12);
+                write (opossum, line, inBars ({ { 4, 7 }, { 12, 15 } }), octaveTo (line, 52.0), "Metal");
+            }
+            else
+            {
+                // the bells' presets play one or two octaves down: written around E4, they sound low
+                const auto bells = generate (al::Rol::melodia, 12);
+                write (opossum, bells, inBars ({ { 8, 11 }, { 15, 15 } }), octaveTo (bells, 64.0), "Campanas");
+            }
+        }
+        if (*np.otter != 0)
+        {
+            const String p (np.otter);
+            otter = midiTrack ("Racoon - Otter Strings", String::fromUTF8 (p == "frotada" ? "Otter · Cuerdas" : "Otter · Arpegio"));
+            part (otter, np.otter);
+            if (p == "frotada") write (otter, generate (al::Rol::pad, 13), inBars ({ { 0, 15 } }), 0, "Cuerdas");
+            else
+            {
+                const auto arp = generate (al::Rol::arpegio, 13);
+                const bool bellsInBreak = String (np.opossum) == "campana";
+                write (otter, arp, bellsInBreak ? inBars ({ { 4, 7 }, { 12, 15 } }) : inBars ({ { 4, 7 }, { 10, 15 } }), octaveTo (arp, 60.0), "Arpegio");
+            }
+            // the sympathetic strings in the song's key
+            for (auto* prm : paramsOf (otter))
+            {
+                if (prm->getName (64) == String::fromUTF8 ("Simpáticas: tónica")) prm->setValueNotifyingHost ((float) g.key / (float) jmax (1, prm->getNumSteps() - 1));
+                if (prm->getName (64) == String::fromUTF8 ("Simpáticas: afinación")) prm->setValueNotifyingHost (g.major ? 1.0f : 0.5f);
+            }
+        }
+        if (*np.beaver != 0)
+        {
+            const bool pad2 = String (np.beaver) == "pad";
+            beaver = midiTrack ("Racoon - Beaver Additive", String::fromUTF8 (pad2 ? "Beaver · Pad" : "Beaver · Textura"));
+            part (beaver, np.beaver);
+            // over the bass's octave: under 100 Hz the sub and the kick have the floor, and the break stays light
+            // the texture plays the pad's chords too (one chord a bar, the same in every phrase): Beaver's texture presets
+            // make them a texture, and the harmony of the block keeps repeating every four bars
+            const auto notes = generate (al::Rol::pad, pad2 ? 14 : 15);
+            if (pad2) write (beaver, notes, inBars ({ { 8, 15 } }), octaveTo (notes, 60.0), "Pad");
+            else write (beaver, notes, inBars ({ { 0, 3 }, { 8, 15 } }), octaveTo (notes, 57.0), "Textura");
+        }
+
+        // ---- the automations: points (beat, value as the plugin shows it) on the parameter of that name
+        auto automate = [&] (te::Plugin* p, const String& name, std::initializer_list<std::pair<double, float>> pts)
+        {
+            if (p == nullptr) return;
+            te::AutomatableParameter* ap = nullptr;
+            for (auto* a : p->getAutomatableParameters()) if (a->getParameterName() == name) { ap = a; break; }
+            AudioProcessorParameter* jp = nullptr;
+            if (auto* ext = dynamic_cast<te::ExternalPlugin*> (p))
+                if (auto* pi = ext->getAudioPluginInstance())
+                    for (auto* x : pi->getParameters()) if (x->getName (128) == name) { jp = x; break; }
+            if (ap == nullptr || jp == nullptr) return;
+            auto& curve = ap->getCurve();
+            const auto vr = ap->getValueRange();
+            for (auto& [beat, v] : pts)
+            {
+                const float norm = jlimit (0.0f, 1.0f, jp->getValueForText (String (v)));
+                curve.addPoint (edit->tempoSequence.toTime (bp (beat)), vr.getStart() + norm * (vr.getEnd() - vr.getStart()), 0.0f);
+            }
+        };
+        auto inst = [] (te::AudioTrack* t) -> te::Plugin* { return t != nullptr ? instrumentOf (*t) : nullptr; };
+        // Marmot: the filter breathes in the break and opens across the last phrase, shut again on the next one
+        automate (inst (marmot), "Corte", { { 0.0, 600.0f }, { 39.98, 600.0f }, { 40.0, 350.0f }, { 48.0, 700.0f }, { 63.9, 2200.0f }, { 64.0, 600.0f } });
+        // Opossum: the growl bites harder to the end; the metal opens; the bells darken back after the break
+        if (String (np.opossum) == "growl") automate (inst (opossum), "Mordida", { { 0.0, 90.0f }, { 48.0, 90.0f }, { 63.9, 170.0f }, { 64.0, 90.0f } });
+        else if (String (np.opossum) == "metal") automate (inst (opossum), "Corte", { { 0.0, 700.0f }, { 16.0, 700.0f }, { 31.9, 1200.0f }, { 48.0, 800.0f }, { 63.9, 1800.0f }, { 64.0, 700.0f } });
+        else automate (inst (opossum), "Mordida", { { 0.0, 45.0f }, { 32.0, 45.0f }, { 46.0, 80.0f }, { 48.0, 50.0f }, { 64.0, 45.0f } });
+        // Otter: a little brighter through the second phrase and the break, darker under the drop
+        if (String (np.otter) == "frotada") automate (inst (otter), String::fromUTF8 ("Presión del arco"), { { 0.0, 35.0f }, { 32.0, 65.0f }, { 64.0, 35.0f } });
+        else automate (inst (otter), "Oscuridad", { { 0.0, 60.0f }, { 16.0, 60.0f }, { 44.0, 38.0f }, { 47.9, 38.0f }, { 48.0, 58.0f }, { 64.0, 60.0f } });
+        // Beaver: from sound A to sound B across the break (and across the intro for a texture)
+        if (String (np.beaver) == "pad") automate (inst (beaver), String::fromUTF8 ("Mezcla A ↔ B"), { { 0.0, 0.0f }, { 32.0, 0.0f }, { 47.9, 100.0f }, { 48.0, 40.0f }, { 64.0, 40.0f } });
+        else automate (inst (beaver), String::fromUTF8 ("Mezcla A ↔ B"), { { 0.0, 0.0f }, { 15.9, 100.0f }, { 16.0, 0.0f }, { 32.0, 0.0f }, { 47.9, 100.0f }, { 48.0, 30.0f }, { 64.0, 30.0f } });
+
+        // ---- Jerboa on the Master (before Hedgehog): straight through, and one pattern on the last beat of each phrase
+        if (np.jerboa)
+        {
+            auto item = itemFor ("Jerboa");
+            if (item.available) jerboa = insertOnMaster (item);
+            if (jerboa != nullptr)
+            {
+                if (auto* ext = dynamic_cast<te::ExternalPlugin*> (jerboa.get()))
+                    if (auto* pi = ext->getAudioPluginInstance())
+                        for (auto* prm : pi->getParameters())
+                        {
+                            const auto name = prm->getName (64);
+                            if (name == "Banco de patrones") prm->setValueNotifyingHost (0.0f);                          // Inicial
+                            if (name == String::fromUTF8 ("Cambiar de patrón")) prm->setValueNotifyingHost (0.0f);       // al instante
+                            if (name == String::fromUTF8 ("Arranque del patrón")) prm->setValueNotifyingHost (0.0f);     // sigue el compás
+                            if (name == "Tono de cinta") prm->setValueNotifyingHost (prm->getValueForText ("60"));
+                            // on the Master the notes of every channel arrive: only the automation switches it here
+                            if (name == "Cambiar con las notas") prm->setValueNotifyingHost (0.0f);
+                        }
+                // the patterns of the Inicial bank that only touch the fourth beat (the rest of the bar stays straight)
+                using G = variedad::Grupo;
+                const auto grupo = variedad::grupoDe (g.id, g.bpm);
+                float p7 = 9, p11 = 23, p15 = 21;      // stutter 1/16, rewind and silence on the 4
+                if (grupo == G::trap || grupo == G::hiphop) { p7 = 13; p11 = 11; p15 = 21; }     // scratch, reverse, silence
+                if (grupo == G::breaks) { p7 = 9; p11 = 23; p15 = 11; }
+                automate (jerboa.get(), String::fromUTF8 ("Patrón"),
+                          { { 0.0, 1.0f }, { 27.99, 1.0f }, { 28.0, p7 }, { 31.99, p7 }, { 32.0, 1.0f },
+                            { 43.99, 1.0f }, { 44.0, p11 }, { 47.99, p11 }, { 48.0, 1.0f },
+                            { 59.99, 1.0f }, { 60.0, p15 }, { 63.99, p15 }, { 64.0, 1.0f } });
+            }
+        }
+    }
+
     // ---- levels and space
     setVolume (kickT, 0.0f); setVolume (drums, hasDrums ? -1.0f : -6.0f); setVolume (bass, -2.0f); setVolume (pad, hasDrums ? -9.0f : -4.0f); setVolume (keys, -9.0f);
     setVolume (hook, -10.0f);  setVolume (gtr, g.guitar ? -8.0f : -11.0f); setVolume (choir, -10.0f); setVolume (perc, -12.0f);
     setVolume (texture, -14.0f); setVolume (voice, -6.0f);
+    setVolume (marmot, std::strcmp (np.marmot, "stab") == 0 ? -11.0f : -12.0f);
+    setVolume (opossum, String (np.opossum) == "growl" ? -8.0f : String (np.opossum) == "metal" ? -11.0f : -9.0f);
+    setVolume (otter, String (np.otter) == "frotada" ? -13.0f : -11.0f);
+    // the bells and the plucked strings answer each other from the two sides (the mix may move them again by role)
+    auto setPanOf = [] (te::AudioTrack* t, float pan) { if (t != nullptr) if (auto* v = t->getVolumePlugin()) v->setPan (pan); };
+    if (String (np.opossum) == "campana") setPanOf (opossum, -0.3f);
+    if (String (np.otter) != "frotada") setPanOf (otter, 0.25f);
+    if (std::strcmp (np.marmot, "arp") == 0) setPanOf (marmot, -0.15f);
+    setVolume (beaver, String (np.beaver) == "pad" ? -13.0f : -11.0f);
     auto send = [this] (te::AudioTrack* t, int bus, float db) { if (t != nullptr) if (auto* s = getSend (*t, bus, true)) s->setGainDb (db); };
     send (drums, 0, -20.0f); send (pad, 0, -12.0f); send (choir, 0, -10.0f); send (voice, 0, -12.0f); send (gtr, 0, -16.0f);
     send (hook, 1, -14.0f);  send (voice, 1, -18.0f); send (keys, 1, -20.0f);
+    send (marmot, 1, -16.0f); send (marmot, 0, -20.0f); send (otter, 0, -14.0f); send (otter, 1, -20.0f); send (beaver, 0, -14.0f);
+    if (String (np.opossum) == "campana") { send (opossum, 0, -12.0f); send (opossum, 1, -18.0f); }
 
     // ---- Hedgehog on the Master: the Partícula and a little limiter
     {

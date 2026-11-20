@@ -2023,6 +2023,7 @@ bool PianoRoll::generateRandom (std::optional<aleatorio::Rol> role, int64 seed, 
     // the song's style and its chords: every part generated here plays over the same harmony
     const auto genreId = vs.edit().state.getProperty ("racoonGenre").toString();
     o.estilo = aleatorio::estiloDe (genreId, vs.session.getBpm());
+    o.genero = genreId;
     const auto* genre = findGenre (genreId);
     {
         // the song's key (the genre's, or the one ARMONIZAR left), unless the Piano's scale helper says another

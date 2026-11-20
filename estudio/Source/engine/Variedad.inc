@@ -283,8 +283,41 @@ const StringArray& seConservan()
     static const StringArray a = u8 ({ "Tonalidad", "Escala", "Modo", "Acordes", "Conducción de voces", "Registro bajo", "Registro alto",
                                        "Afinar el kit a", "Escala del kit", "Notas del kit", "Pattern follows the DAW", "Seq Mode",
                                        "Afinar la percusión a", "Escala de la percusión", "Reproducir", "Cantar las notas MIDI", "Cantar: voz",
-                                       "Granos con el teclado", "Biblioteca" });
+                                       "Granos con el teclado", "Biblioteca", "Simpáticas: tónica", "Simpáticas: afinación" });
     return a;
+}
+
+// the sounds of the newer animals for the part each one plays in the block (racoonParte on its channel): all of them low
+StringArray sonidosNuevos (const String& animal, const String& parte, Grupo g)
+{
+    if (animal == "Marmot")
+    {
+        if (parte == "lead") return u8 ({ "Hilo negro", "Faro apagado", "Sótano", "Linterna" });
+        if (parte == "stab") return u8 ({ "Puerta de hierro", "Bodega", "Concreto" });
+        return u8 ({ "Gota fría", "Pluma de cuervo", "Ceniza" });
+    }
+    if (animal == "Opossum")
+    {
+        if (parte == "growl") return g == Grupo::breaks ? u8 ({ "Reese de túnel", "Gruñido de alcantarilla", "Hiena dormida" })
+                                                      : u8 ({ "Gruñido de alcantarilla", "Mandíbula", "Hiena dormida", "Motor frío" });
+        if (parte == "metal") return u8 ({ "Remache", "Cadena", "Tubería", "Yunque" });
+        return u8 ({ "Campana hundida", "Plomo", "Faro en la niebla", "Iglesia vacía" });
+    }
+    if (animal == "Otter")
+    {
+        if (parte == "golpeada") return g == Grupo::afro || g == Grupo::latino ? u8 ({ "Marimba de barro", "Balafón nocturno", "Lengüeta de hierro" })
+                                                                               : u8 ({ "Marimba de barro", "Dulcémele apagado", "Lengüeta de hierro", "Campana de pozo" });
+        if (parte == "frotada") return u8 ({ "Cuenco frotado", "Cuerdas de humo", "Drone de simpáticas" });
+        if (g == Grupo::afro) return u8 ({ "Kora del río", "Arpa de carbón", "Koto en penumbra" });
+        if (g == Grupo::trap || g == Grupo::hiphop) return u8 ({ "Arpa de carbón", "Pizzicato grave", "Koto en penumbra", "Chelo sin arco" });
+        return u8 ({ "Arpa de carbón", "Kora del río", "Koto en penumbra", "Pizzicato grave" });
+    }
+    if (animal == "Beaver")
+    {
+        if (parte == "textura") return u8 ({ "Drone de alquitrán", "Sótano en fase", "Formante de cueva" });
+        return u8 ({ "Pad de carbón", "Sierra tibia", "Formante de cueva", "Sótano en fase", "Peine oscuro", "Coro de ceniza" });
+    }
+    return {};
 }
 
 int notaDe (const String& name)   // "C#2" -> 37 (C4 = 60), "E-1" -> 4
@@ -564,6 +597,15 @@ StringArray Session::varySounds (juce::uint32 seed, const juce::Array<te::AudioT
                 {
                     if (auto* prm = paramNamed (*pi, "Afinar el kit a")) prm->setValueNotifyingHost ((float) (keyRoot + 1) / (float) jmax (1, prm->getNumSteps() - 1));
                     if (auto* prm = paramNamed (*pi, "Escala del kit")) prm->setValueNotifyingHost (keyMajor ? 1.0f : 0.0f);
+                }
+            }
+            else if (animal == "Marmot" || animal == "Opossum" || animal == "Otter" || animal == "Beaver")
+            {
+                const auto pool = variedad::sonidosNuevos (animal, t->state.getProperty ("racoonParte").toString(), grupo);
+                if (! pool.isEmpty())
+                {
+                    const auto preset = gusto::elegir (rng, "sonido de " + animal.toLowerCase(), pool);
+                    if (loadProgramKeeping (*pi, preset)) what = preset;
                 }
             }
             else if (animal == "Badger")

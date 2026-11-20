@@ -134,6 +134,12 @@ mezcla::Papel papelDe (Session& s, te::AudioTrack& t)
     String animal;
     if (auto* p = s.familyPluginOf (t)) animal = Catalog::animalFor (p->getName());
     if (animal == "Hamster") return name.contains ("kick") || name.contains ("bombo") ? P::kick : P::drums;
+    // the newer animals play the part the block gave them (Opossum's bells are a melody, its metal stabs are chords)
+    const auto parte = t.state.getProperty ("racoonParte").toString();
+    if (animal == "Opossum" && parte == "campana") return P::melody;
+    if (animal == "Opossum" && parte == "metal") return P::chords;
+    if (animal == "Marmot" && parte == "stab") return P::chords;
+    if (animal == "Otter" && parte == "frotada") return P::pad;
     if (animal == "Badger" || animal == "Opossum") return P::bass;
     if (animal == "Dormouse" || animal == "Beaver") return P::pad;
     if (animal == "Chipmunk" || animal == "Otter") return P::chords;

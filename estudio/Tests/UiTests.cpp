@@ -136,6 +136,18 @@ Array<T*> findChildren (Component& root)
 }
 }
 
+namespace
+{
+// the newer animals a genre's block brings (Marmot, Opossum, Otter, Beaver)
+int nuevosEn (te::Edit& e)
+{
+    int n = 0;
+    for (auto* t : te::getAudioTracks (e))
+        for (auto* a : { "Marmot", "Opossum", "Otter", "Beaver" }) if (t->getName().startsWith (a)) ++n;
+    return n;
+}
+}
+
 int runUiTests (Session& s, const File& out)
 {
     std::cout << "interfaz" << std::endl;
@@ -184,8 +196,8 @@ int runUiTests (Session& s, const File& out)
         shot (mc, shots.getChildFile ("00a_que_vamos_a_producir.png"));
         if (picker != nullptr) picker->buttonFor ("trap")->triggerClick();
         for (int i = 0; i < 40 && mc.getGenrePicker() != nullptr; ++i) pump (150);
-        check (mc.getGenrePicker() == nullptr && std::abs (s.getBpm() - 140.0) < 0.01 && te::getAudioTracks (s.getEdit()).size() == 13,
-               "elegir Trap arma el bloque a 140 BPM con sus 11 canales (el kick aparte del groove)");
+        check (mc.getGenrePicker() == nullptr && std::abs (s.getBpm() - 140.0) < 0.01 && te::getAudioTracks (s.getEdit()).size() == 13 + nuevosEn (s.getEdit()) && nuevosEn (s.getEdit()) == 2,
+               "elegir Trap arma el bloque a 140 BPM con sus 13 canales (el kick aparte del groove, Opossum y Otter)");
         pump (400);
         shot (mc, shots.getChildFile ("00a_bloque_trap.png"));
     }
@@ -277,7 +289,7 @@ int runUiTests (Session& s, const File& out)
         pump (500);
         shot (mc, shots.getChildFile ("00_inicio_bloque.png"));
         auto lanes = findChildren<ui::TrackLane> (mc.getArrangement());
-        check (lanes.size() == 11, "el bloque muestra 11 canales (Kick y Groove aparte): " + String (lanes.size()));
+        check (lanes.size() == 11 + nuevosEn (s.getEdit()), "el bloque muestra " + String (11 + nuevosEn (s.getEdit())) + " canales (Kick y Groove aparte): " + String (lanes.size()));
         // a click on the song with Piano open: Piano stays and shows that channel's notes, never the drums'
         if (lanes.size() > 2)
         {
@@ -1814,7 +1826,9 @@ int runUiTests (Session& s, const File& out)
                         // a new pattern: other notes than before, in the clip's whole length
                         String sigAfter;
                         for (auto* n : m->getSequence().getNotes()) sigAfter << n->getNoteNumber() << "@" << n->getStartBeat().inBeats() << " ";
-                        if (sigAfter != sigBefore) ++keptBars; else report << t->getName() << " ";
+                        // the kick of a four-on-the-floor genre is the genre's kick: Aleatoria keeps it (its book has no other)
+                        const bool fourKick = t->getName().contains ("Kick") && sigAfter == sigBefore;
+                        if (sigAfter != sigBefore || fourKick) ++keptBars; else report << t->getName() << " ";
                         juce::ignoreUnused (before, after, r0, r1);
                         ++keptRange;
                     }

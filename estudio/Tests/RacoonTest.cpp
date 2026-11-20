@@ -335,6 +335,99 @@ int main (int argc, char** argv)
         }
         return 0;
     }
+    // RACOON_GRAVES_ROLA=1: the song of 96 bars from the start block, the lows under 100 Hz of its drop and breakdown
+    if (SystemStats::getEnvironmentVariable ("RACOON_GRAVES_ROLA", {}).isNotEmpty())
+    {
+        using namespace racoon::arranger;
+        Session s (engine, uiB);
+        s.newProject (true, false, &defaultGenre());
+        auto& ae = s.getEdit();
+        Array<te::AudioTrack*> loopTracks;
+        for (auto* t : te::getAudioTracks (ae)) if (kindOf (*t) != TrackKind::returnBus) loopTracks.add (t);
+        Options ao; ao.totalBars = 96;
+        auto res = build (s, loopTracks, 0.0, 64.0, ao);
+        MessageManager::getInstance()->runDispatchLoopUntil (300);
+        auto secBeat = [&res] (Part part, bool end) { for (auto& sec : res.sections) if (sec.part == part) return (end ? sec.startBar + sec.bars : sec.startBar) * 4.0; return 0.0; };
+        ExportOptions so; so.destination = out.getChildFile ("rola_graves.wav"); so.sampleRate = 44100.0; so.tailSeconds = 0.5;
+        s.exportMix (so);
+        AudioBuffer<float> mix; double sr = 0.0;
+        if (audio::readFile (s.engine, so.destination, mix, sr))
+        {
+            IIRFilter lp[4];
+            for (auto& f : lp) f.setCoefficients (IIRCoefficients::makeLowPass (sr, 100.0));
+            std::vector<float> low ((size_t) mix.getNumSamples());
+            for (int i = 0; i < mix.getNumSamples(); ++i) { float x = 0.5f * (mix.getSample (0, i) + mix.getSample (jmin (1, mix.getNumChannels() - 1), i)); for (auto& f : lp) x = f.processSingleSampleRaw (x); low[(size_t) i] = x; }
+            auto& ts = ae.tempoSequence;
+            auto lowDb = [&] (double a, double b)
+            {
+                const int i0 = (int) (ts.toTime (te::BeatPosition::fromBeats (a + 2.0)).inSeconds() * sr);
+                const int i1 = jmin ((int) low.size(), (int) (ts.toTime (te::BeatPosition::fromBeats (b - 1.0)).inSeconds() * sr));
+                double e = 0.0; for (int i = i0; i < i1; ++i) e += (double) low[(size_t) i] * low[(size_t) i];
+                return 10.0 * std::log10 (e / jmax (1, i1 - i0) + 1.0e-20);
+            };
+            std::cout << "ROLA drop " << lowDb (secBeat (Part::drop, false), secBeat (Part::drop, true)) << " breakdown " << lowDb (secBeat (Part::breakdown, false), secBeat (Part::breakdown, true)) << std::endl;
+            for (auto* p : ae.getMasterPluginList())
+                if (p->getName().contains ("Jerboa"))
+                    for (auto* ap : p->getAutomatableParameters())
+                        if (ap->getCurve().getNumPoints() > 0)
+                            std::cout << "  " << ap->getParameterName() << " puntos " << ap->getCurve().getNumPoints() << " valor en el breakdown "
+                                      << ap->getCurve().getValueAt (ts.toTime (te::BeatPosition::fromBeats (secBeat (Part::breakdown, false) + 4.0))) << " texto " << ap->getCurrentValueAsString() << std::endl;
+        }
+        return 0;
+    }
+    // RACOON_GRAVES="house": the lows under 100 Hz of each phrase of the block (intro, phrase 2, break, last phrase)
+    if (SystemStats::getEnvironmentVariable ("RACOON_GRAVES", {}).isNotEmpty())
+    {
+        Session s (engine, uiB);
+        for (auto& id : StringArray::fromTokens (SystemStats::getEnvironmentVariable ("RACOON_GRAVES", {}), ",", ""))
+            if (auto* g = findGenre (id))
+            {
+                s.newProject (true, false, g);
+                for (int i = 0; i < 40; ++i) MessageManager::getInstance()->runDispatchLoopUntil (50);
+                ExportOptions o;
+                o.destination = out.getChildFile ("graves_" + id + ".wav");
+                o.sampleRate = 44100.0; o.loopOnly = true; o.tailSeconds = 0.0;
+                s.exportMix (o);
+                AudioBuffer<float> mix; double sr = 44100.0;
+                if (! audio::readFile (engine, o.destination, mix, sr)) continue;
+                IIRFilter lp[4];
+                for (auto& f : lp) f.setCoefficients (IIRCoefficients::makeLowPass (sr, 100.0));
+                const double spb = 60.0 / s.getBpm() * sr;
+                String line = id + ":";
+                double e[4] {}; int n[4] {};
+                for (int i = 0; i < mix.getNumSamples(); ++i)
+                {
+                    float x = 0.5f * (mix.getSample (0, i) + mix.getSample (jmin (1, mix.getNumChannels() - 1), i));
+                    for (auto& f : lp) x = f.processSingleSampleRaw (x);
+                    const int ph = jlimit (0, 3, (int) (i / spb / 16.0));
+                    e[ph] += x * x; ++n[ph];
+                }
+                for (int k = 0; k < 4; ++k) line << " " << String (10.0 * std::log10 (e[k] / jmax (1, n[k]) + 1.0e-20), 1);
+                std::cout << line << std::endl;
+                // and each channel's lows (its stem)
+                ExportOptions so; so.destination = out.getChildFile ("graves_stems_" + id); so.sampleRate = 44100.0; so.stems = true; so.loopOnly = true;
+                so.destination.deleteRecursively();
+                Array<File> written;
+                s.exportStems (so, &written);
+                for (auto& f : written)
+                {
+                    AudioBuffer<float> b; double r2 = 44100.0;
+                    if (! audio::readFile (engine, f, b, r2)) continue;
+                    IIRFilter q[4];
+                    for (auto& fl : q) fl.setCoefficients (IIRCoefficients::makeLowPass (r2, 100.0));
+                    double ee = 0.0, all = 0.0;
+                    for (int i = 0; i < b.getNumSamples(); ++i) { float x = b.getSample (0, i); all += x * x; for (auto& fl : q) x = fl.processSingleSampleRaw (x); ee += x * x; }
+                    String preset;
+                    for (auto* t : te::getAudioTracks (s.getEdit()))
+                        if (f.getFileNameWithoutExtension().endsWith (t->getName()))
+                            if (auto* ext = dynamic_cast<te::ExternalPlugin*> (Session::instrumentOf (*t)))
+                                if (auto* pi = ext->getAudioPluginInstance()) preset = pi->getProgramName (pi->getCurrentProgram());
+                    std::cout << "   " << f.getFileNameWithoutExtension() << " graves " << String (10.0 * std::log10 (ee / jmax (1, b.getNumSamples()) + 1.0e-20), 1)
+                              << " rms " << String (std::sqrt (all / jmax (1, b.getNumSamples())), 4) << " " << preset << std::endl;
+                }
+            }
+        return 0;
+    }
     // RACOON_STEMS="trap,house": renders the stems of those genres (to check by ear and with scripts/afinacion.py)
     if (SystemStats::getEnvironmentVariable ("RACOON_STEMS", {}).isNotEmpty())
     {
@@ -445,16 +538,23 @@ int main (int argc, char** argv)
                 end = jmax (end, e.tempoSequence.toBeats (c->getPosition().getEnd()).inBeats());
             if (end >= 63.99) ++full; else shortOnes << t->getName() << " (" << String (end, 1) << ") ";
         }
-        check (channels == 11, "11 canales de instrumentos y sonidos (Kick y Groove aparte): " + String (channels));
+        // the newer animals the genre of the start block uses (Marmot, Opossum, Otter, Beaver)
+        int nuevos = 0;
+        for (auto* t : te::getAudioTracks (e))
+            for (auto* a : { "Marmot", "Opossum", "Otter", "Beaver" }) if (t->getName().startsWith (a)) ++nuevos;
+        check (nuevos >= 1 && channels == 11 + nuevos, String (11 + nuevos) + " canales de instrumentos y sonidos (Kick y Groove aparte, " + String (nuevos) + " de los nuevos): " + String (channels));
         check (full == channels, "todos los canales cubren el bloque de 64 tiempos " + shortOnes);
-        check (te::getAudioTracks (e).size() == 13, "con los 2 retornos");
+        check (te::getAudioTracks (e).size() == 13 + nuevos, "con los 2 retornos");
         check (countNotes (e) > 400, "notas del bloque: " + String (countNotes (e)));
         if (havePlugins)
         {
             int hosted = 0;
             for (auto* t : te::getAudioTracks (e))
                 if (auto* p = Session::instrumentOf (*t)) hosted += dynamic_cast<te::ExternalPlugin*> (p) != nullptr ? 1 : 0;
-            check (hosted == 9, "9 instrumentos Racoon alojados (Hamster dos veces: Kick y Groove): " + String (hosted));
+            check (hosted == 9 + nuevos, String (9 + nuevos) + " instrumentos Racoon alojados (Hamster dos veces: Kick y Groove): " + String (hosted));
+            bool jerboa = false;
+            for (auto* p : e.getMasterPluginList()) jerboa |= p->getName().contains ("Jerboa");
+            check (jerboa, "Jerboa en el Master para las transiciones");
             bool hedgehog = false;
             for (auto* p : e.getMasterPluginList()) hedgehog |= p->getName().contains ("Hedgehog");
             check (hedgehog, "Hedgehog en el Master");
@@ -542,7 +642,24 @@ int main (int argc, char** argv)
                             if (prog.startsWith ("Muestras / ") || prog.startsWith ("Kits Racoon / ")) ++sampleKits;
                             if (prog.startsWith ("Kits Racoon / ")) ++tallerKits;
                         }
-            const int wantChannels = std::strlen (g.kick) > 0 ? 11 : 10;    // Kick and Groove apart, when there is a kick
+            // the newer animals: at least one in every genre, each with an automation; Jerboa on the Master with its transitions
+            int nuevos = 0, automated = 0, jerboaPoints = 0;
+            for (auto* t : te::getAudioTracks (ge))
+                for (auto* a : { "Marmot", "Opossum", "Otter", "Beaver" })
+                    if (t->getName().startsWith (a))
+                    {
+                        ++nuevos;
+                        if (auto* ins = Session::instrumentOf (*t))
+                            for (auto* ap : ins->getAutomatableParameters()) if (ap->getCurve().getNumPoints() >= 3) { ++automated; break; }
+                    }
+            for (auto* p : ge.getMasterPluginList())
+                if (Catalog::animalFor (p->getName()) == "Jerboa")
+                    for (auto* ap : p->getAutomatableParameters()) jerboaPoints = jmax (jerboaPoints, ap->getCurve().getNumPoints());
+            const bool wantsJerboa = String (g.id) != "ambient" && String (g.id) != "downtempo";
+            if (nuevos == 0) wrong << g.id << ": sin Marmot, Opossum, Otter ni Beaver; ";
+            if (havePlugins && automated < nuevos) wrong << g.id << ": " << (nuevos - automated) << " de los nuevos sin automatización; ";
+            if (havePlugins && wantsJerboa && jerboaPoints < 12) wrong << g.id << ": Jerboa sin sus transiciones (" << jerboaPoints << " puntos); ";
+            const int wantChannels = (std::strlen (g.kick) > 0 ? 11 : 10) + nuevos;    // Kick and Groove apart, when there is a kick
             bool ok = std::abs (s.getBpm() - g.bpm) < 0.01 && channels == wantChannels && full == wantChannels && countNotes (ge) > 150
                             && (drumNotes > 60 || String (g.id) == "ambient") && kitOk && silentChannels == 0;
             // what makes it its own song: the voice file, the melody and the key
@@ -579,7 +696,8 @@ int main (int argc, char** argv)
                 {
                     const auto n = t->getName();
                     if (! (n.contains ("Badger") || n.contains ("Dormouse") || n.contains ("Chipmunk") || n.contains ("Squirrel")
-                           || n.contains ("Ferret") || n.contains ("Porcupine") || n.contains ("Chinchilla") || n.contains ("Skunk"))) continue;
+                           || n.contains ("Ferret") || n.contains ("Porcupine") || n.contains ("Chinchilla") || n.contains ("Skunk")
+                           || n.contains ("Marmot") || n.contains ("Opossum") || n.contains ("Otter") || n.contains ("Beaver"))) continue;
                     for (auto* c : t->getClips())
                         if (auto* mc = dynamic_cast<te::MidiClip*> (c))
                             for (auto* nt : mc->getSequence().getNotes())

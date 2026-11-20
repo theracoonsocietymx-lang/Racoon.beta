@@ -48,6 +48,41 @@ Efectos de Racoon (57 en el navegador, pestaña Efectos):
 - Vinilo, Reductor, Filtro automatico, Multibanda y Bus de bateria ya suenan al cargarlos.
 - El modo Paralelo del compresor mezcla una copia aplastada debajo del original, como en Nueva York.
 
+Novedades del 19 de noviembre (los cinco nuevos en cada genero y Aleatoria con el recetario de cada genero):
+- Al elegir un genero, el bloque ya trae a los nuevos donde ese genero los usa. Marmot arpegia en trance, psytrance,
+  progressive, melodic techno, synthwave, electro, hardstyle, future bass, indie dance, nu disco, disco y pop, y toca
+  stabs en funk. Opossum hace growl en drum & bass, jungle, dubstep, breakbeat y moombahton, stabs de metal en techno,
+  hard techno, tech house, phonk y electro, y campanas oscuras en el break de house, UK garage, jersey club, trap,
+  drill y hip hop. Otter toca arpa, kora o koto en afro house, organic house, hightempo, liquid, trap, drill, hip hop,
+  lo-fi, R&B y downtempo, marimba o balafon en deep house, minimal, reggaeton, dembow, moombahton, dancehall, cumbia,
+  afrobeats y amapiano, y cuerdas frotadas en ambient. Beaver pone un pad en el break y la ultima frase, o una
+  textura en la intro, el break y la ultima frase, siempre arriba de 100 Hz. Todos tocan los patrones de su genero, en la tonalidad y los acordes del bloque.
+- Cada nuevo trae su automatizacion en el bloque: el Corte de Marmot respira en el break y abre en la ultima frase,
+  la Mordida del growl de Opossum sube hasta el final, el Corte del metal abre, la Oscuridad de Otter aclara hacia el
+  break y vuelve a oscurecer en el drop, la Mezcla A con B de Beaver cruza el break. Se ven y se editan como
+  cualquier automatizacion.
+- Jerboa va en el Master antes de Hedgehog, derecho todo el bloque, con un patron en el cuarto tiempo de cada final
+  de frase: tartamudeo 1/16 en el compas 8, rebobinado en el 12 y silencio en el 16 (en trap y hip hop rascado,
+  reversa y silencio; en drum & bass la reversa va al final). En ambient y downtempo no se pone.
+- Jerboa tiene un interruptor nuevo, Cambiar con las notas (seccion Patrones). En el Master o en un bus llegan las
+  notas de todos los canales, y cada bombo o charles le cambiaba el patron: en una rola armada eso metia graves
+  lentos en el breakdown (medido: -21 dB abajo de 100 Hz contra -66 dB sin Jerboa). El bloque lo deja apagado en el
+  Master y los graves del breakdown quedan igual que sin Jerboa. En su propio canal sigue prendido, como antes.
+- Los sonidos de los nuevos cambian con cada bloque y con ALEATORIA, siempre graves (por ejemplo Gota fria, Pluma de
+  cuervo o Ceniza en Marmot; Arpa de carbon, Kora del rio o Marimba de barro en Otter).
+- ALEATORIA ya no inventa ritmos: cada uno de los 45 generos tiene su recetario con los patrones que se usan de verdad
+  en ese genero, instrumento por instrumento (bombo, palma o caja, hats, percusion, bajo, stabs, arpegio y ritmo de la
+  melodia). Por ejemplo el bajo a contratiempo y los stabs del house, el bajo rodante del techno, el bajo de tres
+  dieciseisavos del psytrance, el log drum del amapiano, el 3+3+2 del dembow, el two-step del UK garage, el dos pasos
+  del drum & bass, el medio tiempo del dubstep y los redobles de hats de trap y drill. Lo aleatorio elige entre esos
+  patrones y varia solo lo que el genero permite: un patron hermano en el compas 2 o 3 de la frase, el relleno propio
+  del genero al final, el swing del genero, una nota del bajo a la octava, la fuerza de cada golpe, la inversion de
+  cada acorde, una linea de hats mas llena en las frases de despues. Medido: en los 45 generos con 6 semillas, el
+  bombo, los hats y el bajo del primer compas siempre son patrones del recetario; veinte semillas de bajo de house
+  dan lineas distintas.
+- El boton Aleatoria de cada plugin tambien sigue el genero: Racoon guarda el genero de la rola abierta y los plugins
+  lo leen (en otro programa, sin Racoon abierto, siguen el estilo del tempo como antes).
+
 Novedades del 19 de noviembre en Racoon (dos efectos nuevos y Hedgehog con recorte):
 - Separador de golpe (Dinamica): parte el sonido en golpe y cuerpo. Cada parte tiene su nivel, su color (Limpio,
   Calor, Recorte, Lo-fi, Difusion, Eco), su inclinacion, su ancho y su mezcla. Sin colores, golpe mas cuerpo es la
