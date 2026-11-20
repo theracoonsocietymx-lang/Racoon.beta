@@ -10,6 +10,12 @@ project(RACOON VERSION 1.0.0 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Windows (Visual Studio): los textos llevan acentos (UTF-8), hay archivos grandes y se compila en paralelo
+if(MSVC)
+    add_compile_options(/utf-8 /bigobj /MP /permissive- /Zc:__cplusplus)
+    add_compile_definitions(_USE_MATH_DEFINES NOMINMAX _CRT_SECURE_NO_WARNINGS)
+endif()
+
 # tracktion_engine (v3.2.0) y su JUCE fijado viven en ./tracktion_engine (los descarga scripts/build_mac.sh)
 add_subdirectory(tracktion_engine/modules/juce)
 add_subdirectory(tracktion_engine/modules)
@@ -57,7 +63,7 @@ target_include_directories(racoon_core PUBLIC Source)
 
 target_compile_definitions(racoon_core PUBLIC
     JUCE_PLUGINHOST_VST3=1
-    JUCE_PLUGINHOST_AU=1
+    $<$<PLATFORM_ID:Darwin>:JUCE_PLUGINHOST_AU=1>
     JUCE_PLUGINHOST_LADSPA=0
     JUCE_USE_CURL=0
     JUCE_WEB_BROWSER=0
@@ -116,7 +122,11 @@ target_include_directories(racoon_stems PRIVATE
 target_include_directories(racoon_stems PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/demucs.cpp/racoon)
 set_target_properties(racoon_stems PROPERTIES CXX_STANDARD 17 POSITION_INDEPENDENT_CODE TRUE)
 # rapido aunque se compile en Debug: sin esto una cancion tarda horas
-target_compile_options(racoon_stems PRIVATE -O3 -DNDEBUG -ffast-math -fno-finite-math-only -w)
+if(MSVC)
+    target_compile_options(racoon_stems PRIVATE /O2 /Ob2 /DNDEBUG /fp:fast /w)
+else()
+    target_compile_options(racoon_stems PRIVATE -O3 -DNDEBUG -ffast-math -fno-finite-math-only -w)
+endif()
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_link_libraries(racoon_stems PRIVATE pthread)
 endif()
@@ -125,6 +135,10 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_link_libraries(racoon_core PUBLIC "-latomic")
 endif()
 
+set(RACOON_HOST_AU FALSE)
+if(APPLE)
+    set(RACOON_HOST_AU TRUE)
+endif()
 juce_add_gui_app(Racoon
     PRODUCT_NAME "Racoon"
     COMPANY_NAME "Racoon"
@@ -135,7 +149,7 @@ juce_add_gui_app(Racoon
     MICROPHONE_PERMISSION_ENABLED TRUE
     MICROPHONE_PERMISSION_TEXT "Racoon usa el microfono o tu interfaz de audio para grabar."
     DOCUMENT_EXTENSIONS racoon
-    PLUGINHOST_AU TRUE
+    PLUGINHOST_AU ${RACOON_HOST_AU}
     HARDENED_RUNTIME_ENABLED FALSE)
 
 target_sources(Racoon PRIVATE Source/Main.cpp)

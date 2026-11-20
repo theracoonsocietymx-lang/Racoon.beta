@@ -1,6 +1,6 @@
-# Compila Racoon y los 11 plugins para Windows en los servidores de GitHub (gratis en repositorios públicos).
-# En GitHub: pestaña Actions > "Racoon para Windows" > Run workflow. Al terminar (unos 40 minutos), abajo en
-# Artifacts queda "Racoon-Windows": Racoon.exe, los 11 plugins VST3 y la carpeta Muestras Racoon.
+# Compila Racoon y los 16 plugins para Windows en los servidores de GitHub (gratis en repositorios públicos).
+# En GitHub: pestaña Actions > "Racoon para Windows" > Run workflow. Los plugins y el estudio se compilan al mismo
+# tiempo en dos máquinas; al terminar quedan abajo, en Artifacts, "Plugins-Windows" y "Estudio-Windows".
 # El repositorio necesita las tres carpetas del paquete en su raíz: estudio, plugins y muestras.
 name: Racoon para Windows
 
@@ -10,15 +10,12 @@ on:
     tags: [ "v*" ]
 
 jobs:
-  windows:
+  plugins:
+    name: Los 16 plugins
     runs-on: windows-latest
-    timeout-minutes: 180
+    timeout-minutes: 240
     steps:
       - uses: actions/checkout@v4
-
-      - name: Motor de audio (Tracktion Engine y su JUCE)
-        shell: bash
-        run: bash estudio/scripts/fetch_deps.sh
 
       - name: JUCE de los plugins
         shell: bash
@@ -27,35 +24,64 @@ jobs:
             git clone --depth 1 --branch 8.0.16-security https://github.com/juce-framework/JUCE.git plugins/JUCE
           fi
 
-      - name: Los 11 plugins (VST3)
-        run: |
-          cmake -S plugins -B plugins/build-win -G "Visual Studio 17 2022" -A x64
-          cmake --build plugins/build-win --config Release --parallel
+      - name: Configurar
+        run: cmake -S plugins -B plugins/build-win -G "Visual Studio 17 2022" -A x64 -DRF_TESTS=ON
 
-      - name: Racoon, el estudio
+      - name: Compilar los VST3 y las pruebas
+        shell: bash
         run: |
-          cmake -S estudio -B estudio/build-win -G "Visual Studio 17 2022" -A x64
-          cmake --build estudio/build-win --config Release --target Racoon --parallel
+          T=""
+          for p in Badger Hamster Dormouse Squirrel Chipmunk Mole Skunk Ferret Porcupine Hedgehog Chinchilla Marmot Jerboa Opossum Otter Beaver; do
+            T="$T Racoon${p}_VST3"
+          done
+          cmake --build plugins/build-win --config Release --parallel --target $T FamilyTest
 
-      - name: Juntar todo
+      - name: Juntar
         shell: pwsh
         run: |
-          $out = "dist/Racoon-Windows"
+          $out = "dist/Plugins-Windows"
           New-Item -ItemType Directory -Force -Path "$out/VST3" | Out-Null
           Get-ChildItem -Path plugins/build-win -Recurse -Directory -Filter *.vst3 |
-            Where-Object { $_.FullName -match "Release" } |
+            Where-Object { $_.FullName -match "Release" -and $_.Parent.Name -eq "VST3" } |
             ForEach-Object { Copy-Item $_.FullName -Destination "$out/VST3" -Recurse -Force }
-          $exe = Get-ChildItem -Path estudio/build-win -Recurse -Filter Racoon.exe | Select-Object -First 1
-          Copy-Item $exe.FullName -Destination $out
-          if (Test-Path muestras/catalogo.json) { Copy-Item muestras -Destination "$out/Muestras Racoon" -Recurse }
-          @"
-          Racoon para Windows
-          1. Copia la carpeta VST3 completa (los 11 .vst3) a C:\Program Files\Common Files\VST3
-          2. Copia la carpeta Muestras Racoon a Documentos\Racoon\Muestras Racoon, o déjala junto a Racoon.exe
-          3. Abre Racoon.exe
-          "@ | Out-File -Encoding utf8 "$out/LEEME.txt"
+          Get-ChildItem -Path plugins/build-win -Recurse -Filter FamilyTest.exe | Select-Object -First 1 |
+            ForEach-Object { Copy-Item $_.FullName -Destination $out }
+          Get-ChildItem "$out/VST3" | Format-Table Name
 
       - uses: actions/upload-artifact@v4
         with:
-          name: Racoon-Windows
-          path: dist/Racoon-Windows
+          name: Plugins-Windows
+          path: dist/Plugins-Windows
+
+  estudio:
+    name: Racoon, el estudio
+    runs-on: windows-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Motor de audio (Tracktion Engine y su JUCE)
+        shell: bash
+        run: bash estudio/scripts/fetch_deps.sh
+
+      - name: Configurar
+        run: cmake -S estudio -B estudio/build-win -G "Visual Studio 17 2022" -A x64 -DRACOON_TESTS=ON
+
+      - name: Compilar Racoon y sus pruebas
+        run: cmake --build estudio/build-win --config Release --parallel --target Racoon RacoonTest FxTest
+
+      - name: Juntar
+        shell: pwsh
+        run: |
+          $out = "dist/Estudio-Windows"
+          New-Item -ItemType Directory -Force -Path $out | Out-Null
+          foreach ($n in "Racoon.exe", "RacoonTest.exe", "FxTest.exe") {
+            Get-ChildItem -Path estudio/build-win -Recurse -Filter $n | Select-Object -First 1 |
+              ForEach-Object { Copy-Item $_.FullName -Destination $out }
+          }
+          Get-ChildItem $out | Format-Table Name, Length
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Estudio-Windows
+          path: dist/Estudio-Windows

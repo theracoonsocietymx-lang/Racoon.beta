@@ -10,6 +10,12 @@ project(RACOON_FAMILY VERSION 1.0.0 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Windows (Visual Studio): los textos llevan acentos (UTF-8), hay archivos grandes y se compila en paralelo
+if(MSVC)
+    add_compile_options(/utf-8 /bigobj /MP /permissive- /Zc:__cplusplus)
+    add_compile_definitions(_USE_MATH_DEFINES NOMINMAX _CRT_SECURE_NO_WARNINGS)
+endif()
+
 add_subdirectory(JUCE)
 
 # Muestras Racoon (muestras con licencia libre) va al lado de esta carpeta en el paquete; los plugins también la buscan
