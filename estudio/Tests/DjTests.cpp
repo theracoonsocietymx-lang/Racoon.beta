@@ -6,6 +6,7 @@
 #include "engine/AudioTools.h"
 #include "engine/Gusto.h"
 #include "engine/Biblioteca.h"
+#include "EnvShim.h"
 
 using namespace racoon;
 using namespace juce;

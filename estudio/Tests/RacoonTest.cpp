@@ -13,6 +13,7 @@
 #include "engine/MidiCapture.h"
 #include "ui/Aleatorio.h"
 #include "fx/NativeFx.h"
+#include "EnvShim.h"
 #if RACOON_WITH_UI_TESTS
  #include "ui/MainComponent.h"
 #endif
