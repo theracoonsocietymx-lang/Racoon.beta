@@ -5,6 +5,7 @@
 #include "../Shared/Maqueta.h"
 #include "RacoonProcessor.h"
 #include "RacoonEditor.h"
+#include "EnvShim.h"
 
 using namespace juce;
 using namespace racoon;
@@ -656,7 +657,6 @@ static void commonChecks (const String& name, std::function<RacoonProcessor*()> 
 // ===================================================================== tanda 4: preview synth and sample reading
 #include "PreviewSound.h"
 #include "ref/OldPreviewSound.inc"
-#include "EnvShim.h"
 namespace tanda4
 {
 // power that is not the tone or its harmonics, relative to all of it
