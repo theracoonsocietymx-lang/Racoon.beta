@@ -1,0 +1,44 @@
+# Sube el instalador de Windows de una corrida de "Racoon para Windows" a la página de descargas (Releases),
+# para que el tester lo baje con un link directo. En GitHub: Actions > "Publicar instalador de Windows" > Run workflow.
+name: Publicar instalador de Windows
+
+on:
+  workflow_dispatch:
+    inputs:
+      corrida:
+        description: Número de la corrida de "Racoon para Windows" que trae el instalador
+        required: true
+      etiqueta:
+        description: Nombre de la versión en Releases
+        required: false
+        default: windows-beta
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  publicar:
+    name: Publicar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: Racoon-Instalador-Windows
+          path: dist
+          run-id: ${{ inputs.corrida }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Subir a Releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ETIQUETA: ${{ inputs.etiqueta }}
+        run: |
+          ls -l dist
+          if ! gh release view "$ETIQUETA" -R "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            gh release create "$ETIQUETA" -R "$GITHUB_REPOSITORY" --prerelease --target "$GITHUB_SHA" \
+              --title "Racoon para Windows (beta)" \
+              --notes "Instalador de Racoon y los 16 plugins VST3 para Windows 10 y 11 de 64 bits. Sin firma digital todavía: Windows SmartScreen pide Más información y Ejecutar de todas formas."
+          fi
+          gh release upload "$ETIQUETA" dist/*.exe -R "$GITHUB_REPOSITORY" --clobber
+          gh release view "$ETIQUETA" -R "$GITHUB_REPOSITORY" --json assets --jq '.assets[] | .name + "  " + .url'
