@@ -1,0 +1,101 @@
+# Corre las pruebas de Racoon en Windows con lo que ya compiló "Racoon para Windows" (sin volver a compilar).
+# En GitHub: Actions > "Pruebas en Windows" > Run workflow, y pega el número de la corrida que compiló.
+name: Pruebas en Windows
+
+on:
+  workflow_dispatch:
+    inputs:
+      corrida:
+        description: "Número de la corrida de 'Racoon para Windows' que tiene los programas"
+        required: true
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  familia:
+    name: La familia de plugins
+    runs-on: windows-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: Plugins-Windows
+          path: prog
+          run-id: ${{ inputs.corrida }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: FamilyTest
+        shell: pwsh
+        env:
+          RACOON_MUESTRAS: ${{ github.workspace }}\muestras
+        run: |
+          New-Item -ItemType Directory -Force -Path salida | Out-Null
+          Set-Location salida
+          & ..\prog\FamilyTest.exe 2>&1 | Tee-Object -FilePath ..\familia.log
+          exit $LASTEXITCODE
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Pruebas-familia
+          path: familia.log
+
+  efectos:
+    name: Los efectos del estudio
+    runs-on: windows-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: Estudio-Windows
+          path: prog
+          run-id: ${{ inputs.corrida }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: FxTest
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path salida | Out-Null
+          Set-Location salida
+          & ..\prog\FxTest.exe 2>&1 | Tee-Object -FilePath ..\efectos.log
+          exit $LASTEXITCODE
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Pruebas-efectos
+          path: efectos.log
+
+  estudio:
+    name: El estudio con los plugins
+    runs-on: windows-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: Estudio-Windows
+          path: prog
+          run-id: ${{ inputs.corrida }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: Plugins-Windows
+          path: plugins-win
+          run-id: ${{ inputs.corrida }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: RacoonTest
+        shell: pwsh
+        env:
+          RACOON_PLUGIN_PATH: ${{ github.workspace }}\plugins-win\VST3
+          RACOON_MUESTRAS: ${{ github.workspace }}\muestras
+        run: |
+          New-Item -ItemType Directory -Force -Path salida | Out-Null
+          Set-Location salida
+          & ..\prog\RacoonTest.exe 2>&1 | Tee-Object -FilePath ..\estudio.log
+          exit $LASTEXITCODE
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Pruebas-estudio
+          path: estudio.log
