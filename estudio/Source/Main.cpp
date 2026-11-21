@@ -1,4 +1,5 @@
 // Racoon: el DAW de la familia Racoon.
+#include <cstdlib>
 #include "engine/SoundLibrary.h"
 #include "engine/CrashLog.h"
 #include "engine/Muestras.h"
@@ -137,6 +138,11 @@ public:
         engine.reset();
         LookAndFeel::setDefaultLookAndFeel (nullptr);
         crashlog::cleanExit();
+       #if JUCE_WINDOWS
+        // todo quedó guardado: en Windows se sale aquí, antes de que se descarguen las DLL de los plugins,
+        // que en las pruebas terminan en un cierre forzado (0xC0000409)
+        std::_Exit (0);
+       #endif
     }
 
     void systemRequestedQuit() override

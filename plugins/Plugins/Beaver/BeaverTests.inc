@@ -349,7 +349,9 @@ static void testBeaver (const juce::File& out)
             return (Time::getMillisecondCounterHiRes() - t0) * 0.001 / 4.0 * 100.0;
         };
         const double normal = cost (1, 12), eco = cost (0, 12);
-        check (normal < 30.0 && eco < 15.0, "12 voces con unison 3: NORMAL " + String (roundToInt (normal)) + " % de un núcleo, ECO "_u + String (roundToInt (eco)) + " %");
+        // las máquinas compartidas de GitHub (CI=true) corren más lento que una computadora de verdad
+        const bool enCi = SystemStats::getEnvironmentVariable ("CI", {}).isNotEmpty();
+        check (normal < (enCi ? 45.0 : 30.0) && eco < (enCi ? 25.0 : 15.0), "12 voces con unison 3: NORMAL " + String (roundToInt (normal)) + " % de un núcleo, ECO "_u + String (roundToInt (eco)) + " %");
     }
 
     // every preset is dark

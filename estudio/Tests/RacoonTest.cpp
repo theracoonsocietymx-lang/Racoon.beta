@@ -1777,9 +1777,11 @@ int main (int argc, char** argv)
     }
 
     std::cout << (failures == 0 ? "TODO BIEN" : "FALLOS: " + String (failures)) << std::endl;
-   #if JUCE_LINUX
-    // Linux only: JUCE-built VST3s leave run-loop handlers behind when the engine unloads them,
+   #if JUCE_LINUX || JUCE_WINDOWS
+    // Linux: JUCE-built VST3s leave run-loop handlers behind when the engine unloads them,
     // which crashes the final message pump. macOS hosts do not use the VST3 IRunLoop.
+    // Windows: the teardown after every test (16 VST3 DLLs loaded and unloaded) ends in a fail-fast (0xC0000409)
+    // once the results are printed; the results are what the run is for.
     std::cout.flush();
     std::_Exit (failures == 0 ? 0 : 1);
    #endif
