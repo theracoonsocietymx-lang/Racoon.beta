@@ -85,3 +85,45 @@ jobs:
         with:
           name: Estudio-Windows
           path: dist/Estudio-Windows
+
+  instalador:
+    name: El instalador
+    needs: [plugins, estudio]
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: Plugins-Windows
+          path: dist/Racoon-Windows
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: Estudio-Windows
+          path: dist/estudio
+
+      - name: Juntar lo que va en el instalador
+        shell: pwsh
+        run: |
+          $out = "dist/Racoon-Windows"
+          Copy-Item dist/estudio/Racoon.exe -Destination $out
+          Copy-Item muestras -Destination "$out/Muestras Racoon" -Recurse
+          Get-ChildItem "$out/VST3" | Format-Table Name
+          "{0:N0} archivos de muestras" -f (Get-ChildItem "$out/Muestras Racoon" -Recurse -File).Count
+
+      - name: Inno Setup
+        shell: pwsh
+        run: |
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path $iscc)) { choco install innosetup -y --no-progress | Out-Null }
+          & $iscc /Q "/DFuente=..\dist\Racoon-Windows" "/DVersion=1.0.0" windows\racoon.iss
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Get-ChildItem dist/*.exe | Format-Table Name, Length
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Racoon-Instalador-Windows
+          path: dist/Racoon-*-Windows.exe
+          compression-level: 0

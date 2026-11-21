@@ -12,6 +12,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Windows (Visual Studio): los textos llevan acentos (UTF-8), hay archivos grandes y se compila en paralelo
 if(MSVC)
+    # el runtime de C++ va dentro de cada .exe y .vst3: no hay que instalar nada de Microsoft aparte
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
     add_compile_options(/utf-8 /bigobj /MP /permissive- /Zc:__cplusplus)
     add_compile_definitions(_USE_MATH_DEFINES NOMINMAX _CRT_SECURE_NO_WARNINGS)
 endif()
