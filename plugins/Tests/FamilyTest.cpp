@@ -552,7 +552,10 @@ static void commonChecks (const String& name, std::function<RacoonProcessor*()> 
                 dock->mouseDrag (ev ({ dock->getWidth() / 2, -150 }, 1));
                 MessageManager::getInstance()->runDispatchLoopUntil (60);
                 const int grown = dock->roll.getHeight() - before;
-                check (grown >= 140 && dock->getY() < dockY - 140, "arrastrar el borde de arriba hace el piano roll más alto (+"_u + String (grown) + " px)");
+                // the page above keeps 170 px: in a short window (the Windows test machine) the roll grows up to that
+                const int room = jmin (140, dock->getParentComponent()->getHeight() - 296 - 170 - 60);
+                check (room > 100 && grown >= room && dock->getY() <= dockY - room, "arrastrar el borde de arriba hace el piano roll más alto (+"_u + String (grown) + " px de "
+                       + String (room) + " posibles)");
                 tu::shot (*re, shots.getChildFile (name.toLowerCase() + "_piano_alto.png"));
                 dock->setExtraHeight (0);
                 MessageManager::getInstance()->runDispatchLoopUntil (40);

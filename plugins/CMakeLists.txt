@@ -16,6 +16,8 @@ if(MSVC)
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
     add_compile_options(/utf-8 /bigobj /MP /permissive- /Zc:__cplusplus)
     add_compile_definitions(_USE_MATH_DEFINES NOMINMAX _CRT_SECURE_NO_WARNINGS)
+    # Windows le da 1 MB de pila a cada programa y Linux y Mac 8 MB: los programas quedan igual que en Mac
+    add_link_options($<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,EXECUTABLE>:/STACK:8388608>)
 endif()
 
 add_subdirectory(JUCE)
@@ -224,6 +226,8 @@ if(RF_TESTS)
         juce::juce_recommended_config_flags)
     if(NOT MSVC)
         target_compile_options(FamilyTest PRIVATE -w)
+    else()
+        target_link_options(FamilyTest PRIVATE /STACK:67108864)
     endif()
 endif()
 

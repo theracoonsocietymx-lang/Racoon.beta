@@ -3,6 +3,10 @@
 name: Pruebas en Windows
 
 on:
+  # sola, cada vez que "Racoon para Windows" termina bien
+  workflow_run:
+    workflows: [ "Racoon para Windows" ]
+    types: [ completed ]
   workflow_dispatch:
     inputs:
       corrida:
@@ -13,9 +17,13 @@ permissions:
   actions: read
   contents: read
 
+env:
+  CORRIDA: ${{ inputs.corrida || github.event.workflow_run.id }}
+
 jobs:
   familia:
     name: La familia de plugins
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: windows-latest
     timeout-minutes: 180
     steps:
@@ -24,7 +32,7 @@ jobs:
         with:
           name: Plugins-Windows
           path: prog
-          run-id: ${{ inputs.corrida }}
+          run-id: ${{ env.CORRIDA }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: FamilyTest
         shell: pwsh
@@ -34,7 +42,9 @@ jobs:
           New-Item -ItemType Directory -Force -Path salida | Out-Null
           Set-Location salida
           & ..\prog\FamilyTest.exe 2>&1 | Tee-Object -FilePath ..\familia.log
-          exit $LASTEXITCODE
+          $code = $LASTEXITCODE
+          Write-Host ("codigo de salida: 0x{0:X8} ({0})" -f $code)
+          exit $code
       - if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -43,6 +53,7 @@ jobs:
 
   efectos:
     name: Los efectos del estudio
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: windows-latest
     timeout-minutes: 180
     steps:
@@ -51,7 +62,7 @@ jobs:
         with:
           name: Estudio-Windows
           path: prog
-          run-id: ${{ inputs.corrida }}
+          run-id: ${{ env.CORRIDA }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: FxTest
         shell: pwsh
@@ -59,7 +70,9 @@ jobs:
           New-Item -ItemType Directory -Force -Path salida | Out-Null
           Set-Location salida
           & ..\prog\FxTest.exe 2>&1 | Tee-Object -FilePath ..\efectos.log
-          exit $LASTEXITCODE
+          $code = $LASTEXITCODE
+          Write-Host ("codigo de salida: 0x{0:X8} ({0})" -f $code)
+          exit $code
       - if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -68,6 +81,7 @@ jobs:
 
   estudio:
     name: El estudio con los plugins
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: windows-latest
     timeout-minutes: 240
     steps:
@@ -76,13 +90,13 @@ jobs:
         with:
           name: Estudio-Windows
           path: prog
-          run-id: ${{ inputs.corrida }}
+          run-id: ${{ env.CORRIDA }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/download-artifact@v4
         with:
           name: Plugins-Windows
           path: plugins-win
-          run-id: ${{ inputs.corrida }}
+          run-id: ${{ env.CORRIDA }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: RacoonTest
         shell: pwsh
@@ -93,7 +107,9 @@ jobs:
           New-Item -ItemType Directory -Force -Path salida | Out-Null
           Set-Location salida
           & ..\prog\RacoonTest.exe 2>&1 | Tee-Object -FilePath ..\estudio.log
-          exit $LASTEXITCODE
+          $code = $LASTEXITCODE
+          Write-Host ("codigo de salida: 0x{0:X8} ({0})" -f $code)
+          exit $code
       - if: always()
         uses: actions/upload-artifact@v4
         with:

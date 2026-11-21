@@ -271,9 +271,8 @@ static void testSkunk (const juce::File& out)
         {
             auto tone = sine (220.0, 0.5f, 0.75);
             WavAudioFormat wav;
-            std::unique_ptr<AudioFormatWriter> w (wav.createWriterFor (new FileOutputStream (file), 44100.0, 2, 24, {}, 0));
             file.deleteFile();
-            w.reset (wav.createWriterFor (new FileOutputStream (file), 44100.0, 2, 24, {}, 0));
+            std::unique_ptr<AudioFormatWriter> w (wav.createWriterFor (new FileOutputStream (file), 44100.0, 2, 24, {}, 0));
             w->writeFromAudioSampleBuffer (tone, 0, tone.getNumSamples());
         }
         auto p = make();

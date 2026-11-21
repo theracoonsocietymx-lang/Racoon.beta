@@ -16,6 +16,8 @@ if(MSVC)
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
     add_compile_options(/utf-8 /bigobj /MP /permissive- /Zc:__cplusplus)
     add_compile_definitions(_USE_MATH_DEFINES NOMINMAX _CRT_SECURE_NO_WARNINGS)
+    # Windows le da 1 MB de pila a cada programa y Linux y Mac 8 MB: los programas quedan igual que en Mac
+    add_link_options($<$<STREQUAL:$<TARGET_PROPERTY:TYPE>,EXECUTABLE>:/STACK:8388608>)
 endif()
 
 # tracktion_engine (v3.2.0) y su JUCE fijado viven en ./tracktion_engine (los descarga scripts/build_mac.sh)
@@ -171,4 +173,9 @@ if(RACOON_TESTS)
     target_include_directories(FxTest PRIVATE Tests/fx)
     target_compile_definitions(FxTest PRIVATE RACOON_TEST_HARNESS=1)
     target_link_libraries(FxTest PRIVATE racoon_core)
+    if(MSVC)
+        # las pruebas arman plugins y efectos enteros como variables locales
+        target_link_options(RacoonTest PRIVATE /STACK:67108864)
+        target_link_options(FxTest PRIVATE /STACK:67108864)
+    endif()
 endif()
